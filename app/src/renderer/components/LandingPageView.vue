@@ -2,6 +2,7 @@
   <div>
     <img src="./LandingPageView/assets/logo.png" alt="electron-vue">
     <h1>Welcome.</h1>
+    <login></login>
     <current-page></current-page>
     <versions></versions>
     <links></links>
@@ -9,14 +10,17 @@
 </template>
 
 <script>
+  
   import CurrentPage from './LandingPageView/CurrentPage'
   import Links from './LandingPageView/Links'
   import Versions from './LandingPageView/Versions'
+  import Login from './LandingPageView/Login'
   export default {
     components: {
       CurrentPage,
       Links,
-      Versions
+      Versions,
+      Login
     },
     name: 'landing-page'
   }
