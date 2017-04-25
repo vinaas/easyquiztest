@@ -17,7 +17,7 @@
     "postinstall": "npm run lint:fix && cd app && npm install"
   },
   "build": {
-    "productName": "ElectronVue",
+    "productName": "EasyQuizTest",
     "appId": "org.simulatedgreg.electron-vue",
     "category": "public.app-category.tools",
     "dmg": {
@@ -52,7 +52,7 @@
       ]
     }
   },
-  "author": "Greg Holguin <simulatedgreg@gmail.com>",
+  "author": "VinaAS Contact <contact@vinaas.com>",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.8.0",
