@@ -6,7 +6,7 @@ export default [
   },
   {
     path: '/about',
-    name: 'landing',
+    name: 'about',
     component: require('components/AboutView')
   },
   {

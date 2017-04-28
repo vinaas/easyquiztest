@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <img src="./LandingPageView/assets/logo.png" alt="electron-vue">
-     <router-link to="/about">Đến trang giới thiệu</router-link>
+  <div class="container">
     <login></login>
     <current-page></current-page>
   </div>
@@ -13,6 +11,7 @@
   import Links from './LandingPageView/Links'
   import Versions from './LandingPageView/Versions'
   import Login from './LandingPageView/Login'
+  
   export default {
     components: {
       CurrentPage,

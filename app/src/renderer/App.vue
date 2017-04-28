@@ -1,39 +1,49 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
+  
+  <div id="app" class="container-fluid">
+    <b-navbar toggleable type="inverse" variant="success">
+
+    <b-nav-toggle target="nav_collapse"></b-nav-toggle>
+
+    <b-link class="navbar-brand" to="#">
+      <span>EasyQuizTest</span>
+    </b-link>
+
+    <b-collapse is-nav id="nav_collapse">
+      
+      <b-nav is-nav-bar>
+        <b-nav-item to="/about">Giới Thiệu</b-nav-item>
+        <b-nav-item>Docs</b-nav-item>
+        <b-nav-item>Contact Us</b-nav-item>
+      </b-nav>
+      
+      <b-nav is-nav-bar class="ml-auto">
+        
+        <b-nav-item-dropdown right-alignment>
+          
+          <!-- Using text slot -->
+          <template slot="text">
+            <span style="font-weight: bold;">User</span>
+          </template>
+          
+          <b-dropdown-item to="#">Profile</b-dropdown-item>
+          <b-dropdown-item to="#">Signout</b-dropdown-item>
+        </b-nav-item-dropdown>
+       
+      </b-nav>
+    </b-collapse>
+  </b-navbar>
+  <router-view></router-view>
   </div>
 </template>
 
 <script>
+  // import 'bootstrap/dist/css/bootstrap.css'
+  // import 'bootstrap-vue/dist/bootstrap-vue.css'
+
   import store from 'renderer/vuex/store'
+  
   export default {
     store
   }
 </script>
-
-<style>
-  @import url(https://fonts.googleapis.com/css?family=Lato:300);
-
-  * {
-    margin: 0;
-    padding: 0;
-  }
-
-  html,
-  body { height: 100%; }
-
-  body {
-    align-items: center;
-    background:
-      radial-gradient(
-        ellipse at center,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(229, 229, 229, .85) 100%
-      );
-    background-position: center;
-    display: flex;
-    font-family: Lato, Helvetica, sans-serif;
-    justify-content: center;
-    text-align: center;
-  }
-</style>
