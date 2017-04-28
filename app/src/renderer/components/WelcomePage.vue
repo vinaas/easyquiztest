@@ -1,7 +1,7 @@
 <template>
   <div>
     <img src="./LandingPageView/assets/logo.png" alt="electron-vue">
-     <router-link to="/landing">Đến trang giới thiệu</router-link>
+     <router-link to="/about">Đến trang giới thiệu</router-link>
     <login></login>
     <current-page></current-page>
   </div>

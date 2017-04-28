@@ -6,7 +6,7 @@
     <current-page></current-page>
     <versions></versions>
     <links></links>
-    <router-link to="/about">Về trang chủ</router-link>
+    <router-link to="/landing">Về trang chủ</router-link>
   </div>
 </template>
 

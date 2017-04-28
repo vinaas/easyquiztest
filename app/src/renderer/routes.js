@@ -7,7 +7,7 @@ export default [
   {
     path: '/about',
     name: 'landing',
-    component: require('components/LandingPageView')
+    component: require('components/AboutView')
   },
   {
     path: '*',
