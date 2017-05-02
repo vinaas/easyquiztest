@@ -1,8 +1,8 @@
 export default [
   {
     path: '/',
-    name: 'landing',
-    component: require('components/WelcomePage')
+    name: 'dashboard',
+    component: require('components/DashBoard')
   },
   {
     path: '/about',
