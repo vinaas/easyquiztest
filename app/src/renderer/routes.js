@@ -1,3 +1,4 @@
+
 export default [{
     path: '/landing-page',
     name: 'landing-page',
@@ -13,7 +14,11 @@ export default [{
       },
       {
         path: 'about',
-        component: require('components/DashBoard/About')
+        component: require('components/DashBoard/About'),
+        beforeEnter: (to, from, next) => {
+          // alert('ok');
+          next();
+        }
       }
     ]
   },

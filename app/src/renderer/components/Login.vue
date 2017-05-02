@@ -25,6 +25,7 @@ export default {
     },
     methods: {
         login: function () {
+            window.localStorage.setItem('user', 'admin');
             this.$router.push({ path: 'dashboard' })
         }
     }
