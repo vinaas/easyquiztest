@@ -1,7 +1,7 @@
 export default [{
     path: '/',
     // name: 'dashboard',
-    component: require('components/DashBoard'),
+    component: require('components/DashBoardView'),
     children: [{
         path: '',
         component: require('components/DashBoard/CurrentPage')
@@ -10,7 +10,6 @@ export default [{
         path: 'about',
         component: require('components/DashBoard/About'),
         beforeEnter: (to, from, next) => {
-          // alert('ok');
           next()
         }
       },
@@ -18,7 +17,6 @@ export default [{
         path: 'login',
         component: require('components/DashBoard/Login'),
         beforeEnter: (to, from, next) => {
-          // alert('ok');
           next()
         }
       }
@@ -26,15 +24,11 @@ export default [{
   },
   {
     path: '/Quiz',
-    component: require('components/Quiz'),
+    component: require('components/QuizView'),
     beforeEnter: (to, from, next) => {
       // alert('ok');
       next()
     }
-  }, {
-    path: '/login',
-    name: 'login',
-    component: require('components/Login')
   },
   {
     path: '*',

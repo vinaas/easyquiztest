@@ -13,12 +13,10 @@
 
 <script>
 import TopNav from './DashBoard/TopNav'
-import RightSidebar from './DashBoard/RightSidebar'
 export default {
   name: 'dashboard',
   components: {
     TopNav,
-    RightSidebar
   }
 }
 </script>

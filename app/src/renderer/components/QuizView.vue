@@ -4,7 +4,7 @@
             <div class="ui three column grid">
                 <div class="four wide column">
                     <div class="row">
-                        <button class="positive ui button fluid">Kết thúc thi <i class="fa fa-clock-o" aria-hidden="true"></i></button>
+                        <button class="positive ui button fluid">Kết thúc thi</button>
                     </div>
                     <div class="row">
                         <div class="ui card">
@@ -156,24 +156,23 @@
                                 </div>
                             </div>
                             <div class="extra content">
+                                <button class="ui button green fluid">Trả lời</button>
+                                <div class="ui divider"></div>
+                                <div id="nav-buttons" class="ui  buttons fluid  center alinged">
+                                    <button class="ui button left attached blue "><i class="left chevron icon"></i>Trước</button>
+                                    <button class="ui button right attached blue ">Sau <i class="right chevron icon"></i></button>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="ui divider"></div>
-                        <div class="ui card">
-                            <div class="ui  buttons">
-                                <button class="ui button left attached blue "><i class="left chevron icon"></i>Trước</button>
-                                <button class="ui button right attached blue ">Sau <i class="right chevron icon"></i></button>
-                            </div>
 
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="ui progress">
+        <div id="quiz-progress" class="ui teal progress" data-value="16" data-total="20">
             <div class="bar">
                 <div class="progress"></div>
             </div>
@@ -213,6 +212,21 @@
     export default {
         name: 'quiz',
         components: {},
-       
+        mounted: function () {
+            $('#quiz-progress').progress({
+                label: 'ratio',
+                text: {
+                    ratio: '{value} / {total}'
+                },
+                showActivity: false
+            });
+        }
+
     }
 </script>
+<style scoped>
+    #nav-buttons {
+        padding-top: 100px;
+        padding-bottom: 10px;
+    }
+</style>
