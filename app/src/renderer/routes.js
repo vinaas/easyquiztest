@@ -1,11 +1,10 @@
-
 export default [{
     path: '/landing-page',
     name: 'landing-page',
     component: require('components/WelcomePage')
   },
   {
-    path: '/',
+    path: '/dashboard',
     // name: 'dashboard',
     component: require('components/DashBoard'),
     children: [{
@@ -17,12 +16,19 @@ export default [{
         component: require('components/DashBoard/About'),
         beforeEnter: (to, from, next) => {
           // alert('ok');
-          next();
+          next()
         }
       }
     ]
   },
   {
+    path: '/',
+    component: require('components/Quiz'),
+    beforeEnter: (to, from, next) => {
+      // alert('ok');
+      next()
+    }
+  }, {
     path: '/login',
     name: 'login',
     component: require('components/Login')
