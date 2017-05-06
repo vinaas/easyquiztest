@@ -2,12 +2,12 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-              <img src="assets/images/logo.png" class="image">
-              <div class="content">
-                Log-in to your account
-              </div>
-            </h2>
-            <form class="ui large form">
+                      <img src="../assets/logo.png" class="image">
+                      <div class="content">
+                        Log-in to your account
+                      </div>
+                    </h2>
+            <form class="ui large form " v-on:submit.prevent="submit">
                 <div class="ui stacked segment">
                     <div class="field">
                         <div class="ui left icon input">
@@ -21,7 +21,7 @@
                             <input type="password" name="password" placeholder="Password">
                         </div>
                     </div>
-                    <div class="ui fluid large teal submit button">Login</div>
+                    <button class="ui fluid large teal submit button">Login</button>
                 </div>
     
                 <div class="ui error message"></div>
@@ -34,35 +34,16 @@
         </div>
     </div>
 </template>
-
 <script>
 export default {
-    created() {
+    mounted: function () {
     },
     methods: {
-        login: function () {
+        submit: function () {
             window.localStorage.setItem('user', 'admin')
-            this.$router.push({ path: 'dashboard' })
+            this.$router.push({ path: 'quiz' })
         }
     }
-}
 
+}
 </script>
-
-<style scoped>
-body {
-    background-color: #DADADA;
-}
-
-body>.grid {
-    height: 100%;
-}
-
-.image {
-    margin-top: -100px;
-}
-
-.column {
-    max-width: 450px;
-}
-</style>

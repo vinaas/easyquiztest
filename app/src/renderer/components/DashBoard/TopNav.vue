@@ -1,27 +1,32 @@
 <template>
-    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-        <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="#">Home</a>
+    <div class="ui fixed inverted menu">
+        <div class="ui container">
+            <router-link class="item header item" to="/"> <img class="logo" src="../assets/logo.png"> EasyQuizTest
+            </router-link>
+            <!--<router-link class="item" to="/about">Giới thiệu</router-link>-->
     
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                     <router-link class="nav-link" to="/">dashboard</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/about">about</router-link>
+            <router-link class="item" to="/login">Đăng nhập</router-link>
     
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/login">login</router-link>
-                </li>
-            </ul>
-            <form class="form-inline mt-2 mt-md-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
         </div>
-    </nav>
+    </div>
 </template>
+
+<script>
+export default {
+    mounted: function () {
+        $(document)
+            .ready(function () {
+                $('.ui.menu .ui.dropdown').dropdown({
+                    on: 'hover'
+                });
+                $('.ui.menu a.item')
+                    .on('click', function () {
+                        $(this)
+                            .addClass('active')
+                            .siblings()
+                            .removeClass('active');
+                    });
+            });
+    }
+}
+</script>
