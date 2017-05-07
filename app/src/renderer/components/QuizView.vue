@@ -3,7 +3,7 @@
         <div class="row">
             <div class="ui three column grid">
                 <div class="four wide column">
-                    <div class="row">
+                    <div class="row" style="padding-bottom:10px">
                         <button class="positive ui button fluid">Kết thúc thi</button>
                     </div>
                     <div class="row">
