@@ -109,7 +109,5 @@
     "webpack-dev-server": "^2.3.0",
     "webpack-merge": "^2.4.0"
   },
-  "dependencies": {
-    "bootstrap-vue": "^0.14.0"
-  }
+  "dependencies": {}
 }
