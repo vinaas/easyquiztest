@@ -50,6 +50,7 @@ npm run pack
 # Install dependencies and run your app
 cd app
 npm install
+cd ..
 npm run dev
 ```
 
