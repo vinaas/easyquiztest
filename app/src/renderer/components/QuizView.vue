@@ -1,6 +1,13 @@
 <template>
-    <div class="ui container" style="padding-top: 10px">
-        <div class="row">
+    <div class="ui fluid-container">
+        <div class="ui menu">
+            <div class="ui container">
+                <router-link class="item header item" to="/"> <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</router-link>
+                
+            </div>
+        </div>
+    <div class="ui container" >
+        <div class="row" >
             <div class="ui three column grid">
                 <div class="four wide column">
                     <div class="row" style="padding-bottom:10px">
@@ -204,7 +211,7 @@
                 </div>
             </footer>
         </div>
-
+    </div>
     </div>
 </template>
 
