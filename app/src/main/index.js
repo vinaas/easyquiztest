@@ -15,8 +15,8 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 800,
-    width: 1024,
+    height: 720,
+    width: 1280,
     // kiosk: true
   })
   mainWindow.setMenu(null);
