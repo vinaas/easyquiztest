@@ -4,7 +4,7 @@
             <h2 class="ui teal image header">
                               <img src="../assets/vinaas-logo.png" class="image">
                               <div class="content">
-                                Đăng nhập vào hệ thống EasyQuiz
+                                Đăng nhập vào hệ thống
                               </div>
                             </h2>
             <form class="ui large form " v-on:submit.prevent="submit">
