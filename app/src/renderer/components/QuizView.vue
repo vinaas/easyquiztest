@@ -2,7 +2,7 @@
     <div class="ui fluid-container">
         <div class="ui menu">
             <div class="ui container">
-                <router-link class="item header item" to="/"> <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</router-link>
+                <div class="item header item"> <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>
                 
             </div>
         </div>
