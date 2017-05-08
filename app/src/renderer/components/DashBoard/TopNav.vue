@@ -5,7 +5,7 @@
             </router-link>
             <!--<router-link class="item" to="/about">Giới thiệu</router-link>-->
     
-            <router-link class="item" to="/login">Đăng nhập</router-link>
+            <!--<router-link class="item" to="/login">Đăng nhập</router-link>-->
     
         </div>
     </div>
