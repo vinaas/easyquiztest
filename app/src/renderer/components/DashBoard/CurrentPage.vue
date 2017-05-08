@@ -2,9 +2,9 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                              <img src="../assets/logo.png" class="image">
+                              <img src="../assets/vinaas-logo.png" class="image">
                               <div class="content">
-                                Log-in to your account
+                                Đăng nhập vào hệ thống EasyQuiz
                               </div>
                             </h2>
             <form class="ui large form " v-on:submit.prevent="submit">
@@ -12,7 +12,7 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="email" placeholder="E-mail address">
+                            <input type="text" name="username" placeholder="username">
                         </div>
                     </div>
                     <div class="field">
@@ -21,7 +21,7 @@
                             <input type="password" name="password" placeholder="Password">
                         </div>
                     </div>
-                    <button class="ui fluid large teal submit button">Login</button>
+                    <button class="ui fluid large teal submit button">Đăng Nhập</button>
                 </div>
     
                 <div class="ui error message"></div>
@@ -29,7 +29,8 @@
             </form>
     
             <div class="ui message">
-                New to us? <a href="#">Sign Up</a>
+                Chưa có tài khoản đăng nhập, liên hệ với chúng tôi!
+                <!--New to us? <a href="#">Sign Up</a>-->
             </div>
         </div>
     </div>
@@ -61,6 +62,6 @@ body>.grid {
 }
 
 .column {
-    max-width: 450px;
+    max-width: 450px; 
 }
 </style>
