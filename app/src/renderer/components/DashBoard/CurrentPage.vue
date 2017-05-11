@@ -4,7 +4,7 @@
             <h2 class="ui teal image header">
                               <img src="../assets/logo.png" class="image">
                               <div class="content">
-                                Log-in to your account
+                                Đăng nhập vào hệ thống
                               </div>
                             </h2>
             <form class="ui large form " v-on:submit.prevent="submit">
@@ -12,7 +12,7 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="email" placeholder="E-mail address">
+                            <input type="text" name="username" placeholder="username">
                         </div>
                     </div>
                     <div class="field">
@@ -21,7 +21,7 @@
                             <input type="password" name="password" placeholder="Password">
                         </div>
                     </div>
-                    <button class="ui fluid large teal submit button">Login</button>
+                    <button class="ui fluid large teal submit button">Đăng nhập</button>
                 </div>
     
                 <div class="ui error message"></div>
@@ -29,21 +29,21 @@
             </form>
     
             <div class="ui message">
-                New to us? <a href="#">Sign Up</a>
+                Chưa có tài khoản? liên hệ với contact@vinaas.com để có thông tin
             </div>
         </div>
     </div>
 </template>
 <script>
 export default {
-    mounted: function () {
-    },
-    methods: {
-        submit: function () {
-            window.localStorage.setItem('user', 'admin')
-            this.$router.push({ path: 'quiz' })
-        }
+  mounted: function () {
+  },
+  methods: {
+    submit: function () {
+      window.localStorage.setItem('user', 'admin')
+      this.$router.push({ path: 'quiz' })
     }
+  }
 
 }
 </script>
