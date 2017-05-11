@@ -4,7 +4,7 @@
             <div class="ui three column grid">
                 <div class="four wide column">
                     <div class="row" style="padding-bottom:10px">
-                        <button class="positive ui button fluid">Kết thúc thi</button>
+                        <router-link class="positive ui button fluid" to="/">Kết thúc thi</router-link>
                     </div>
                     <div class="row">
                         <div class="ui card">
