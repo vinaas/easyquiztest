@@ -16,7 +16,7 @@ import TopNav from './DashBoard/TopNav'
 export default {
   name: 'dashboard',
   components: {
-    TopNav,
+    TopNav
   }
 }
 </script>

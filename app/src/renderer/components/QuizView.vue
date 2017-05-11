@@ -210,17 +210,17 @@
 
 <script>
     export default {
-        name: 'quiz',
-        components: {},
-        mounted: function () {
-            $('#quiz-progress').progress({
-                label: 'ratio',
-                text: {
-                    ratio: '{value} / {total}'
-                },
-                showActivity: false
-            });
-        }
+      name: 'quiz',
+      components: {},
+      mounted: function () {
+        $('#quiz-progress').progress({
+          label: 'ratio',
+          text: {
+            ratio: '{value} / {total}'
+          },
+          showActivity: false
+        })
+      }
 
     }
 </script>
