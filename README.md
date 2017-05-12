@@ -33,8 +33,16 @@
 # install dependencies
 npm install
 
+## Cài đặt những package để chạy app (bổ sung)
+```
+cd app
+npm install
+cd ..
+```
+
 # serve with hot reload at localhost:9080
 npm run dev
+
 
 # build electron app for production
 npm run build
@@ -44,15 +52,7 @@ npm run lint
 
 # run webpack in production
 npm run pack
-```
-## Cài đặt những package để chạy app
-```bash 
-# Install dependencies and run your app
-cd app
-npm install
-cd ..
-npm run dev
-```
+
 
 More information can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/en/npm_scripts.html).
 
