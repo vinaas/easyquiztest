@@ -24,8 +24,8 @@
     
                                 </div>
                                 <!--<div class="extra content">
-                        
-                                                    </div>-->
+                            
+                                                        </div>-->
                             </div>
                             <div class="ui card">
     
@@ -71,39 +71,39 @@
                                         </tbody>
                                     </table>
                                     <!--<div class="ui divided items">
-                                                            <div class="item">
-                                                                <div class="ui tiny image">
-                                                                    A
+                                                                <div class="item">
+                                                                    <div class="ui tiny image">
+                                                                        A
+                                                                    </div>
+                                                                    <div class="middle aligned content">
+                                                                        Đáp án trả lời A
+                                                                    </div>
                                                                 </div>
-                                                                <div class="middle aligned content">
-                                                                    Đáp án trả lời A
+                                                                <div class="item">
+                                                                    <div class="ui tiny image">
+                                                                        B
+                                                                    </div>
+                                                                    <div class="middle aligned content">
+                                                                        Đáp án trả lời B
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="item">
-                                                                <div class="ui tiny image">
-                                                                    B
+                                                                <div class="item">
+                                                                    <div class="ui tiny image">
+                                                                        C
+                                                                    </div>
+                                                                    <div class="middle aligned content">
+                                                                        Đáp án trả lời C
+                                                                    </div>
                                                                 </div>
-                                                                <div class="middle aligned content">
-                                                                    Đáp án trả lời B
+                                                                <div class="item">
+                                                                    <div class="ui tiny image">
+                                                                        D
+                                                                    </div>
+                                                                    <div class="middle aligned content">
+                                                                        Đáp án trả lời D
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="item">
-                                                                <div class="ui tiny image">
-                                                                    C
-                                                                </div>
-                                                                <div class="middle aligned content">
-                                                                    Đáp án trả lời C
-                                                                </div>
-                                                            </div>
-                                                            <div class="item">
-                                                                <div class="ui tiny image">
-                                                                    D
-                                                                </div>
-                                                                <div class="middle aligned content">
-                                                                    Đáp án trả lời D
-                                                                </div>
-                                                            </div>
-                                                        </div>-->
+                                                            </div>-->
                                 </div>
                                 <div class="extra content">
                                 </div>
@@ -122,8 +122,8 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <div v-for="a of current.answers" class="field" >
-                                                <div v-bind:class="[ 'ui','checkbox', current.type ]" >
+                                            <div v-for="a of current.answers" class="field">
+                                                <div v-bind:class="[ 'ui','checkbox', current.type ]">
                                                     <input v-bind:type="current.type" v-bind:name="current.id">
                                                     <label>{{a.id}}</label>
                                                 </div>
@@ -135,8 +135,8 @@
                                     <button class="ui button green fluid">Trả lời</button>
                                     <div class="ui divider"></div>
                                     <div id="nav-buttons" class="ui  buttons fluid  center alinged">
-                                        <button class="ui button left attached blue "><i class="left chevron icon"></i>Trước</button>
-                                        <button class="ui button right attached blue ">Sau <i class="right chevron icon"></i></button>
+                                        <button class="ui button left attached blue " v-bind:disabled="!previous " @click="goPrevious()"><i class="left chevron icon"></i>Trước</button>
+                                        <button class="ui button right attached blue " v-bind:disabled="!next" @click="goNext()"> Sau <i class="right chevron icon"></i></button>
                                     </div>
     
                                 </div>
@@ -159,13 +159,13 @@
                         <div class="content">
                             <button v-for="(q, index) in quizs" @click="goToQuestion(q)" class="mini green ui button inverted">Câu {{index+ 1}}</button>
                             <!--<button class="mini green ui button inverted">Câu 2</button>
-                                <button class="mini green ui button inverted ">Câu 3</button>
-                                <button class="mini orange ui button inverted">Câu 4</button>
-                                <button class="mini orange ui button inverted">Câu 5</button>
-                                <button class="mini orange ui button inverted">Câu 6</button>
-                                <button class="mini green ui button ">Câu 7</button>
-                                <button class="mini orange ui button inverted">Câu 8</button>
-                                <button class="mini orange ui button inverted">Câu 9</button>-->
+                                    <button class="mini green ui button inverted ">Câu 3</button>
+                                    <button class="mini orange ui button inverted">Câu 4</button>
+                                    <button class="mini orange ui button inverted">Câu 5</button>
+                                    <button class="mini orange ui button inverted">Câu 6</button>
+                                    <button class="mini green ui button ">Câu 7</button>
+                                    <button class="mini orange ui button inverted">Câu 8</button>
+                                    <button class="mini orange ui button inverted">Câu 9</button>-->
     
                         </div>
     
@@ -188,7 +188,9 @@ export default {
     name: 'quiz',
     computed: mapGetters({
         quizs: 'getAllQuizs',
-        current: 'getCurrentQuestion'
+        current: 'getCurrentQuestion',
+        next: 'next',
+        previous: 'previous'
     }),
     components: {},
     mounted: function () {
@@ -209,11 +211,19 @@ export default {
     methods: {
         goToQuestion(q) {
             this.$store.dispatch('goToQuestion', q)
+            console.log('next', this.current, this.next)
+        },
+        goNext() {
+            this.$store.dispatch('goToQuestion', { id: this.current.id + 1 })
+        },
+        goPrevious() {
+            this.$store.dispatch('goToQuestion', { id: this.current.id - 1 })
+
         }
     },
     created() {
         this.$store.dispatch('getAllQuizs')
-        this.$store.dispatch('goToQuestion',{id:1})
+        this.$store.dispatch('goToQuestion', { id: 1 })
     }
 
 }

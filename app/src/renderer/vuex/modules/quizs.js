@@ -2,13 +2,19 @@ import * as types from '../mutation-types'
 import quizApi from '../../api/quiz'
 const state = {
     all: [],
-    currentQuestion:{}
+    currentQuestion:{},
+    next: true,
+    previous: true,
+    
 }
 
 // getters
 const getters = {
     getAllQuizs: state => state.all,
-    getCurrentQuestion: (state) => state.currentQuestion
+    getCurrentQuestion: (state) => state.currentQuestion,
+    previous: (state) => state.all.map(x=>x).shift().id !== state.currentQuestion.id ,
+    //   !state.currentQuestion.id == state.all.map(x=>x).shift().id,
+    next: (state)=> state.currentQuestion.id !== state.all.map(x=>x).pop().id
 }
 
 // actions
