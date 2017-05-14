@@ -18,14 +18,14 @@
     
                                 <div class="content">
                                     <div class="ui info message center aligned green">
-                                        <div class="header">Thời gian</div>    
+                                        <div class="header">Thời gian</div>
                                         <h1><div id="basicUsage">00:00:00</div> <i class="alarm outline icon"></i></h1>
                                     </div>
     
                                 </div>
                                 <!--<div class="extra content">
-            
-                                        </div>-->
+                    
+                                                </div>-->
                             </div>
                             <div class="ui card">
     
@@ -83,39 +83,39 @@
                                         </tbody>
                                     </table>
                                     <!--<div class="ui divided items">
-                                                <div class="item">
-                                                    <div class="ui tiny image">
-                                                        A
-                                                    </div>
-                                                    <div class="middle aligned content">
-                                                        Đáp án trả lời A
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="ui tiny image">
-                                                        B
-                                                    </div>
-                                                    <div class="middle aligned content">
-                                                        Đáp án trả lời B
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="ui tiny image">
-                                                        C
-                                                    </div>
-                                                    <div class="middle aligned content">
-                                                        Đáp án trả lời C
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="ui tiny image">
-                                                        D
-                                                    </div>
-                                                    <div class="middle aligned content">
-                                                        Đáp án trả lời D
-                                                    </div>
-                                                </div>
-                                            </div>-->
+                                                        <div class="item">
+                                                            <div class="ui tiny image">
+                                                                A
+                                                            </div>
+                                                            <div class="middle aligned content">
+                                                                Đáp án trả lời A
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="ui tiny image">
+                                                                B
+                                                            </div>
+                                                            <div class="middle aligned content">
+                                                                Đáp án trả lời B
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="ui tiny image">
+                                                                C
+                                                            </div>
+                                                            <div class="middle aligned content">
+                                                                Đáp án trả lời C
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="ui tiny image">
+                                                                D
+                                                            </div>
+                                                            <div class="middle aligned content">
+                                                                Đáp án trả lời D
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
                                 </div>
                                 <div class="extra content">
                                 </div>
@@ -187,8 +187,8 @@
                 <footer>
                     <div class="ui card fluid">
                         <!--<div class="content">
-                                    <div class="header">Câu hỏi</div>
-                                </div>-->
+                                            <div class="header">Câu hỏi</div>
+                                        </div>-->
                         <div class="content">
                             <button class="mini green ui button inverted">Câu 1</button>
                             <button class="mini green ui button inverted">Câu 2</button>
@@ -215,8 +215,13 @@
 <script>
 
 import * as Timer from 'easytimer'
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
     name: 'quiz',
+    computed: mapGetters({
+        quizs: 'getAllQuizs'
+    }),
     components: {},
     mounted: function () {
         $('#quiz-progress').progress({
@@ -231,6 +236,10 @@ export default {
         timer.addEventListener('secondsUpdated', function (e) {
             $('#basicUsage').html(timer.getTimeValues().toString());
         });
+
+    },
+    created() {
+        this.$store.dispatch('getAllQuizs')
 
     }
 
