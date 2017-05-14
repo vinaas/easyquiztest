@@ -123,8 +123,8 @@
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
                                             <div v-for="a of current.answers" class="field" >
-                                                <div class="ui radio checkbox">
-                                                    <input type="radio" name="example2" checked="checked">
+                                                <div v-bind:class="[ 'ui','checkbox', current.type ]" >
+                                                    <input v-bind:type="current.type" v-bind:name="current.id">
                                                     <label>{{a.id}}</label>
                                                 </div>
                                             </div>
