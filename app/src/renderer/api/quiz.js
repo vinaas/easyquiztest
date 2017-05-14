@@ -1,11 +1,13 @@
 /**
  * Mocking client-server processing
  */
-const _quizs = [{
+const _quizs = [
+    {
         "id": 1,
         "type": "checkbox",
         "description": "what ???",
-        "answers": [{
+        "answers": [
+            {
                 "id": "A",
                 "content": "Nội dung đáp án A"
             },
@@ -25,7 +27,7 @@ const _quizs = [{
     },
     {
         "id": 2,
-        "type":"radio",
+        "type": "radio",
         "description": "what 2???",
         "answers": [{
                 "id": "A",
