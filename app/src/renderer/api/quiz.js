@@ -1,13 +1,11 @@
 /**
  * Mocking client-server processing
  */
-const _quizs = [
-    {
+const _quizs = [{
         "id": 1,
         "type": "checkbox",
         "description": "what ???",
-        "answers": [
-            {
+        "answers": [{
                 "id": "A",
                 "content": "Nội dung đáp án A"
             },
@@ -23,7 +21,8 @@ const _quizs = [
                 "id": "D",
                 "content": "Nội dung đáp án D"
             }
-        ]
+        ],
+        "correctAnswers": ["A"]
     },
     {
         "id": 2,
@@ -45,7 +44,9 @@ const _quizs = [
                 "id": "D",
                 "content": "Nội dung đáp án D"
             }
-        ]
+        ],
+        "correctAnswers": ["A"]
+
     },
     {
         "id": 3,
@@ -67,14 +68,16 @@ const _quizs = [
                 "id": "D",
                 "content": "Nội dung đáp án D"
             }
-        ]
+        ],
+        "correctAnswers": ["A"]
+
     }
 
 
 ]
 
 export default {
-    getQuizs(cb) {
-        cb(_quizs)
+    getQuizs() {
+        return Promise.resolve(_quizs)
     }
 }

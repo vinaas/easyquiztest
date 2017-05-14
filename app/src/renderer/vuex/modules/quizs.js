@@ -13,14 +13,14 @@ const getters = {
     getAllQuizs: state => state.all,
     getCurrentQuestion: (state) => state.currentQuestion,
     previous: (state) => state.all.map(x=>x).shift().id !== state.currentQuestion.id ,
-    //   !state.currentQuestion.id == state.all.map(x=>x).shift().id,
     next: (state)=> state.currentQuestion.id !== state.all.map(x=>x).pop().id
 }
 
 // actions
 const actions = {
     getAllQuizs({ commit}) {
-        quizApi.getQuizs(quizs => {
+        quizApi.getQuizs().then( function(quizs)  {
+            console.log('quiz', quizs)
             commit(types.RECEIVE_QUIZS, {
                 quizs
             })
