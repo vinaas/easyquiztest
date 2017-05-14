@@ -59,25 +59,13 @@
                                     <div class="header">Câu {{current.id}}</div>
                                 </div>
                                 <div class="content">
-                                    <h4 class="ui sub header ">{{current.question}}</h4>
+                                    <h4 class="ui sub header ">{{current.description}}</h4>
                                     <table class="ui table celled">
     
                                         <tbody>
-                                            <tr>
-                                                <td>A</td>
-                                                <td>Đáp án A Đáp án A ... Đáp án A Đáp án A </td>
-                                            </tr>
-                                            <tr>
-                                                <td>B</td>
-                                                <td>Đáp án B </td>
-                                            </tr>
-                                            <tr>
-                                                <td>C</td>
-                                                <td>Đáp án C</td>
-                                            </tr>
-                                            <tr>
-                                                <td>D</td>
-                                                <td>Đáp án D</td>
+                                            <tr v-for="a of current.answers">
+                                                <td>{{a.id}}</td>
+                                                <td>{{a.content}}</td>
                                             </tr>
     
                                         </tbody>
@@ -134,28 +122,10 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <div class="field">
+                                            <div v-for="a of current.answers" class="field" >
                                                 <div class="ui radio checkbox">
                                                     <input type="radio" name="example2" checked="checked">
-                                                    <label>A</label>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui radio checkbox">
-                                                    <input type="radio" name="example2">
-                                                    <label>B</label>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui radio checkbox">
-                                                    <input type="radio" name="example2">
-                                                    <label>C</label>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui radio checkbox">
-                                                    <input type="radio" name="example2">
-                                                    <label>D</label>
+                                                    <label>{{a.id}}</label>
                                                 </div>
                                             </div>
                                         </div>

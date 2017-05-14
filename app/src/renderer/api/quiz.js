@@ -2,18 +2,49 @@
  * Mocking client-server processing
  */
 const _quizs = [{
-    "id": 1,
-    "question": "what 1 ???"
-},
-{
-    "id": 2,
-    "question": "what 2???"
-},
-{
-    "id": 3,
-    "question": "what 3 ???"
-}
- ]
+        "id": 1,
+        "description": "what ???",
+        "answers": [{
+                "id": "A",
+                "content": "Nội dung đáp án A"
+            },
+            {
+                "id": "B",
+                "content": "Nội dung đáp án B"
+            },
+            {
+                "id": "C",
+                "content": "Nội dung đáp án C"
+            },
+            {
+                "id": "D",
+                "content": "Nội dung đáp án D"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "description": "what 2???",
+        "answers": [{
+                "id": "A",
+                "content": "Nội dung đáp án A"
+            },
+            {
+                "id": "B",
+                "content": "Nội dung đáp án B"
+            },
+            {
+                "id": "C",
+                "content": "Nội dung đáp án C"
+            },
+            {
+                "id": "D",
+                "content": "Nội dung đáp án D"
+            }
+        ]
+    }
+
+]
 
 export default {
     getQuizs(cb) {
