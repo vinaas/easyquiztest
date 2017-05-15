@@ -1,3 +1,4 @@
+// apply global overrides stuff here
 import Vue from 'vue'
 import Electron from 'vue-electron'
 import Resource from 'vue-resource'
@@ -10,7 +11,9 @@ Vue.use(Router)
 Vue.config.debug = true
 
 const router = new Router({
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes
 })
 
