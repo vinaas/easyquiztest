@@ -1,6 +1,7 @@
 # easyquiztest
 
 > Easy QuizTest, a product of VinaAS Ltd,.Co
+> Công nghệ: Electron, VueJS, SemanticUI 
 
 ## Kế hoạch thực hiện
 ### Bản demo dùng thử: khoảng 10/05/2017
@@ -27,23 +28,28 @@
    - phân quyền 
    - phân thí sinh tham gia kì thi 
 
-## Build Setup
+### Build Setup
 
 ``` bash
 # install dependencies
 npm install
 
 ## Cài đặt những package để chạy app (bổ sung)
-```
 cd app
 npm install
 cd ..
 ```
 
+### Run software
+
+```
 # serve with hot reload at localhost:9080
 npm run dev
+```
 
+### Build to software (Win, Mac, Linux)
 
+```bash
 # build electron app for production
 npm run build
 
@@ -52,10 +58,4 @@ npm run lint
 
 # run webpack in production
 npm run pack
-
-
-More information can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/en/npm_scripts.html).
-
----
-
-This project was generated from [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about this project can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+```
