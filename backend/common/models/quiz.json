@@ -1,0 +1,25 @@
+{
+  "name": "Quiz",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "forceId": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": "string",
+    "startDate": "date",
+    "quizTime": "date",
+    "quizStatus": "string",
+    "totalTime": "number",
+    "numberOfQuestions": "number"
+  },
+  "validations": [],
+  "relations": {
+
+  },
+  "acls": [
+
+  ],
+  "methods": {}
+}
