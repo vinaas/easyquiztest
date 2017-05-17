@@ -33,7 +33,9 @@
 ``` bash
 # install dependencies
 npm install
+## Khởi động API phía server
 
+npm run server
 ## Cài đặt những package để chạy app (bổ sung)
 cd app
 npm install
