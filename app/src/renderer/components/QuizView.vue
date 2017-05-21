@@ -24,8 +24,8 @@
     
                                 </div>
                                 <!--<div class="extra content">
-                                
-                                                            </div>-->
+                                            
+                                                                        </div>-->
                             </div>
                             <div class="ui card">
     
@@ -71,39 +71,39 @@
                                         </tbody>
                                     </table>
                                     <!--<div class="ui divided items">
-                                                                    <div class="item">
-                                                                        <div class="ui tiny image">
-                                                                            A
-                                                                        </div>
-                                                                        <div class="middle aligned content">
-                                                                            Đáp án trả lời A
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="item">
-                                                                        <div class="ui tiny image">
-                                                                            B
-                                                                        </div>
-                                                                        <div class="middle aligned content">
-                                                                            Đáp án trả lời B
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="item">
-                                                                        <div class="ui tiny image">
-                                                                            C
-                                                                        </div>
-                                                                        <div class="middle aligned content">
-                                                                            Đáp án trả lời C
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="item">
-                                                                        <div class="ui tiny image">
-                                                                            D
-                                                                        </div>
-                                                                        <div class="middle aligned content">
-                                                                            Đáp án trả lời D
-                                                                        </div>
-                                                                    </div>
-                                                                </div>-->
+                                                                                <div class="item">
+                                                                                    <div class="ui tiny image">
+                                                                                        A
+                                                                                    </div>
+                                                                                    <div class="middle aligned content">
+                                                                                        Đáp án trả lời A
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="item">
+                                                                                    <div class="ui tiny image">
+                                                                                        B
+                                                                                    </div>
+                                                                                    <div class="middle aligned content">
+                                                                                        Đáp án trả lời B
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="item">
+                                                                                    <div class="ui tiny image">
+                                                                                        C
+                                                                                    </div>
+                                                                                    <div class="middle aligned content">
+                                                                                        Đáp án trả lời C
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="item">
+                                                                                    <div class="ui tiny image">
+                                                                                        D
+                                                                                    </div>
+                                                                                    <div class="middle aligned content">
+                                                                                        Đáp án trả lời D
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>-->
                                 </div>
                                 <div class="extra content">
                                 </div>
@@ -124,7 +124,7 @@
                                             <!--<label>How often do you use checkboxes?</label>-->
                                             <div v-for="a of current.answers" class="field">
                                                 <div v-bind:class="[ 'ui','checkbox', current.type ]">
-                                                    <input v-bind:type="current.type" v-bind:name="current.id" >
+                                                    <input v-bind:type="current.type" v-bind:name="current.id">
                                                     <label>{{a.id}}</label>
                                                 </div>
                                             </div>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
             </div>
-            <div id="quiz-progress" class="ui teal progress" data-value="16" data-total="20">
+            <div id="quiz-progress" class="ui teal progress">
                 <div class="bar">
                     <div class="progress"></div>
                 </div>
@@ -174,7 +174,7 @@
 
 import * as Timer from 'easytimer'
 import { mapGetters, mapActions } from 'vuex'
-import toastr from  'toastr'
+import toastr from 'toastr'
 
 export default {
     name: 'quiz',
@@ -182,18 +182,24 @@ export default {
         quizs: 'getAllQuizs',
         current: 'getCurrentQuestion',
         next: 'next',
-        previous: 'previous'
+        previous: 'previous',
+        answereds: 'answereds'
     }),
     components: {},
     mounted: function () {
-        
-        $('#quiz-progress').progress({
-            label: 'ratio',
-            text: {
-                ratio: '{value} / {total}'
-            },
-            showActivity: false
-        });
+        setTimeout(function () {
+            $('#quiz-progress').progress({
+                label: 'ratio',
+                value: me.answereds,
+                total: me.quizs.length,
+                text: {
+                    ratio: '{value}/{total}'
+                },
+                showActivity: false
+            });
+        }, 500);
+        var me = this;
+
         var timer = new Timer();
         timer.start();
         timer.addEventListener('secondsUpdated', function (e) {
@@ -212,9 +218,14 @@ export default {
             this.$store.dispatch('goToQuestion', { id: this.current.id - 1 })
 
         },
-        answer(){
-            this.$store.dispatch('answer');
-            toastr.info('Bạn đã trả lời thành công')
+        answer() {
+
+            toastr.options.timeOut = 100;
+            toastr.info('Bạn đã trả lời thành công');
+            if (this.current.isAnswered == false) {
+                this.$store.dispatch('answer');
+                $('#quiz-progress').progress('increment')
+            }
         }
     },
     created() {

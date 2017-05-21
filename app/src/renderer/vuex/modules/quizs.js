@@ -15,7 +15,7 @@ const getters = {
     getCurrentQuestion: (state) => state.currentQuestion,
     previous: (state) =>state.all.length!==0 && state.all.map(x => x).shift().id !== state.currentQuestion.id,
     next: (state) => state.all.length!==0 && state.currentQuestion.id !== state.all.map(x => x).pop().id,
-    answereds : (state)=> state.all.filter(x=>x.userAnswered.length !== 0).length
+    answereds : (state)=> state.all.filter(x=> x.isAnswered == true).length
 }
 
 // actions
