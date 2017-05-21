@@ -1,7 +1,47 @@
 <template>
     <div>
-        <h1 class="ui header">Quản lý đề thi</h1>
-        <p>Quản lý danh sách câu hỏi đề thi</p>
+        <!--<h1 class="ui header">Bảng quản lý</h1>-->
+        <h1>Danh sách các đề thi</h1>
+        <table class="ui celled striped table">
+            <thead>
+                <tr>
+                    <th colspan="3">
+                        Danh sách các đề thi
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="collapsing">
+                        Đề thi 1
+                    </td>
+                    <td>Đề thi môn ABC năm 2016/2017</td>
+                    <td class="right aligned collapsing">60 phút</td>
+                </tr>
+                 <tr>
+                    <td class="collapsing">
+                        Đề thi 2
+                    </td>
+                    <td>Đề thi môn ABC năm 2016/2017</td>
+                    <td class="right aligned collapsing">60 phút</td>
+                </tr>
+                 <tr>
+                    <td class="collapsing">
+                        Đề thi 3
+                    </td>
+                    <td>Đề thi môn ABC năm 2016/2017</td>
+                    <td class="right aligned collapsing">60 phút</td>
+                </tr>
+                 <tr>
+                    <td class="collapsing">
+                        Đề thi 3
+                    </td>
+                    <td>Đề thi môn ABC năm 2016/2017</td>
+                    <td class="right aligned collapsing">60 phút</td>
+                </tr>
+    
+            </tbody>
+        </table>
     </div>
 </template>
 <script>
@@ -15,24 +55,5 @@ export default {
 }
 </script>
 <style scoped>
-body {
-    background-color: #FFFFFF;
-}
 
-.ui.menu .item img.logo {
-    margin-right: 1.5em;
-}
-
-.main.container {
-    margin-top: 7em;
-}
-
-.wireframe {
-    margin-top: 2em;
-}
-
-.ui.footer.segment {
-    margin: 5em 0em 0em;
-    padding: 5em 0em;
-}
 </style>
