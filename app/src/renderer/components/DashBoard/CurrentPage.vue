@@ -2,11 +2,11 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                                                                  <img src="../assets/vinaas-logo.png" class="image">
-                                                                  <div class="content">
-                                                                    Đăng nhập vào hệ thống
-                                                                  </div>
-                                                                </h2>
+                                                                                                      <img src="../assets/vinaas-logo.png" class="image">
+                                                                                                      <div class="content">
+                                                                                                        Đăng nhập vào hệ thống
+                                                                                                      </div>
+                                                                                                    </h2>
             <form class="ui large form " v-on:submit.prevent="submit">
                 <div class="ui stacked segment">
                     <div class="field">
@@ -30,12 +30,15 @@
     
             <div class="ui message">
                 Chưa có tài khoản đăng nhập, liên hệ với chúng tôi!
+                <p>tài khoản quản trị <code>admin/1234</code></p>
+                <p>tài khoản thí sinh <code>user/1234</code></p>
                 <!--New to us? <a href="#">Sign Up</a>-->
             </div>
         </div>
     </div>
 </template>
 <script>
+import toastr from 'toastr'
 export default {
     mounted: function () {
     },
@@ -44,11 +47,20 @@ export default {
         submit: function () {
 
             window.localStorage.setItem(this.username, this.password)
-            if (this.username === 'admin') {
+            if (this.username === 'admin' && this.password === '1234') {
                 this.$router.push({ path: 'admin' })
+                toastr.info('Đăng nhập thành công')
 
-            } else
-                this.$router.push({ path: 'quiz' })
+            }
+            else
+                if (this.username === 'user' && this.password === '1234') {
+                    this.$router.push({ path: 'quiz' })
+                    toastr.info('Đăng nhập thành công')
+
+                }
+                else {
+                    toastr.error('Đăng nhập không thành công', 'Invalid login')
+                }
         }
     }
 
