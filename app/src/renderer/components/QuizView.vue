@@ -19,13 +19,13 @@
                                 <div class="content">
                                     <div class="ui info message center aligned green">
                                         <div class="header">Thời gian</div>
-                                        <h1><div id="basicUsage">00:00:00</div> <i class="alarm outline icon"></i></h1>
+                                        <h1><div id="basicUsage"></div> <i class="alarm outline icon"></i></h1>
                                     </div>
     
                                 </div>
                                 <!--<div class="extra content">
-                                            
-                                                                        </div>-->
+                                                        
+                                                                                    </div>-->
                             </div>
                             <div class="ui card">
     
@@ -71,39 +71,39 @@
                                         </tbody>
                                     </table>
                                     <!--<div class="ui divided items">
-                                                                                <div class="item">
-                                                                                    <div class="ui tiny image">
-                                                                                        A
-                                                                                    </div>
-                                                                                    <div class="middle aligned content">
-                                                                                        Đáp án trả lời A
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="item">
-                                                                                    <div class="ui tiny image">
-                                                                                        B
-                                                                                    </div>
-                                                                                    <div class="middle aligned content">
-                                                                                        Đáp án trả lời B
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="item">
-                                                                                    <div class="ui tiny image">
-                                                                                        C
-                                                                                    </div>
-                                                                                    <div class="middle aligned content">
-                                                                                        Đáp án trả lời C
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="item">
-                                                                                    <div class="ui tiny image">
-                                                                                        D
-                                                                                    </div>
-                                                                                    <div class="middle aligned content">
-                                                                                        Đáp án trả lời D
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>-->
+                                                                                            <div class="item">
+                                                                                                <div class="ui tiny image">
+                                                                                                    A
+                                                                                                </div>
+                                                                                                <div class="middle aligned content">
+                                                                                                    Đáp án trả lời A
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="item">
+                                                                                                <div class="ui tiny image">
+                                                                                                    B
+                                                                                                </div>
+                                                                                                <div class="middle aligned content">
+                                                                                                    Đáp án trả lời B
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="item">
+                                                                                                <div class="ui tiny image">
+                                                                                                    C
+                                                                                                </div>
+                                                                                                <div class="middle aligned content">
+                                                                                                    Đáp án trả lời C
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="item">
+                                                                                                <div class="ui tiny image">
+                                                                                                    D
+                                                                                                </div>
+                                                                                                <div class="middle aligned content">
+                                                                                                    Đáp án trả lời D
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>-->
                                 </div>
                                 <div class="extra content">
                                 </div>
@@ -172,9 +172,10 @@
 
 <script>
 
-import * as Timer from 'easytimer'
+// import * as Timer from 'easytimer'
 import { mapGetters, mapActions } from 'vuex'
 import toastr from 'toastr'
+import startTimer from '../../common/coundown.js'
 
 export default {
     name: 'quiz',
@@ -199,12 +200,14 @@ export default {
             });
         }, 500);
         var me = this;
-
-        var timer = new Timer();
-        timer.start();
-        timer.addEventListener('secondsUpdated', function (e) {
-            $('#basicUsage').html(timer.getTimeValues().toString());
-        });
+        // var timer = new Timer();
+        // timer.start();
+        // timer.addEventListener('secondsUpdated', function (e) {
+        //     $('#basicUsage').html(timer.getTimeValues().toString());
+        // });
+        var totalSecond = 30 * 60,
+            display = document.querySelector('#basicUsage');
+        startTimer(totalSecond, display);
 
     },
     methods: {
@@ -237,6 +240,7 @@ export default {
     }
 
 }
+
 </script>
 <style scoped>
 #nav-buttons {
