@@ -124,7 +124,7 @@
                                             <!--<label>How often do you use checkboxes?</label>-->
                                             <div v-for="a of current.answers" class="field">
                                                 <div v-bind:class="[ 'ui','checkbox', current.type ]">
-                                                    <input v-bind:type="current.type" v-bind:name="current.id">
+                                                    <input v-bind:type="current.type" v-bind:name="current.id" >
                                                     <label>{{a.id}}</label>
                                                 </div>
                                             </div>
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                                 <div class="extra content">
-                                    <button class="ui button green fluid">Trả lời</button>
+                                    <button class="ui button green fluid" @click="answer()">Trả lời</button>
                                     <div class="ui divider"></div>
                                     <div id="nav-buttons" class="ui  buttons fluid  center alinged">
                                         <button class="ui button left attached blue " v-bind:disabled="!previous " @click="goPrevious()"><i class="left chevron icon"></i>Trước</button>
@@ -157,16 +157,7 @@
                 <footer>
                     <div class="ui card fluid">
                         <div class="content">
-                            <button v-for="(q, index) of quizs" @click="goToQuestion(q)" class="mini green ui button" v-bind:class="{inverted: (index+1)!==current.id}">Câu {{index+ 1}}</button>
-                            <!--<button class="mini green ui button inverted">Câu 2</button>
-                                        <button class="mini green ui button inverted ">Câu 3</button>
-                                        <button class="mini orange ui button inverted">Câu 4</button>
-                                        <button class="mini orange ui button inverted">Câu 5</button>
-                                        <button class="mini orange ui button inverted">Câu 6</button>
-                                        <button class="mini green ui button ">Câu 7</button>
-                                        <button class="mini orange ui button inverted">Câu 8</button>
-                                        <button class="mini orange ui button inverted">Câu 9</button>-->
-    
+                            <button v-for="(q, index) of quizs" @click="goToQuestion(q)" class="mini ui button" v-bind:class="{inverted: (index+1)!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
                         </div>
     
                     </div>
@@ -183,6 +174,7 @@
 
 import * as Timer from 'easytimer'
 import { mapGetters, mapActions } from 'vuex'
+import toastr from  'toastr'
 
 export default {
     name: 'quiz',
@@ -212,7 +204,6 @@ export default {
     methods: {
         goToQuestion(q) {
             this.$store.dispatch('goToQuestion', q)
-            console.log('next', this.current, this.next)
         },
         goNext() {
             this.$store.dispatch('goToQuestion', { id: this.current.id + 1 })
@@ -220,6 +211,10 @@ export default {
         goPrevious() {
             this.$store.dispatch('goToQuestion', { id: this.current.id - 1 })
 
+        },
+        answer(){
+            this.$store.dispatch('answer');
+            toastr.info('Bạn đã trả lời thành công')
         }
     },
     created() {

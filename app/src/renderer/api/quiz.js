@@ -7,21 +7,26 @@ const _quizs = [{
         "description": "what ???",
         "answers": [{
                 "id": "A",
-                "content": "Nội dung đáp án A"
+                "content": "Nội dung đáp án A",
+                "isUserChecked": false
             },
             {
                 "id": "B",
-                "content": "Nội dung đáp án B"
+                "content": "Nội dung đáp án B",
+                "isUserChecked": false
             },
             {
                 "id": "C",
-                "content": "Nội dung đáp án C"
+                "content": "Nội dung đáp án C",
+                "isUserChecked": false
             },
             {
                 "id": "D",
-                "content": "Nội dung đáp án D"
+                "content": "Nội dung đáp án D",
+                "isUserChecked": false
             }
         ],
+        "isAnswered": false,
         "correctAnswers": ["A"]
     },
     {
@@ -30,21 +35,26 @@ const _quizs = [{
         "description": "what 2???",
         "answers": [{
                 "id": "A",
-                "content": "Nội dung đáp án A"
+                "content": "Nội dung đáp án A",
+                "isUserChecked": true
             },
             {
                 "id": "B",
-                "content": "Nội dung đáp án B"
+                "content": "Nội dung đáp án B",
+                "isUserChecked": false
             },
             {
                 "id": "C",
-                "content": "Nội dung đáp án C"
+                "content": "Nội dung đáp án C",
+                "isUserChecked": false
             },
             {
                 "id": "D",
-                "content": "Nội dung đáp án D"
+                "content": "Nội dung đáp án D",
+                "isUserChecked": false
             }
         ],
+        "isAnswered": false,
         "correctAnswers": ["A"]
 
     },
@@ -54,21 +64,26 @@ const _quizs = [{
         "description": "what 3???",
         "answers": [{
                 "id": "A",
-                "content": "Nội dung đáp án A"
+                "content": "Nội dung đáp án A",
+                "isUserChecked": false
             },
             {
                 "id": "B",
-                "content": "Nội dung đáp án B"
+                "content": "Nội dung đáp án B",
+                "isUserChecked": false
             },
             {
                 "id": "C",
-                "content": "Nội dung đáp án C"
+                "content": "Nội dung đáp án C",
+                "isUserChecked": false
             },
             {
                 "id": "D",
-                "content": "Nội dung đáp án D"
+                "content": "Nội dung đáp án D",
+                "isUserChecked": false
             }
         ],
+        "isAnswered": false,
         "correctAnswers": ["A"]
 
     }
