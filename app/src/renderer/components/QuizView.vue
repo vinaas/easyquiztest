@@ -218,7 +218,9 @@ export default {
         }
     },
     created() {
+        console.log('create');
         this.$store.dispatch('getAllQuizs').then(() => {
+            console.log('done get data');
             this.$store.dispatch('goToQuestion', { id: 1 })
         })
     }

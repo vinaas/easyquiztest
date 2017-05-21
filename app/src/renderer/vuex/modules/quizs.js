@@ -2,7 +2,7 @@ import * as types from '../mutation-types'
 import quizApi from '../../api/quiz'
 const state = {
     all: [],
-    currentQuestion: {},
+    currentQuestion: {id:1},
     next: true,
     previous: true,
     answereds: 0,
@@ -13,8 +13,8 @@ const state = {
 const getters = {
     getAllQuizs: state => state.all,
     getCurrentQuestion: (state) => state.currentQuestion,
-    previous: (state) => state.all.map(x => x).shift().id !== state.currentQuestion.id,
-    next: (state) => state.currentQuestion.id !== state.all.map(x => x).pop().id,
+    previous: (state) =>state.all.length!==0 && state.all.map(x => x).shift().id !== state.currentQuestion.id,
+    next: (state) => state.all.length!==0 && state.currentQuestion.id !== state.all.map(x => x).pop().id,
     answereds : (state)=> state.all.filter(x=>x.userAnswered.length !== 0).length
 }
 
