@@ -2,23 +2,23 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                              <img src="../assets/vinaas-logo.png" class="image">
-                              <div class="content">
-                                Đăng nhập vào hệ thống
-                              </div>
-                            </h2>
+                                                                  <img src="../assets/vinaas-logo.png" class="image">
+                                                                  <div class="content">
+                                                                    Đăng nhập vào hệ thống
+                                                                  </div>
+                                                                </h2>
             <form class="ui large form " v-on:submit.prevent="submit">
                 <div class="ui stacked segment">
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="username" placeholder="username">
+                            <input type="text" name="username" placeholder="username" v-model="username">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
-                            <input type="password" name="password" placeholder="Password">
+                            <input type="password" name="password" placeholder="Password" v-model="password">
                         </div>
                     </div>
                     <button class="ui fluid large teal submit button">Đăng Nhập</button>
@@ -39,10 +39,16 @@
 export default {
     mounted: function () {
     },
+    data: function () { return { username: '', password: '' } },
     methods: {
         submit: function () {
-            window.localStorage.setItem('user', 'admin')
-            this.$router.push({ path: 'quiz' })
+
+            window.localStorage.setItem(this.username, this.password)
+            if (this.username === 'admin') {
+                this.$router.push({ path: 'admin' })
+
+            } else
+                this.$router.push({ path: 'quiz' })
         }
     }
 
@@ -62,6 +68,6 @@ body>.grid {
 }
 
 .column {
-    max-width: 450px; 
+    max-width: 450px;
 }
 </style>

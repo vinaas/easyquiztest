@@ -31,6 +31,22 @@ export default [{
     }
   },
   {
+    path: '/admin',
+    component: require('components/AdminView'),
+    children: [{
+        path: '',
+        component: require('components/Admin/CurrentPage')
+      },
+      {
+        path: 'quizlist',
+        component: require('components/Admin/QuizList'),
+        beforeEnter: (to, from, next) => {
+          next()
+        }
+      }
+    ]
+  },
+  {
     path: '*',
     redirect: '/'
   }
