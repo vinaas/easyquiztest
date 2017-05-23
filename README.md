@@ -28,6 +28,10 @@
    - phân quyền 
    - phân thí sinh tham gia kì thi 
 
+### Requirement
+- Git
+- Nodejs >= v.7.1
+
 ### Build Setup
 
 ``` bash
