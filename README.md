@@ -9,6 +9,7 @@
   - tham gia kì thi có sẵn
   - trả lời từng câu hỏi, lựa chọn đáp án trong thời gian giới hạn
   - kết quả sau khi hoàn thành bài thi
+Them moi 1 dong
 
 ### Bản chính thức:  khoảng 10/06/2017
  + Hoàn thiện phần mềm thi cài trên máy con ở bản demo

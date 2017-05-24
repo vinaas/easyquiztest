@@ -37,14 +37,14 @@
 </template>
 <script>
 export default {
-    mounted: function () {
-    },
-    methods: {
-        submit: function () {
-            window.localStorage.setItem('user', 'admin')
-            this.$router.push({ path: 'quiz' })
-        }
+  mounted: function () {
+  },
+  methods: {
+    submit: function () {
+      window.localStorage.setItem('user', 'admin')
+      this.$router.push({ path: 'quiz' })
     }
+  }
 
 }
 </script>
