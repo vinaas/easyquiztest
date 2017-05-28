@@ -24,8 +24,8 @@
     
                                 </div>
                                 <!--<div class="extra content">
-                                                        
-                                                                                    </div>-->
+                                                                                                                                                                                        
+                                                                                                                                                                                                                    </div>-->
                             </div>
                             <div class="ui card">
     
@@ -70,40 +70,7 @@
     
                                         </tbody>
                                     </table>
-                                    <!--<div class="ui divided items">
-                                                                                            <div class="item">
-                                                                                                <div class="ui tiny image">
-                                                                                                    A
-                                                                                                </div>
-                                                                                                <div class="middle aligned content">
-                                                                                                    Đáp án trả lời A
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="item">
-                                                                                                <div class="ui tiny image">
-                                                                                                    B
-                                                                                                </div>
-                                                                                                <div class="middle aligned content">
-                                                                                                    Đáp án trả lời B
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="item">
-                                                                                                <div class="ui tiny image">
-                                                                                                    C
-                                                                                                </div>
-                                                                                                <div class="middle aligned content">
-                                                                                                    Đáp án trả lời C
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="item">
-                                                                                                <div class="ui tiny image">
-                                                                                                    D
-                                                                                                </div>
-                                                                                                <div class="middle aligned content">
-                                                                                                    Đáp án trả lời D
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>-->
+    
                                 </div>
                                 <div class="extra content">
                                 </div>
@@ -122,9 +89,10 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <div v-for="a of current.answers" class="field">
+                                            <div v-for="(a ,i) in current.answers" class="field">
                                                 <div v-bind:class="[ 'ui','checkbox', current.type ]">
-                                                    <input v-bind:type="current.type" v-bind:name="current.id">
+                                                    <input v-if="current.type=='checkbox'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
+                                                    <input v-if="current.type=='radio'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
                                                     <label>{{a.id}}</label>
                                                 </div>
                                             </div>
@@ -176,9 +144,14 @@
 import { mapGetters, mapActions } from 'vuex'
 import toastr from 'toastr'
 import startTimer from '../../common/coundown.js'
-
+import _ from 'lodash'
 export default {
     name: 'quiz',
+    data: function () {
+        return {
+            cloneUserCheck: ['A']
+        }
+    },
     computed: mapGetters({
         quizs: 'getAllQuizs',
         current: 'getCurrentQuestion',
@@ -197,45 +170,61 @@ export default {
                     ratio: '{value}/{total}'
                 },
                 showActivity: false
-            });
-        }, 500);
-        var me = this;
+            })
+        }, 500)
+        var me = this
         // var timer = new Timer();
         // timer.start();
         // timer.addEventListener('secondsUpdated', function (e) {
         //     $('#basicUsage').html(timer.getTimeValues().toString());
         // });
         var totalSecond = 30 * 60,
-            display = document.querySelector('#basicUsage');
-        startTimer(totalSecond, display);
-
+            display = document.querySelector('#basicUsage')
+        startTimer(totalSecond, display)
     },
     methods: {
         goToQuestion(q) {
             this.$store.dispatch('goToQuestion', q)
+                .then(() => {
+                    this._cloneCurrentCheck();
+                })
         },
         goNext() {
             this.$store.dispatch('goToQuestion', { id: this.current.id + 1 })
+                .then(() => {
+                    this._cloneCurrentCheck();
+                })
         },
         goPrevious() {
             this.$store.dispatch('goToQuestion', { id: this.current.id - 1 })
-
+                .then(() => {
+                    this._cloneCurrentCheck();
+                })
         },
         answer() {
-
-            toastr.options.timeOut = 100;
-            toastr.info('Bạn đã trả lời thành công');
+            toastr.options.timeOut = 100
+            if (this.cloneUserCheck.length == 0) {
+                toastr.warning('Bạn chưa chọn đáp án')
+                return;
+            }
+            toastr.info('Bạn đã trả lời thành công')
             if (this.current.isAnswered == false) {
-                this.$store.dispatch('answer');
+
+                this.$store.dispatch('answer')
                 $('#quiz-progress').progress('increment')
             }
+        },
+        _cloneCurrentCheck() {
+            this.cloneUserCheck = _.clone(this.current.userCheck)
         }
     },
     created() {
-        console.log('create');
+        console.log('create', this.a)
         this.$store.dispatch('getAllQuizs').then(() => {
-            console.log('done get data');
-            this.$store.dispatch('goToQuestion', { id: 1 })
+            console.log('done get data')
+            this.$store.dispatch('goToQuestion', { id: 1 }).then(() => {
+                this._cloneCurrentCheck()
+            })
         })
     }
 
