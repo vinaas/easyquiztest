@@ -1,0 +1,34 @@
+{
+  "name": "UsersQuizs",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "userId": {
+      "type": "number",
+      "required": true
+    },
+    "quizId": {
+      "type": "number",
+      "required": true
+    },
+    "answerDetail": {
+      "type": "object"
+    },
+    "result": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "number"
+    },
+    "scopesPraction": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

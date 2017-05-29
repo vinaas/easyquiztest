@@ -2,24 +2,38 @@
   "name": "Quiz",
   "base": "PersistedModel",
   "idInjection": true,
-  "forceId": false,
   "options": {
     "validateUpsert": true
   },
+  "forceId": false,
   "properties": {
-    "name": "string",
-    "startDate": "date",
-    "quizTime": "date",
-    "quizStatus": "string",
-    "totalTime": "number",
-    "numberOfQuestions": "number"
+    "name": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "date"
+    },
+    "quizTime": {
+      "type": "date"
+    },
+    "quizStatus": {
+      "type": "string"
+    },
+    "totalTime": {
+      "type": "number"
+    },
+    "numberOfQuestions": {
+      "type": "number"
+    }
   },
   "validations": [],
   "relations": {
-
+    "questions": {
+      "type": "hasMany",
+      "model": "Question",
+      "foreignKey": ""
+    }
   },
-  "acls": [
-
-  ],
+  "acls": [],
   "methods": {}
 }

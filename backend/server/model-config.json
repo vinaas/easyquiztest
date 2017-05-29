@@ -43,5 +43,13 @@
   "Question": {
     "dataSource": "mongoDs",
     "public": true
+  },
+  "ApplicationUser": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "UsersQuizs": {
+    "dataSource": "mongoDs",
+    "public": true
   }
 }

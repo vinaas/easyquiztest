@@ -1,5 +1,5 @@
 {
-  "name": "Examiner",
+  "name": "ApplicationUser",
   "base": "User",
   "idInjection": true,
   "options": {
@@ -8,6 +8,12 @@
   "properties": {},
   "validations": [],
   "relations": {
+    "quizzes": {
+      "type": "hasMany",
+      "model": "Quiz",
+      "foreignKey": "userId",
+      "through": "UsersQuizs"
+    }
   },
   "acls": [],
   "methods": {}

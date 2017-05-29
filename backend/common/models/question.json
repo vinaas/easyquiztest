@@ -6,11 +6,24 @@
     "validateUpsert": true
   },
   "properties": {
-    "content": "string",
-    "type": "string"
+    "content": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "quizId": {
+      "type": "number"
+    }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "quiz": {
+      "type": "belongsTo",
+      "model": "Quiz",
+      "foreignKey": "quizId"
+    }
+  },
   "acls": [],
   "methods": {}
 }
