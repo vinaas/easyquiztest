@@ -36,10 +36,6 @@
     "dataSource": "mongoDs",
     "public": true
   },
-  "Examiner": {
-    "dataSource": "mongoDs",
-    "public": true
-  },
   "Question": {
     "dataSource": "mongoDs",
     "public": true
