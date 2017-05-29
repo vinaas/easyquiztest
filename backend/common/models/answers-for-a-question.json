@@ -1,31 +1,32 @@
 {
-  "name": "Question",
+  "name": "AnswersForAQuestion",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "description": {
+    "questionId": {
+      "type": "number",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
       "type": "string"
     },
-    "type": {
-      "type": "string"
-    },
-    "quizId": {
-      "type": "number"
+    "isCorrect": {
+      "type": "boolean",
+      "default": false
     }
   },
   "validations": [],
   "relations": {
-    "quiz": {
+    "question": {
       "type": "belongsTo",
-      "model": "Quiz",
-      "foreignKey": "quizId"
-    },
-    "answersForAQuestions": {
-      "type": "hasMany",
-      "model": "AnswersForAQuestion",
+      "model": "Question",
       "foreignKey": "questionId"
     }
   },

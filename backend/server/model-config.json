@@ -47,5 +47,9 @@
   "UsersQuizs": {
     "dataSource": "mongoDs",
     "public": true
+  },
+  "AnswersForAQuestion": {
+    "dataSource": "mongoDs",
+    "public": true
   }
 }
