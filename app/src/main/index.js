@@ -6,20 +6,20 @@ import {
 } from 'electron'
 
 let mainWindow
-const winURL = process.env.NODE_ENV === 'development' ?
-  `http://localhost:${require('../../../config').port}` :
-  `file://${__dirname}/index.html`
+const winURL = process.env.NODE_ENV === 'development'
+  ? `http://localhost:${require('../../../config').port}`
+  : `file://${__dirname}/index.html`
 
-function createWindow() {
+function createWindow () {
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
     height: 720,
-    width: 1280,
+    width: 1280
     // kiosk: true
   })
-  mainWindow.setMenu(null);
+  mainWindow.setMenu(null)
   mainWindow.loadURL(winURL)
 
   mainWindow.on('closed', () => {

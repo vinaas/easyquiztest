@@ -146,87 +146,86 @@ import toastr from 'toastr'
 import startTimer from '../../common/coundown.js'
 import _ from 'lodash'
 export default {
-    name: 'quiz',
-    data: function () {
-        return {
-            cloneUserCheck: ['A']
-        }
-    },
-    computed: mapGetters({
-        quizs: 'getAllQuizs',
-        current: 'getCurrentQuestion',
-        next: 'next',
-        previous: 'previous',
-        answereds: 'answereds'
-    }),
-    components: {},
-    mounted: function () {
-        setTimeout(function () {
-            $('#quiz-progress').progress({
-                label: 'ratio',
-                value: me.answereds,
-                total: me.quizs.length,
-                text: {
-                    ratio: '{value}/{total}'
-                },
-                showActivity: false
-            })
-        }, 500)
-        var me = this
+  name: 'quiz',
+  data: function () {
+    return {
+      cloneUserCheck: ['A']
+    }
+  },
+  computed: mapGetters({
+    quizs: 'getAllQuizs',
+    current: 'getCurrentQuestion',
+    next: 'next',
+    previous: 'previous',
+    answereds: 'answereds'
+  }),
+  components: {},
+  mounted: function () {
+    setTimeout(function () {
+      $('#quiz-progress').progress({
+        label: 'ratio',
+        value: me.answereds,
+        total: me.quizs.length,
+        text: {
+          ratio: '{value}/{total}'
+        },
+        showActivity: false
+      })
+    }, 500)
+    var me = this
         // var timer = new Timer();
         // timer.start();
         // timer.addEventListener('secondsUpdated', function (e) {
         //     $('#basicUsage').html(timer.getTimeValues().toString());
         // });
-        var totalSecond = 30 * 60,
-            display = document.querySelector('#basicUsage')
-        startTimer(totalSecond, display)
+    var totalSecond = 30 * 60,
+      display = document.querySelector('#basicUsage')
+    startTimer(totalSecond, display)
+  },
+  methods: {
+    goToQuestion (q) {
+      this.$store.dispatch('goToQuestion', q)
+                .then(() => {
+                  this._cloneCurrentCheck()
+                })
     },
-    methods: {
-        goToQuestion(q) {
-            this.$store.dispatch('goToQuestion', q)
+    goNext () {
+      this.$store.dispatch('goToQuestion', { id: this.current.id + 1 })
                 .then(() => {
-                    this._cloneCurrentCheck();
+                  this._cloneCurrentCheck()
                 })
-        },
-        goNext() {
-            this.$store.dispatch('goToQuestion', { id: this.current.id + 1 })
-                .then(() => {
-                    this._cloneCurrentCheck();
-                })
-        },
-        goPrevious() {
-            this.$store.dispatch('goToQuestion', { id: this.current.id - 1 })
-                .then(() => {
-                    this._cloneCurrentCheck();
-                })
-        },
-        answer() {
-            toastr.options.timeOut = 100
-            if (this.cloneUserCheck.length == 0) {
-                toastr.warning('Bạn chưa chọn đáp án')
-                return;
-            }
-            toastr.info('Bạn đã trả lời thành công')
-            if (this.current.isAnswered == false) {
-
-                this.$store.dispatch('answer')
-                $('#quiz-progress').progress('increment')
-            }
-        },
-        _cloneCurrentCheck() {
-            this.cloneUserCheck = _.clone(this.current.userCheck)
-        }
     },
-    created() {
-        console.log('create', this.a)
-        this.$store.dispatch('getAllQuizs').then(() => {
-            console.log('done get data')
-            this.$store.dispatch('goToQuestion', { id: 1 }).then(() => {
-                this._cloneCurrentCheck()
-            })
-        })
+    goPrevious () {
+      this.$store.dispatch('goToQuestion', { id: this.current.id - 1 })
+                .then(() => {
+                  this._cloneCurrentCheck()
+                })
+    },
+    answer () {
+      toastr.options.timeOut = 100
+      if (this.cloneUserCheck.length == 0) {
+        toastr.warning('Bạn chưa chọn đáp án')
+        return
+      }
+      toastr.info('Bạn đã trả lời thành công')
+      if (this.current.isAnswered == false) {
+        this.$store.dispatch('answer')
+        $('#quiz-progress').progress('increment')
+      }
+    },
+    _cloneCurrentCheck () {
+      this.cloneUserCheck = _.clone(this.current.userCheck)
     }
+  },
+  created () {
+    console.log('create', this.a)
+    this.$store.dispatch('getAllQuizs').then(() => {
+      console.log('done get data')
+      this.$store.dispatch('goToQuestion', { id: 1 }).then(() => {
+        this._cloneCurrentCheck()
+      })
+    })
+  }
 
 }
 
