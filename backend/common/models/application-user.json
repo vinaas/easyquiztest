@@ -21,11 +21,13 @@
       "through": "RoleMapping"
     }
   },
-  "acls": [{
-    "accessType": "READ",
-    "principalType": "ROLE",
-    "principalId": "admin",
-    "permission": "ALLOW"
-  }],
+  "acls": [
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }
