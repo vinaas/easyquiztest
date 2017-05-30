@@ -13,15 +13,19 @@ export class AuthServices {
         }
         let username = userCertification.username
         let password = userCertification.password
-        var ret = yield axios.post('/ApplicationUsers/login', {
+        var ret = yield axios.post('api/ApplicationUsers/login', {
             'username': username,
             'password': password
         })
         this._setToken(ret);
+        return true
 
     });
+    getUserRoles = Promise.coroutine(function* (id) {
+        return yield axios.get('api/ApplicationUsers/' + id + '/roles')
+    })
     logout = Promise.coroutine(function* () {
-        return yield axios.post('/ApplicationUsers/logout')
+        return yield axios.post('api/ApplicationUsers/logout')
 
     })
     getUserInfo() {
