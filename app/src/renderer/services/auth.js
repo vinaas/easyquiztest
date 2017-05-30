@@ -1,4 +1,9 @@
 var Promise = require("bluebird");
+Promise.config({
+    warnings: {
+        wForgottenReturn: false
+    }
+});
 export class AuthServices {
     get isAuthenticated() {
         return !!this.token()
@@ -17,12 +22,16 @@ export class AuthServices {
             'username': username,
             'password': password
         })
-        this._setToken(ret);
+        this._setToken(ret.data);
         return true
 
     });
-    getUserRoles = Promise.coroutine(function* (id) {
-        return yield axios.get('api/ApplicationUsers/' + id + '/roles')
+    getUserRoles = Promise.coroutine(function* () {
+        var user = JSON.parse(sessionStorage.getItem('userinfo'));
+       
+        let ret = yield axios.get('api/ApplicationUsers/' + user.userId + '/roles')
+         console.log('user info', ret.data)
+        return ret.data
     })
     logout = Promise.coroutine(function* () {
         return yield axios.post('api/ApplicationUsers/logout')
@@ -32,11 +41,11 @@ export class AuthServices {
         if (!this.token) {
             return;
         }
-        return sessionStorage.getItem('userinfo')
+        return JSON.parse(sessionStorage.getItem('userinfo'))
 
     }
     _setToken(ret) {
-        sessionStorage.setItem('userinfo', ret)
+        sessionStorage.setItem('userinfo', JSON.stringify(ret))
         axios.defaults.headers.common['Authorization'] = ret.id
     }
 }
