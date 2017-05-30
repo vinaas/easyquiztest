@@ -13,6 +13,9 @@ import 'font-awesome/css/font-awesome.css'
 import '../../node_modules/toastr/build/toastr.min.css'
 import './style/style.css'
 import store from 'renderer/vuex/store'
+import appConfig from '../../application.json'
+import 'axios'
+axios.defaults.baseURL = appConfig.endpointApi
 export default {
   store
 }

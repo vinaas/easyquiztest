@@ -92,7 +92,8 @@ let rendererConfig = {
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
-      Tether: 'tether'
+      Tether: 'tether',
+       axios: 'axios'
 
     })
   ],
