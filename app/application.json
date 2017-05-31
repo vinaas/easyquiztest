@@ -1,4 +1,5 @@
 {
     "name": "easyquiztest",
-    "endpointApi": "http://localhost:3000/"
+    "endpointApi": "http://localhost:3000/",
+    "logLevel": "debug"
 }

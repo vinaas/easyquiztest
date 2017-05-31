@@ -2,11 +2,11 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                                <img src="../assets/vinaas-logo.png" class="image">
-                                <div class="content">
-                                    Đăng nhập vào hệ thống
-                                </div>
-                            </h2>
+                <img src="../assets/vinaas-logo.png" class="image">
+                <div class="content">
+                    Đăng nhập vào hệ thống
+                </div>
+            </h2>
             <form class="ui large form " v-on:submit.prevent="submit">
                 <div class="ui stacked segment">
                     <div class="field">
@@ -62,11 +62,13 @@ export default {
                             this.$router.push({ path: 'admin' })
                             toastr.info('Đăng nhập thành công')
                         } else {
-                            // user thường
-                            this.$router.push({ path: 'quiz' })
-                            toastr.info('Đăng nhập thành công')
 
                         }
+
+                    }).catch(err => {
+                        // user thường
+                        this.$router.push({ path: 'quiz' })
+                        toastr.info('Đăng nhập thành công')
 
                     })
                 } else {
