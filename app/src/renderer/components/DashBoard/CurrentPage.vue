@@ -2,12 +2,12 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                <img src="../assets/vinaas-logo.png" class="image">
-                <div class="content">
-                    Đăng nhập vào hệ thống
-                </div>
-            </h2>
-            <form class="ui large form " v-on:submit.prevent="submit">
+                                                                                                    <img src="../assets/vinaas-logo.png" class="image">
+                                                                                                    <div class="content">
+                                                                                                        Đăng nhập vào hệ thống
+                                                                                                    </div>
+                                                                                                </h2>
+            <form class="ui large form ">
                 <div class="ui stacked segment">
                     <div class="field">
                         <div class="ui left icon input">
@@ -21,7 +21,7 @@
                             <input type="password" name="password" placeholder="Password" v-model="password">
                         </div>
                     </div>
-                    <button class="ui fluid large teal submit button">Đăng Nhập</button>
+                    <button id="login" class="ui fluid large teal submit button">Đăng Nhập</button>
                 </div>
     
                 <div class="ui error message"></div>
@@ -44,42 +44,51 @@
 <script>
 import toastr from 'toastr'
 import { AuthServices } from '../../services/auth.js'
+import Promise from 'bluebird'
 const _authServices = new AuthServices()
+
 export default {
     mounted: function () {
+        var me = this;
+        $('#login').api({
+            mockResponseAsync: Promise.coroutine(function* (st, cb) {
+                yield me.login();
+                cb();
+            }),
+            on: 'click'
+        })
     },
     data: function () { return { username: '', password: '' } },
     methods: {
-        submit: function () {
-            _authServices.login({
-                'username': this.username,
-                'password': this.password
-            }).then(ret => {
+        login: Promise.coroutine(function* () {
+            try {
+                let ret = yield _authServices.login({
+                    'username': this.username,
+                    'password': this.password
+                })
                 if (ret) {
-                    _authServices.getUserRoles().then(roles => {
-                        // user admin
+                    try {
+                        let roles = yield _authServices.getUserRoles();
                         if (roles.filter(x => x.name == 'admin').length !== 0) {
                             this.$router.push({ path: 'admin' })
                             toastr.info('Đăng nhập thành công')
                         } else {
 
                         }
-
-                    }).catch(err => {
-                        // user thường
+                    } catch (error) {
                         this.$router.push({ path: 'quiz' })
                         toastr.info('Đăng nhập thành công')
-
-                    })
-                } else {
+                    }
 
                 }
-            }).catch(err => {
+
+            } catch (error) {
                 toastr.error('Đăng nhập không thành công', 'Invalid login')
-            })
+            }
 
 
-        }
+
+        })
     }
 
 }
