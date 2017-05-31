@@ -33,7 +33,7 @@ let rendererConfig = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        include: [ path.resolve(__dirname, 'app/src/renderer') ],
+        include: [path.resolve(__dirname, 'app/src/renderer')],
         exclude: /node_modules/
       },
       {
@@ -88,13 +88,13 @@ let rendererConfig = {
         : false,
     }),
     new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.ProvidePlugin({
+    new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       Tether: 'tether',
-       axios: 'axios'
-
+      axios: 'axios',
+      Promise: "imports-loader?this=>global!exports-loader?global.Promise!bluebird",
     })
   ],
   output: {

@@ -55,10 +55,9 @@ export default {
                 "username": this.username,
                 "password": this.password
             }).then(ret => {
-                console.log('login retrict', ret)
                 if (ret) {
                     _authServices.getUserRoles(roles => {
-                        console.log(`""""""""""""""`, roles)
+
                         //user admin
                         if (roles.filter(x => x.name == 'admin').length !== 0) {
                             this.$router.push({ path: 'admin' })
@@ -77,21 +76,8 @@ export default {
             }).catch(err => {
                 toastr.error('Đăng nhập không thành công', 'Invalid login')
             })
-            // window.localStorage.setItem(this.username, this.password)
-            // if (this.username === 'admin' && this.password === '1234') {
-            //     this.$router.push({ path: 'admin' })
-            //     toastr.info('Đăng nhập thành công')
 
-            // }
-            // else
-            //     if (this.username === 'user' && this.password === '1234') {
-            //         this.$router.push({ path: 'quiz' })
-            //         toastr.info('Đăng nhập thành công')
 
-            //     }
-            //     else {
-            //         toastr.error('Đăng nhập không thành công', 'Invalid login')
-            //     }
         }
     }
 
