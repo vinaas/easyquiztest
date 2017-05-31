@@ -2,16 +2,20 @@ import Promise from 'bluebird'
 const pathEntity = '/api/Quizzes';
 export class QuizServices {
     getQuizs = Promise.coroutine(function* () {
-        yield axios.get(pathEntity)
+        let ret = yield axios.get(pathEntity)
+        return ret.data
     })
     getQuiz = Promise.coroutine(function* (id) {
-        yield axios.get(`${pathEntity}/${id}`)
+        let ret = yield axios.get(`${pathEntity}/${id}`)
+        return ret.data
     })
     save = Promise.coroutine(function* (bindingEntity) {
-        yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity)
+        let ret = yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity)
+        return ret.data
     })
     remove = Promise.coroutine(function* (id) {
-        yield axios.delete(`${pathEntity}/${id}`)
+        let ret = yield axios.delete(`${pathEntity}/${id}`)
+        return ret.data
     })
 
 }
