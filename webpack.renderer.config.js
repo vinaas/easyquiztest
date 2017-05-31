@@ -93,8 +93,7 @@ let rendererConfig = {
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       Tether: 'tether',
-      axios: 'axios',
-      Promise: "imports-loader?this=>global!exports-loader?global.Promise!bluebird",
+      axios: 'axios'
     })
   ],
   output: {
