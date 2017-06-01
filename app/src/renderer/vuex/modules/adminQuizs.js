@@ -1,6 +1,7 @@
 import * as types from '../mutation-types'
 import { QuizServices } from '../../services/quiz'
 import Promise from 'bluebird'
+import _ from 'lodash'
 const quizService = new QuizServices();
 const mutationTypes = {
     RECEIVE_QUIZS: 'RECEIVE_QUIZS',
@@ -48,10 +49,9 @@ const actions = {
     saveQuiz: Promise.coroutine(function* ({ commit }, selectedQuiz) {
         var ret = yield quizService.save(selectedQuiz)
         commit(mutationTypes.SAVE_QUIZ)
-        commit(mutationTypes.RESET_CURRENT)
     }),
-    removeQuiz: Promise.coroutine(function* ({ commit }, current) {
-        var ret = yield quizService.remove(current.id)
+    removeQuiz: Promise.coroutine(function* ({ commit }, quiz) {
+        var ret = yield quizService.remove(quiz.id)
     }),
     updateCurrent: Promise.coroutine(function* ({ commit }, selectedQuiz) {
         commit(mutationTypes.UPDATE_CURRENT, selectedQuiz)
@@ -64,7 +64,7 @@ const actions = {
 const getters = {
     all: state => state.all,
     currentQuiz: state => state.currentQuiz,
-    title: state => !!state.currentQuiz ? 'Cập nhật' : 'Tạo mới'
+    title: state => _.isEmpty(state.currentQuiz) ? 'Tạo mới' : 'Cập nhật'
 }
 export default {
     namespaced: true,
