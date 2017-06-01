@@ -152,7 +152,8 @@ export default {
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Có, Xóa",
-                closeOnConfirm: false
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
             },
                 Promise.coroutine(function* () {
                     yield me.$store.dispatch('adminQuizs/removeQuiz', item)
