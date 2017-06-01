@@ -7,7 +7,8 @@ const mutationTypes = {
     SAVE_QUIZ: 'SAVE_QUIZ',
     REMOVE_QUIZ: 'REMOVE_QUIZ',
     SELECT_QUIZ: 'SELECT_QUIZ',
-    RESET_CURRENT: 'RESET_CURRENT'
+    RESET_CURRENT: 'RESET_CURRENT',
+    UPDATE_CURRENT: 'UPDATE_CURRENT'
 }
 const state = {
     all: [],
@@ -15,10 +16,10 @@ const state = {
 }
 
 const mutations = {
-    [mutationTypes.SELECT_QUIZ](state, { selectedQuiz }) {
-        let filter = state.all.filter(x => x.id == selectedQuiz.id);
-        if (filter) {
-            state.current = filter[0]
+    [mutationTypes.SELECT_QUIZ](state, selectedQuiz) {
+        let filter = state.all.filter(x => selectedQuiz && x.id == selectedQuiz.id);
+        if (!!filter.length) {
+            state.currentQuiz = filter[0]
         }
     },
     [mutationTypes.SAVE_QUIZ](state) { },
@@ -27,7 +28,10 @@ const mutations = {
         state.all = quizList
     },
     [mutationTypes.RESET_CURRENT](state) {
-        state.current = {}
+        state.currentQuiz = {}
+    },
+    [mutationTypes.UPDATE_CURRENT](state, quiz) {
+        state.currentQuiz = quiz
     }
 }
 const actions = {
@@ -40,16 +44,18 @@ const actions = {
     }),
     selectQuiz: function ({ commit }, selectedQuiz) {
         commit(mutationTypes.SELECT_QUIZ, selectedQuiz)
-
     },
-    saveQuiz: Promise.coroutine(function* ({ commit }, current) {
-        var ret = yield quizService.save(current)
+    saveQuiz: Promise.coroutine(function* ({ commit }, selectedQuiz) {
+        var ret = yield quizService.save(selectedQuiz)
         commit(mutationTypes.SAVE_QUIZ)
-        commit(mutations.RESET_CURRENT)
+        commit(mutationTypes.RESET_CURRENT)
     }),
     removeQuiz: Promise.coroutine(function* ({ commit }, current) {
         var ret = yield quizService.remove(current.id)
-    })
+    }),
+    updateCurrent: Promise.coroutine(function* ({ commit }, selectedQuiz) {
+        commit(mutationTypes.UPDATE_CURRENT, selectedQuiz)
+    }),
 
 
 
@@ -57,8 +63,8 @@ const actions = {
 
 const getters = {
     all: state => state.all,
-    current: state => state.currentQuiz,
-    title: state => !!state.current ? 'Cập nhật' : 'Tạo mới'
+    currentQuiz: state => state.currentQuiz,
+    title: state => !!state.currentQuiz ? 'Cập nhật' : 'Tạo mới'
 }
 export default {
     namespaced: true,

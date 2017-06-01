@@ -6,54 +6,18 @@
         <div class="ui modal">
             <i class="close icon"></i>
             <div class="header">
-                Profile Picture
+                {{title}}
             </div>
             <div class="ui content">
     
-                <form class="ui form segment">
-                    <p>Tell Us About Yourself</p>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Name</label>
-                            <input placeholder="First Name" name="name" type="text">
-                        </div>
-                        <div class="field">
-                            <label>Gender</label>
-                            <select class="ui dropdown" name="gender">
-                                <option value="">Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Username</label>
-                            <input placeholder="Username" name="username" type="text">
-                        </div>
-                        <div class="field">
-                            <label>Password</label>
-                            <input type="password" name="password">
-                        </div>
+                <form class="ui form">
+                    <div class="field">
+                        <label>Tên</label>
+                        <input type="text" name="name" placeholder="Tên đề thi" :value="current.name" @input="updateCurrent">
                     </div>
                     <div class="field">
-                        <label>Skills</label>
-                        <select name="skills" multiple="" class="ui dropdown">
-                            <option value="">Select Skills</option>
-                            <option value="css">CSS</option>
-                            <option value="html">HTML</option>
-                            <option value="javascript">Javascript</option>
-                            <option value="design">Graphic Design</option>
-                            <option value="plumbing">Plumbing</option>
-                            <option value="mech">Mechanical Engineering</option>
-                            <option value="repair">Kitchen Repair</option>
-                        </select>
-                    </div>
-                    <div class="inline field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="terms">
-                            <label>I agree to the terms and conditions</label>
-                        </div>
+                        <label>Thời gian làm bài</label>
+                        <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="current.totalTime" @input="updateCurrent">
                     </div>
                     <div class="ui primary submit button">Submit</div>
                 </form>
@@ -80,8 +44,8 @@
                     <td>{{item.totalTime}} phút</td>
                     <td>{{item.quizTime}}</td>
                     <td>
-                        <button class="ui button primary"> Cập nhật</button>
-                        <button class="ui button "> Xóa</button>
+                        <button class="ui button primary" v-on:click="toSave(item)"> Cập nhật</button>
+                        <button class="ui button " v-on:click="toDelete(item)"> Xóa</button>
                     </td>
     
                 </tr>
@@ -92,12 +56,14 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
-import * as logger from '../../../common/logger.js'
+import Logger from '../../../common/logger.js'
+import _ from 'lodash'
+const logger = Logger('Admin Quiz List')
 export default {
     computed: {
         ...mapState('adminQuizs', {
             all: state => state.all,
-            current: state => state.current
+            current: state => state.currentQuiz
         }),
         ...mapGetters('adminQuizs', {
             title: 'title'
@@ -105,6 +71,7 @@ export default {
     },
 
     mounted: function () {
+        let me = this
         $('.ui.form')
             .form({
                 fields: {
@@ -115,67 +82,54 @@ export default {
                             prompt: 'Please enter your name'
                         }]
                     },
-                    skills: {
-                        identifier: 'skills',
-                        rules: [{
-                            type: 'minCount[2]',
-                            prompt: 'Please select at least two skills'
-                        }]
-                    },
-                    gender: {
-                        identifier: 'gender',
+                    totalTime: {
+                        identifier: 'totalTime',
                         rules: [{
                             type: 'empty',
-                            prompt: 'Please select a gender'
-                        }]
-                    },
-                    username: {
-                        identifier: 'username',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please enter a username'
-                        }]
-                    },
-                    password: {
-                        identifier: 'password',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please enter a password'
-                        },
-                        {
-                            type: 'minLength[6]',
-                            prompt: 'Your password must be at least {ruleValue} characters'
-                        }
-                        ]
-                    },
-                    terms: {
-                        identifier: 'terms',
-                        rules: [{
-                            type: 'checked',
-                            prompt: 'You must agree to the terms and conditions'
+                            prompt: 'Please enter totalTime'
                         }]
                     }
+
                 },
                 onSuccess: function (event, fields) {
                     event.preventDefault()
-
-                    alert('ok')
+                    me.save()
                     $('.ui.modal').modal('hide')
                     return true
                 },
                 onFailure: function () {
-                    alert('eee')
                     return false
                 }
+
             })
         $('.ui.modal').modal({
-            closable: false
+            closable: false,
+            onHidden: function () {
+                $('.ui.form').form('reset')
+            }
         })
     },
     methods: {
         addQuiz: function () {
+            this.$store.dispatch('adminQuizs/selectQuiz', {})
+
             $('.ui.modal')
                 .modal('show')
+        },
+        toSave: function (item) {
+            logger.debug(item)
+            this.$store.dispatch('adminQuizs/selectQuiz', item)
+
+            $('.ui.modal')
+                .modal('show')
+        },
+        save: function () {
+            this.$store.dispatch('adminQuizs/saveQuiz', this.current)
+        },
+        updateCurrent: function (e) {
+            console.log(e)
+            let cloneQuiz = Object.assign({}, this.current, { [e.target.name]: e.target.value })
+            this.$store.dispatch('adminQuizs/updateCurrent', cloneQuiz)
         }
 
     },
