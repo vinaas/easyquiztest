@@ -3,7 +3,7 @@
         <!--<h1 class="ui header">Bảng quản lý</h1>-->
         <h1>Danh sách các đề thi</h1>
         <button class="ui button primary" v-on:click="addQuiz()">Tạo mới</button>
-        <div class="ui modal">
+        <div id="saveQuiz" class="ui modal">
             <i class="close icon"></i>
             <div class="header">
                 {{title}}
@@ -104,13 +104,7 @@ export default {
                 }
 
             })
-        $('.ui.modal').modal({
-            closable: false,
-            onHidden: function () {
-                $('.ui.form').form('reset')
-                me.$store.dispatch('adminQuizs/updateCurrent', {})
-            }
-        })
+
         $('.ui.form').api({
             mockResponseAsync: Promise.coroutine(function* (st, cb) {
                 yield me.save();
@@ -120,19 +114,30 @@ export default {
             }),
             on: 'submit'
         })
+        $('#saveQuiz').modal({
+            closable: false,
+            onHidden: function () {
+                $('.ui.form').form('reset')
+                me.$store.dispatch('adminQuizs/updateCurrent', {})
+            }
+        })
+        me.$forceUpdate()
+
     },
     methods: {
         addQuiz: function () {
+            logger.debug('add')
             this.$store.dispatch('adminQuizs/selectQuiz', {})
 
-            $('.ui.modal')
+            $('#saveQuiz')
                 .modal('show')
         },
         toSave: function (item) {
             logger.debug(item)
+
             this.$store.dispatch('adminQuizs/selectQuiz', item)
 
-            $('.ui.modal')
+            $('#saveQuiz')
                 .modal('show')
         },
         save: Promise.coroutine(function* () {
@@ -165,8 +170,10 @@ export default {
 
     },
     created() {
+        var me = this
         this.$store.dispatch('adminQuizs/getAll').then(() => {
         })
+
 
     }
 
