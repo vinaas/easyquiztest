@@ -32,27 +32,40 @@
 - Git
 - Nodejs >= v.7.1
 
-### Build Setup
+### Cài đặt để build app
 
+#### 1. Cài đặt client
 ``` bash
-# install dependencies
+# Cài đặt electron vue dependencies
 npm install
-## Khởi động API phía server
 
-npm run server
-## Cài đặt những package để chạy app (bổ sung)
-cd app
+# Cài đặt dependencies cho renderer process (semaintic ui, sweetalert , axios, ...), nếu có cập nhật thêm dependencies trong file app/package.json thì cần cài đặt lại như câu lệnh bên dưới.
+cd app # vào thư mực app
+npm install
+cd ..
+``` 
+#### 2. Cài đặt server
+``` bash
+# cài đặt các thư viện cho backend (loopback)
+cd backend #vào thư mục backend
 npm install
 cd ..
 ```
 
-### Run software
-
-```
+### Chạy ứng dụng
+#### 1.Chạy backend
+```bash
 # serve with hot reload at localhost:9080
-npm run dev
+npm run server
+# hoặc
+cd backend
+node .
 ```
-
+#### 2.Chạy client
+```
+# chạy ở thư mục gốc
+npm run dev 
+```
 ### Build to software (Win, Mac, Linux)
 
 ```bash
