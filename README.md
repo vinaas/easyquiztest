@@ -44,7 +44,7 @@ cd app # vào thư mực app
 npm install
 cd ..
 ``` 
-#### 2. Cài đặt server
+#### 2. Cài đặt backend
 ``` bash
 # cài đặt các thư viện cho backend (loopback)
 cd backend #vào thư mục backend
