@@ -19,7 +19,7 @@
                                 <div class="content">
                                     <div class="ui info message center aligned green">
                                         <div class="header">Thời gian</div>
-                                        <h1><div id="basicUsage"></div> <i class="alarm outline icon"></i></h1>
+                                        <h1><div id="basicUsage">--:--</div> <i class="alarm outline icon"></i></h1>
                                     </div>
     
                                 </div>
@@ -34,9 +34,9 @@
                                     <div class="ui info message">
                                         <div class="header">Thông tin thí sinh</div>
                                         <ul class="list">
-                                            <li> <b>SBD :</b> 1</li>
-                                            <li><b>Họ tên:</b> Phạm Văn A </li>
-                                            <li><b>Ngày sinh:</b> 20/4/2000 </li>
+                                            <li> <b>SBD :</b> {{user.identification}}</li>
+                                            <li><b>Họ tên:</b> {{user.lastName}} {{user.firstName}} </li>
+                                            <li><b>Ngày sinh:</b>{{user.birthday}} </li>
                                         </ul>
                                     </div>
                                     <div class="ui info message">
@@ -157,7 +157,8 @@ export default {
     current: 'getCurrentQuestion',
     next: 'next',
     previous: 'previous',
-    answereds: 'answereds'
+    answereds: 'answereds',
+    user:'user'
   }),
   components: {},
   mounted: function () {
