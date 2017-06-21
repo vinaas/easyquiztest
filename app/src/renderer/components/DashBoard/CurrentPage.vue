@@ -2,11 +2,11 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                                                                                                    <img src="../assets/vinaas-logo.png" class="image">
-                                                                                                    <div class="content">
-                                                                                                        Đăng nhập vào hệ thống
-                                                                                                    </div>
-                                                                                                </h2>
+                <img src="../assets/vinaas-logo.png" class="image">
+                <div class="content">
+                    Đăng nhập vào hệ thống
+                </div>
+            </h2>
             <form class="ui large form ">
                 <div class="ui stacked segment">
                     <div class="field">
@@ -70,6 +70,7 @@ export default {
                     try {
                         let roles = yield _authServices.getUserRoles();
                         if (roles.filter(x => x.name == 'admin').length !== 0) {
+                            yield this.$store.dispatch('login', ret)
                             this.$router.push({ path: 'admin' })
                             toastr.info('Đăng nhập thành công')
                         } else {
@@ -77,6 +78,7 @@ export default {
                         }
                     } catch (error) {
                         this.$router.push({ path: 'quiz' })
+                        yield this.$store.dispatch('login', ret)
                         toastr.info('Đăng nhập thành công')
                     }
 
