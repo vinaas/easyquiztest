@@ -5,7 +5,23 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lasttName": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "birthday": {
+      "type": "string"
+    },
+    "identification": {
+      "type": "string"
+    }
+  },
   "validations": [],
   "relations": {
     "quizzes": {
@@ -24,6 +40,19 @@
   "acls": [
     {
       "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "findById"
+    },
+    {
+      "accessType": "WRITE",
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
