@@ -9,7 +9,7 @@
     "firstName": {
       "type": "string"
     },
-    "lasttName": {
+    "lastName": {
       "type": "string"
     },
     "address": {
