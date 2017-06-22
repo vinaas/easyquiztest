@@ -16,9 +16,14 @@ export class UsersQuizsService {
      * @memberof UsersQuizsService
      */
     getOne = Promise.coroutine(function* (userId, quizId) {
-        let ret = yield axios.post(`${pathEntity}/findOne`, {
-            quizId: quizId,
-            applicationUserId: userId
+        let filter = {
+            fields: {
+                quizId: quizId,
+                applicationUserId: userId
+            }
+        }
+        let ret = yield axios.get(`${pathEntity}/findOne`, {
+            params: filter
         })
         return ret.data
     })
