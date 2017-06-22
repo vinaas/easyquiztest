@@ -1,12 +1,23 @@
-import * as types from '../mutation-types'
+// import * as mutationTypes from '../mutation-mutationTypes'
 import quizApi from '../../api/quiz'
 import { QuizService } from '../../services/quiz'
 import { QuestionService } from '../../services/question'
+import { UsersQuizsService} from '../../services/users-quizes'
+
+const quizSrv = new QuizService()
+const qustonSrv = new QuizService()
+const usersQuizsSrv = new UsersQuizsService()
+
+const mutationTypes= {
+  RECEIVE_QUIZS : 'RECEIVE_QUIZS',
+  GO_TO_QUESTION : 'GO_TO_QUESTION',
+  ANSWERE_A_QUESTION : 'ANSWERE_A_QUESTION'
+}
+
 const state = {
   all: [],
+  quiz:{},
   currentQuestion: {id: 1},
-  next: true,
-  previous: true,
   answereds: 0
 
 }
@@ -24,33 +35,33 @@ const getters = {
 const actions = {
   getAllQuizs ({commit}) {
     quizApi.getQuizs().then(function (quizs) {
-      commit(types.RECEIVE_QUIZS, {
+      commit(mutationTypes.RECEIVE_QUIZS, {
         quizs
       })
     })
   },
   goToQuestion ({commit}, currentQuestion) {
-    commit(types.GO_TO_QUESTION, {
+    commit(mutationTypes.GO_TO_QUESTION, {
       id: currentQuestion.id
     })
   },
   answer ({commit}) {
-    commit(types.ANSWERE_A_QUESTION)
+    commit(mutationTypes.ANSWERE_A_QUESTION)
   }
 }
 const mutations = {
-  [types.RECEIVE_QUIZS] (state, {
+  [mutationTypes.RECEIVE_QUIZS] (state, {
         quizs
     }) {
     state.all = quizs
   },
-  [types.GO_TO_QUESTION] (state, question) {
+  [mutationTypes.GO_TO_QUESTION] (state, question) {
     let questionFilter = state.all.filter(x => x.id == question.id)
     if (questionFilter) {
       state.currentQuestion = questionFilter[0]
     }
   },
-  [types.ANSWERE_A_QUESTION] (state) {
+  [mutationTypes.ANSWERE_A_QUESTION] (state) {
     state.all.forEach(function (current, index, arr) {
       if (current.id === state.currentQuestion.id) {
         current.isAnswered = true

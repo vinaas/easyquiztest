@@ -53,7 +53,7 @@ export default {
         $('#login').api({
             mockResponseAsync: Promise.coroutine(function* (st, cb) {
                 yield me.login();
-                cb();
+                cb(true);
             }),
             on: 'click'
         })

@@ -37,7 +37,7 @@ const mutations = {
 }
 const actions = {
     getAll: Promise.coroutine(function* ({ commit }) {
-        let quizList = yield quizService.getQuizs();
+        let quizList = yield quizService.getAll();
         commit(mutationTypes.RECEIVE_QUIZS, {
             quizList
         })
