@@ -6,14 +6,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "userId": {
-      "type": "number",
-      "required": true
-    },
-    "quizId": {
-      "type": "number",
-      "required": true
-    },
     "answerDetail": {
       "type": "object"
     },
@@ -28,7 +20,18 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "quiz": {
+      "type": "belongsTo",
+      "model": "Quiz",
+      "foreignKey": ""
+    },
+    "applicationUser": {
+      "type": "belongsTo",
+      "model": "ApplicationUser",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }

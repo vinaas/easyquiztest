@@ -32,6 +32,12 @@
       "type": "hasMany",
       "model": "Question",
       "foreignKey": ""
+    },
+    "applicationUsers": {
+      "type": "hasMany",
+      "model": "ApplicationUser",
+      "foreignKey": "",
+      "through": "UsersQuizs"
     }
   },
   "acls": [

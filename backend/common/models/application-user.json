@@ -24,17 +24,17 @@
   },
   "validations": [],
   "relations": {
-    "quizzes": {
-      "type": "hasMany",
-      "model": "Quiz",
-      "foreignKey": "userId",
-      "through": "UsersQuizs"
-    },
     "roles": {
       "type": "hasMany",
       "model": "Role",
       "foreignKey": "principalId",
       "through": "RoleMapping"
+    },
+    "quizzes": {
+      "type": "hasMany",
+      "model": "Quiz",
+      "foreignKey": "",
+      "through": "UsersQuizs"
     }
   },
   "acls": [
