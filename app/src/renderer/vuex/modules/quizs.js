@@ -1,5 +1,7 @@
 import * as types from '../mutation-types'
 import quizApi from '../../api/quiz'
+import { QuizService } from '../../services/quiz'
+import { QuestionService } from '../../services/question'
 const state = {
   all: [],
   currentQuestion: {id: 1},

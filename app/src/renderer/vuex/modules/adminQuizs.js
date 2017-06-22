@@ -1,8 +1,8 @@
 import * as types from '../mutation-types'
-import { QuizServices } from '../../services/quiz'
+import { QuizService } from '../../services/quiz'
 import Promise from 'bluebird'
 import _ from 'lodash'
-const quizService = new QuizServices();
+const quizService = new QuizService();
 const mutationTypes = {
     RECEIVE_QUIZS: 'RECEIVE_QUIZS',
     SAVE_QUIZ: 'SAVE_QUIZ',
