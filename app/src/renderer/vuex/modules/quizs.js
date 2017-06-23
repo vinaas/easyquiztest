@@ -1,72 +1,79 @@
 // import * as mutationTypes from '../mutation-mutationTypes'
 import quizApi from '../../api/quiz'
+// import { QuizService } from '../../services/quiz'
 import { QuizService } from '../../services/quiz'
 import { QuestionService } from '../../services/question'
 import { UsersQuizsService} from '../../services/users-quizes'
+import Promise from 'bluebird';
+
+const co = Promise.coroutine;
 
 const quizSrv = new QuizService()
-const qustonSrv = new QuizService()
+const questionSrv = new QuestionService()
 const usersQuizsSrv = new UsersQuizsService()
 
 const mutationTypes= {
-  RECEIVE_QUIZS : 'RECEIVE_QUIZS',
+  RECEIVE_QUIZ : 'RECEIVE_QUIZ',
+  RECEIVE_QUESTIONS:'RECEIVE_QUESTIONS',
   GO_TO_QUESTION : 'GO_TO_QUESTION',
   ANSWERE_A_QUESTION : 'ANSWERE_A_QUESTION'
 }
 
 const state = {
-  all: [],
+  questions: [],
   quiz:{},
   currentQuestion: {id: 1},
-  answereds: 0
-
+  answereds: 0,
+  detailUserAnswer : {}
 }
 
 // getters
 const getters = {
-  getAllQuizs: state => state.all,
+  getQuiz: state => state.quiz,
   getCurrentQuestion: (state) => state.currentQuestion,
-  previous: (state) => state.all.length !== 0 && state.all.map(x => x).shift().id !== state.currentQuestion.id,
-  next: (state) => state.all.length !== 0 && state.currentQuestion.id !== state.all.map(x => x).pop().id,
-  answereds: (state) => state.all.filter(x => x.isAnswered == true).length
+  previous: (state) => state.questions.length !== 0 && state.questions.map(x => x).shift().id !== state.currentQuestion.id,
+  next: (state) => state.questions.length !== 0 && state.currentQuestion.id !== state.questions.map(x => x).pop().id,
+  answereds: (state) => state.questions.filter(x => x.isAnswered == true).length
 }
 
 // actions
 const actions = {
-  getAllQuizs ({commit}) {
-    quizApi.getQuizs().then(function (quizs) {
-      commit(mutationTypes.RECEIVE_QUIZS, {
-        quizs
-      })
-    })
-  },
-  goToQuestion ({commit}, currentQuestion) {
+  getQuiz : co(function * ({commit}, id) {
+    let recQuiz = yield quizSrv.getBy(id)
+    commit(mutationTypes.RECEIVE_QUIZ,  recQuiz)
+  }),
+  getQuestions : co(function*( {commit}, quizId){
+    let recQuestions = yield quizSrv.getQuestionsBy(quizId);
+    commit(mutationTypes.RECEIVE_QUESTIONS , recQuestions )
+  }),
+  goToQuestion : co( function*({commit}, currentQuestion) {
     commit(mutationTypes.GO_TO_QUESTION, {
       id: currentQuestion.id
     })
-  },
-  answer ({commit}) {
+  }),
+  answer : co(function* ({commit} , detail) {
     commit(mutationTypes.ANSWERE_A_QUESTION)
-  }
+  })
 }
 const mutations = {
-  [mutationTypes.RECEIVE_QUIZS] (state, {
-        quizs
-    }) {
-    state.all = quizs
+  [mutationTypes.RECEIVE_QUIZ] (state, quiz) {
+    state.quiz = quiz
   },
   [mutationTypes.GO_TO_QUESTION] (state, question) {
-    let questionFilter = state.all.filter(x => x.id == question.id)
+    let questionFilter = state.questions.filter(x => x.id == question.id)
     if (questionFilter) {
       state.currentQuestion = questionFilter[0]
     }
   },
   [mutationTypes.ANSWERE_A_QUESTION] (state) {
-    state.all.forEach(function (current, index, arr) {
+    state.questions.forEach(function (current, index, arr) {
       if (current.id === state.currentQuestion.id) {
         current.isAnswered = true
       }
     })
+  },
+  [mutationTypes.RECEIVE_QUESTIONS] (state , questions) {
+    state.questions = questions
   }
 }
 export default {

@@ -219,8 +219,7 @@ export default {
     }
   },
   created () {
-    console.log('create', this.a)
-    this.$store.dispatch('getAllQuizs').then(() => {
+    this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8').then(() => {
       console.log('done get data')
       this.$store.dispatch('goToQuestion', { id: 1 }).then(() => {
         this._cloneCurrentCheck()
