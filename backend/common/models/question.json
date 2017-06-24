@@ -17,6 +17,9 @@
     }
   },
   "validations": [],
+  "scope":{
+    "include": "answersForAQuestions"
+  }, 
   "relations": {
     "quiz": {
       "type": "belongsTo",
