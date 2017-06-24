@@ -1,7 +1,9 @@
 import Promise from 'bluebird';
 const pathEntity = '/api/UsersQuizs';
 import { QuestionService } from './question'
-const questionSrv =  new QuestionService();
+import { QuizService } from './quiz'
+const questionSrv =  new QuestionService()
+const quizSrv = new QuizService();
 
 export class UsersQuizsService {
 
@@ -39,16 +41,32 @@ export class UsersQuizsService {
         let ret = yield axios.delete(`${pathEntity}/${id}`)
         return ret.data
     })
+    /**
+     * paras  (id, question)    
+     * 
+     * @memberof UsersQuizsService
+     */
     userAnswerQuestion = Promise.coroutine(function* (id, question) {
         let usersQuizs = yield this.getBy(id)
+        let questions = yield quizSrv.getQuestionsBy( usersQuizs.quizId )
         let answerDetail = usersQuizs.answerDetail
-        let mapAnserDetail = answerDetail.map(x => {
-            if (x.id == question.id) {
-                return question
-            } else return x
+        let mapthroughtUserAnser = questions.map(x => {
+            let extUserAnswer =  answerDetail.filter(a => x.id == a.id).shift()
+            if(extUserAnswer){
+                return extUserAnswer
+            }
+            else return x           
         })
+        console.log('mapthroughtUserAnser',mapthroughtUserAnser)
+        let mapthroughtQuestion = mapthroughtUserAnser.map(x=> {
+            if(x.id == question.id){
+                return question
+            }
+            else return x
+        })
+        console.log('mapthroughtQuestion',mapthroughtQuestion)
         let entity = Object.assign({}, usersQuizs, {
-            answerDetail: mapAnserDetail
+            answerDetail: mapthroughtQuestion
         })
         let rec = yield this.save(entity)
         return rec.data
@@ -64,5 +82,9 @@ export class UsersQuizsService {
         let question = answerDetail.filter(x => x.id == questionId)
         return Object.assign({}, questionEntity, question)
     }).bind(this)
+
+    exists = Promise.coroutine( function*(userId, quizId){
+        
+    })
 
 }

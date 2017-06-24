@@ -56,17 +56,17 @@
                         <div class="row">
                             <div class="ui card fluid">
                                 <div class="content">
-                                    <div class="header">Câu {{current.id}}</div>
+                                    <div class="header">Câu {{ current.number}}</div>
                                 </div>
                                 <div class="content">
                                     <h4 class="ui sub header ">{{current.description}}</h4>
                                     <table class="ui table celled">
     
                                         <tbody>
-                                            <!--<tr v-for="a of current.answers">
-                                                <td>{{a.id}}</td>
+                                            <tr v-for="a in current.answersForAQuestions">
+                                                <td>{{a.name}}</td>
                                                 <td>{{a.content}}</td>
-                                            </tr>-->
+                                            </tr>
     
                                         </tbody>
                                     </table>
@@ -89,13 +89,13 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <!--<div v-for="(a ,i) in current.answers" class="field">
+                                            <div v-for="(a ,i) in current.answersForAQuestions" class="field">
                                                 <div v-bind:class="[ 'ui','checkbox', current.type ]">
                                                     <input v-if="current.type=='checkbox'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
                                                     <input v-if="current.type=='radio'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
-                                                    <label>{{a.id}}</label>
+                                                    <label>{{a.name}}</label>
                                                 </div>
-                                            </div>-->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                 <footer>
                     <div class="ui card fluid">
                         <div class="content">
-                            <!--<button v-for="(q, index) of userQuestions" @click="goToQuestion(q)" class="mini ui button" v-bind:class="{inverted: (index+1)!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>-->
+                            <button v-for="(q, index) in userQuestions" @click="goToQuestion(q.id)" class="mini ui button" v-bind:class="{inverted: q.id!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
                         </div>
     
                     </div>
@@ -146,17 +146,19 @@ import toastr from 'toastr'
 import startTimer from '../../common/coundown.js'
 import _ from 'lodash'
 import Promise from 'bluebird'
+
 const co = Promise.coroutine
+
 export default {
   name: 'quiz',
   data: function () {
     return {
-      cloneUserCheck: ['A']
+      cloneUserCheck: []
     }
   },
   computed: mapGetters({
     quiz: 'quiz',
-    current: 'getCurrentQuestion',
+    current: 'currentQuestion',
     userQuestions:'mapUserQuestions',
     next: 'next',
     previous: 'previous',
@@ -182,19 +184,19 @@ export default {
         // timer.addEventListener('secondsUpdated', function (e) {
         //     $('#basicUsage').html(timer.getTimeValues().toString());
         // });
-    // var totalSecond = 30 * 60,
-    //   display = document.querySelector('#basicUsage')
-    // startTimer(totalSecond, display)
+    var totalSecond = this.quiz.totalTime * 60,
+         display = document.querySelector('#basicUsage')
+        startTimer(totalSecond, display)
   },
   methods: {
-    goToQuestion (q) {
-      this.$store.dispatch('goToQuestion', q)
+    goToQuestion (id) {
+      this.$store.dispatch('goToQuestion', id)
                 .then(() => {
                   this._cloneCurrentCheck()
                 })
     },
     goNext () {
-      this.$store.dispatch('goToQuestion', { id: this.current.id + 1 })
+      this.$store.dispatch('goToQuestion', )
                 .then(() => {
                   this._cloneCurrentCheck()
                 })
@@ -212,13 +214,11 @@ export default {
         return
       }
       toastr.info('Bạn đã trả lời thành công')
-      if (this.current.isAnswered == false) {
-        this.$store.dispatch('answer')
+        this.$store.dispatch('answer', Object.assign({}, this.current, {userCheck : this.cloneUserCheck  } ) )
         $('#quiz-progress').progress('increment')
-      }
     },
     _cloneCurrentCheck () {
-    //   this.cloneUserCheck = _.clone(this.current.userCheck)
+      this.cloneUserCheck = _.clone(this.current.userCheck)
     }
   },
   created : co( function*() {
@@ -228,7 +228,7 @@ export default {
     yield  this.$store.dispatch('getQuestions', this.quiz.id )
     yield  this.$store.dispatch('getUsersQuizsRow',{userId : '592ff76d5fc5ed23ec231333' , quizId: this.quiz.id })
     yield  this.$store.dispatch('goToQuestion', this.userQuestions[0].id )
-    // this._cloneCurrentCheck()
+    this._cloneCurrentCheck()
   })
 
 }
