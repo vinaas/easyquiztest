@@ -15,7 +15,7 @@ const usersQuizsSrv = new UsersQuizsService()
 const mutationTypes= {
   RECEIVE_QUIZ : 'RECEIVE_QUIZ',
   RECEIVE_QUESTIONS:'RECEIVE_QUESTIONS',
-  RECEIVE_USER_QUESTIONS : 'RECEIVE_USER_QUESTIONS',
+  RECEIVE_USERS_QUIZS_ROW : 'RECEIVE_USERS_QUIZS_ROW',
   GO_TO_QUESTION : 'GO_TO_QUESTION',
   ANSWERE_A_QUESTION : 'ANSWERE_A_QUESTION'
 }
@@ -26,26 +26,26 @@ const state = {
   quiz:{},
   currentQuestion: {id: 1},
   answereds: 0,
-  detailUserAnswer : [],
-  userCheck: []
+  userCheck: [],
+  usersQuizsRow:{answerDetail:[]}
 }
 
 // getters
 const getters = {
   questions : state => state.questions ,
-  userQuestions :  state => state.questions.map(x=> {
-    let getUserCheck = state.detailUserAnswer.filter(y=> x.id==y.id ).shift() || []
+  mapUserQuestions :  state => state.questions.map(x=> {
+    let getUserCheck = state.usersQuizsRow.answerDetail.filter(x=>x ).shift() || []
+    console.log('getUserCheck', getUserCheck)
     let userQuestion = Object.assign({}, x , { userCheck: getUserCheck } )
     return userQuestion
   }) ,
   quiz: state => state.quiz,
-  getCurrentQuestion: (state) => state.currentQuestion,
+  getCurrentQuestion: state => state.currentQuestion,
   previous :(state)=> true,
   next : (state)=> true,
-  answereds : (state)=> 1 
   // previous: (state) => state.questions.length !== 0 && state.questions.map(x => x).shift().id !== state.currentQuestion.id,
   // next: (state) => state.questions.length !== 0 && state.currentQuestion.id !== state.questions.map(x => x).pop().id,
-  // answereds: (state) => state.userQuestions.filter(x => x.userCheck.length == 0).length
+  answereds: (state) => state.userQuestions.filter(x => x.userCheck.length !== 0).length
 }
 
 // actions
@@ -56,14 +56,17 @@ const actions = {
   }),
   getQuestions : co(function*( {commit}, quizId){
     let recQuestions = yield quizSrv.getQuestionsBy(quizId);
-    console.log('recQuestions', recQuestions)
     commit(mutationTypes.RECEIVE_QUESTIONS , recQuestions )
   }),
-  getUserQuestions : co(function*({commit}, { userId, quizId } ){
-    let recUserQuestions =  yield usersQuizsSrv.getOne( userId, quizId )
-    commit(mutations.RECEIVE_USER_QUESTIONS, recUserQuestions)
+  getUsersQuizsRow : co(function*({commit}, { userId, quizId } ){
+    console.log('userId', userId,'quizId',quizId)
+    let recUsersQuizsRow =  yield usersQuizsSrv.getOne( userId, quizId )
+    console.log('rec recUsersQuizsRow', recUsersQuizsRow)
+    commit(mutationTypes.RECEIVE_USERS_QUIZS_ROW, recUsersQuizsRow)
   }),
   goToQuestion : co( function*({commit}, currentQuestion) {
+    console.log('currentQuestion',currentQuestion)
+    //todo: lam cho nay
     commit(mutationTypes.GO_TO_QUESTION, {
       id: currentQuestion.id
     })
@@ -79,7 +82,8 @@ const mutations = {
     state.quiz = quiz
   },
   [mutationTypes.GO_TO_QUESTION] (state, question) {
-    let questionFilter = state.questions.filter(x => x.id == question.id)
+    console.log('user queston', state.userQuestions)
+    let questionFilter = state.userQuestions.filter(x => x.id == question.id)
     if (questionFilter) {
       state.currentQuestion = questionFilter[0]
     }
@@ -95,8 +99,9 @@ const mutations = {
     console.log('dau phong', questions)
     state.questions = questions
   },
-  [mutationTypes.RECEIVE_USER_QUESTIONS](state, userQuestions ){
-    state.userQuestions = userQuestions
+  [mutationTypes.RECEIVE_USERS_QUIZS_ROW](state, usersQuizsRow ){
+    console.log('mutationTypes usersQuizsRow',usersQuizsRow)
+    state.usersQuizsRow = usersQuizsRow
   }
 }
 export default {

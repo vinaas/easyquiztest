@@ -20,8 +20,8 @@ const mutations = {
 
 }
 const actions = {
-    login: Promise.coroutine( function* ({commit}, userInfo) {
-        var retUser = yield userService.getBy(userInfo.userId)
+    login: Promise.coroutine( function* ({commit}, userId) {
+        var retUser = yield userService.getBy(userId)
         commit(mutationTypes.LOG_IN, retUser)
     }),
     logout: function({commit}){

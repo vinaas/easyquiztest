@@ -70,7 +70,7 @@ export default {
                     try {
                         let roles = yield _authServices.getUserRoles();
                         if (roles.filter(x => x.name == 'admin').length !== 0) {
-                            yield this.$store.dispatch('login', ret)
+                            yield this.$store.dispatch('login', ret.userId)
                             this.$router.push({ path: 'admin' })
                             toastr.info('Đăng nhập thành công')
                         } else {
@@ -78,7 +78,7 @@ export default {
                         }
                     } catch (error) {
                         this.$router.push({ path: 'quiz' })
-                        yield this.$store.dispatch('login', ret)
+                        yield this.$store.dispatch('login', ret.userId)
                         toastr.info('Đăng nhập thành công')
                     }
 
@@ -87,9 +87,6 @@ export default {
             } catch (error) {
                 toastr.error('Đăng nhập không thành công', 'Invalid login')
             }
-
-
-
         })
     }
 

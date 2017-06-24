@@ -63,10 +63,10 @@
                                     <table class="ui table celled">
     
                                         <tbody>
-                                            <tr v-for="a of current.answers">
+                                            <!--<tr v-for="a of current.answers">
                                                 <td>{{a.id}}</td>
                                                 <td>{{a.content}}</td>
-                                            </tr>
+                                            </tr>-->
     
                                         </tbody>
                                     </table>
@@ -89,13 +89,13 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <div v-for="(a ,i) in current.answers" class="field">
+                                            <!--<div v-for="(a ,i) in current.answers" class="field">
                                                 <div v-bind:class="[ 'ui','checkbox', current.type ]">
                                                     <input v-if="current.type=='checkbox'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
                                                     <input v-if="current.type=='radio'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
                                                     <label>{{a.id}}</label>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                 <footer>
                     <div class="ui card fluid">
                         <div class="content">
-                            <!--<button v-for="(q, index) of quizs" @click="goToQuestion(q)" class="mini ui button" v-bind:class="{inverted: (index+1)!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>-->
+                            <!--<button v-for="(q, index) of userQuestions" @click="goToQuestion(q)" class="mini ui button" v-bind:class="{inverted: (index+1)!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>-->
                         </div>
     
                     </div>
@@ -145,6 +145,8 @@ import { mapGetters, mapActions } from 'vuex'
 import toastr from 'toastr'
 import startTimer from '../../common/coundown.js'
 import _ from 'lodash'
+import Promise from 'bluebird'
+const co = Promise.coroutine
 export default {
   name: 'quiz',
   data: function () {
@@ -155,6 +157,7 @@ export default {
   computed: mapGetters({
     quiz: 'quiz',
     current: 'getCurrentQuestion',
+    userQuestions:'mapUserQuestions',
     next: 'next',
     previous: 'previous',
     answereds: 'answereds',
@@ -162,17 +165,17 @@ export default {
   }),
   components: {},
   mounted: function () {
-    // setTimeout(function () {
-    //   $('#quiz-progress').progress({
-    //     label: 'ratio',
-    //     value: me.answereds,
-    //     total: me.quizs.length,
-    //     text: {
-    //       ratio: '{value}/{total}'
-    //     },
-    //     showActivity: false
-    //   })
-    // }, 500)
+    setTimeout(function () {
+      $('#quiz-progress').progress({
+        label: 'ratio',
+        value: me.answereds,
+        total: me.userQuestions.length ,
+        text: {
+          ratio: '{value}/{total}'
+        },
+        showActivity: false
+      })
+    }, 500)
     var me = this
         // var timer = new Timer();
         // timer.start();
@@ -215,19 +218,18 @@ export default {
       }
     },
     _cloneCurrentCheck () {
-      this.cloneUserCheck = _.clone(this.current.userCheck)
+    //   this.cloneUserCheck = _.clone(this.current.userCheck)
     }
   },
-  created () {
-    this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8').then(() => {
-      console.log('done get data' , this.quiz)
-      this.$store.dispatch('getQuestions', this.quiz.id )
-      console.log('i am here')
-    //   this.$store.dispatch('goToQuestion', { id: 1 }).then(() => {
-    //     this._cloneCurrentCheck()
-    //   })
-    })
-  }
+  created : co( function*() {
+    // yield this.$store.dispatch('login', JSON.parse( sessionStorage.getItem('userinfo')).userId )
+    yield this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8')
+    console.log(this.quiz)
+    yield  this.$store.dispatch('getQuestions', this.quiz.id )
+    yield  this.$store.dispatch('getUsersQuizsRow',{userId : '592ff76d5fc5ed23ec231333' , quizId: this.quiz.id })
+    yield  this.$store.dispatch('goToQuestion', this.userQuestions[0].id )
+    // this._cloneCurrentCheck()
+  })
 
 }
 

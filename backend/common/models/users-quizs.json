@@ -7,7 +7,9 @@
   },
   "properties": {
     "answerDetail": {
-      "type": "object"
+      "type": [
+        "object"
+      ]
     },
     "result": {
       "type": "string"
