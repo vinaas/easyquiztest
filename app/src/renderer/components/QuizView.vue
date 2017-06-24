@@ -125,7 +125,7 @@
                 <footer>
                     <div class="ui card fluid">
                         <div class="content">
-                            <button v-for="(q, index) of quizs" @click="goToQuestion(q)" class="mini ui button" v-bind:class="{inverted: (index+1)!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
+                            <!--<button v-for="(q, index) of quizs" @click="goToQuestion(q)" class="mini ui button" v-bind:class="{inverted: (index+1)!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>-->
                         </div>
     
                     </div>
@@ -153,7 +153,7 @@ export default {
     }
   },
   computed: mapGetters({
-    quizs: 'getAllQuizs',
+    quiz: 'quiz',
     current: 'getCurrentQuestion',
     next: 'next',
     previous: 'previous',
@@ -162,26 +162,26 @@ export default {
   }),
   components: {},
   mounted: function () {
-    setTimeout(function () {
-      $('#quiz-progress').progress({
-        label: 'ratio',
-        value: me.answereds,
-        total: me.quizs.length,
-        text: {
-          ratio: '{value}/{total}'
-        },
-        showActivity: false
-      })
-    }, 500)
+    // setTimeout(function () {
+    //   $('#quiz-progress').progress({
+    //     label: 'ratio',
+    //     value: me.answereds,
+    //     total: me.quizs.length,
+    //     text: {
+    //       ratio: '{value}/{total}'
+    //     },
+    //     showActivity: false
+    //   })
+    // }, 500)
     var me = this
         // var timer = new Timer();
         // timer.start();
         // timer.addEventListener('secondsUpdated', function (e) {
         //     $('#basicUsage').html(timer.getTimeValues().toString());
         // });
-    var totalSecond = 30 * 60,
-      display = document.querySelector('#basicUsage')
-    startTimer(totalSecond, display)
+    // var totalSecond = 30 * 60,
+    //   display = document.querySelector('#basicUsage')
+    // startTimer(totalSecond, display)
   },
   methods: {
     goToQuestion (q) {
@@ -220,10 +220,12 @@ export default {
   },
   created () {
     this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8').then(() => {
-      console.log('done get data')
-      this.$store.dispatch('goToQuestion', { id: 1 }).then(() => {
-        this._cloneCurrentCheck()
-      })
+      console.log('done get data' , this.quiz)
+      this.$store.dispatch('getQuestions', this.quiz.id )
+      console.log('i am here')
+    //   this.$store.dispatch('goToQuestion', { id: 1 }).then(() => {
+    //     this._cloneCurrentCheck()
+    //   })
     })
   }
 

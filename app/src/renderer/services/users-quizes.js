@@ -1,6 +1,10 @@
 import Promise from 'bluebird';
 const pathEntity = '/api/UsersQuizs';
+import { QuestionService } from './question'
+const questionSrv =  new QuestionService();
+
 export class UsersQuizsService {
+
     getAll = Promise.coroutine(function* () {
         let ret = yield axios.get(pathEntity)
         return ret.data
@@ -10,7 +14,7 @@ export class UsersQuizsService {
         return ret.data
     })
     /**
-     * getOne with opts
+     * getOne with ( userId, quizId)
      * @param userId, quizId
      * @return {UsersQuizs}
      * @memberof UsersQuizsService
@@ -35,5 +39,30 @@ export class UsersQuizsService {
         let ret = yield axios.delete(`${pathEntity}/${id}`)
         return ret.data
     })
+    userAnswerQuestion = Promise.coroutine(function* (id, question) {
+        let usersQuizs = yield this.getBy(id)
+        let answerDetail = usersQuizs.answerDetail
+        let mapAnserDetail = answerDetail.map(x => {
+            if (x.id == question.id) {
+                return question
+            } else return x
+        })
+        let entity = Object.assign({}, usersQuizs, {
+            answerDetail: mapAnserDetail
+        })
+        let rec = yield this.save(entity)
+        return rec.data
+
+    }).bind(this)
+
+    
+
+    getUserAnserQuestion = Promise.coroutine(function* (id, questionId) {
+        let entity = yield this.getBy(id)
+        let answerDetail = entity.answerDetail
+        let questionEntity = yield questionSrv.getBy(questionId)
+        let question = answerDetail.filter(x => x.id == questionId)
+        return Object.assign({}, questionEntity, question)
+    }).bind(this)
 
 }
