@@ -42,8 +42,8 @@
                                     <div class="ui info message">
                                         <div class="header">Thông tin kỳ thi</div>
                                         <ul class="list">
-                                            <li> <b>Kì thi :</b> kiểm tra 60 phút</li>
-                                            <li><b>Khóa ngày:</b> 6/5/2017 </li>
+                                            <li> <b>Kì thi :</b> {{quiz.name}}</li>
+                                            <li><b>Khóa ngày:</b> {{quiz.quizTime}} </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -179,14 +179,10 @@ export default {
       })
     }, 500)
     var me = this
-        // var timer = new Timer();
-        // timer.start();
-        // timer.addEventListener('secondsUpdated', function (e) {
-        //     $('#basicUsage').html(timer.getTimeValues().toString());
-        // });
-    var totalSecond = this.quiz.totalTime * 60,
-         display = document.querySelector('#basicUsage')
-        startTimer(totalSecond, display)
+       
+    // var totalSecond = this.quiz.totalTime * 60 ,
+    //      display = document.querySelector('#basicUsage')
+    //     startTimer(totalSecond, display)
   },
   methods: {
     goToQuestion (id) {
@@ -228,7 +224,22 @@ export default {
     yield  this.$store.dispatch('getQuestions', this.quiz.id )
     yield  this.$store.dispatch('getUsersQuizsRow',{userId : '592ff76d5fc5ed23ec231333' , quizId: this.quiz.id })
     yield  this.$store.dispatch('goToQuestion', this.userQuestions[0].id )
+    // load timer
+    var totalSecond = this.quiz.totalTime * 60 ,
+        display = document.querySelector('#basicUsage')
+        startTimer(totalSecond, display)
     this._cloneCurrentCheck()
+     setTimeout( ()=> {
+      $('#quiz-progress').progress({
+        label: 'ratio',
+        value: this.answereds,
+        total: this.userQuestions.length ,
+        text: {
+          ratio: '{value}/{total}'
+        },
+        showActivity: false
+      })
+    }, 500)
   })
 
 }

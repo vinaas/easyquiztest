@@ -56,7 +56,7 @@ const getters = {
   next : (state)=> true,
   // previous: (state) => state.questions.length !== 0 && state.questions.map(x => x).shift().id !== state.currentQuestion.id,
   // next: (state) => state.questions.length !== 0 && state.currentQuestion.id !== state.questions.map(x => x).pop().id,
-  answereds: (state) => state.userQuestions.filter(x => x.userCheck.length !== 0).length
+  answereds: (state) => state.usersQuizsRow.answerDetail.filter(x => x.userCheck.length !== 0).length
 }
 
 // actions
