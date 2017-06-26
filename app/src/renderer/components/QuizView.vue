@@ -203,16 +203,21 @@ export default {
                   this._cloneCurrentCheck()
                 })
     },
-    answer () {
+    answer : co ( function *() {
       toastr.options.timeOut = 100
       if (this.cloneUserCheck.length == 0) {
         toastr.warning('Bạn chưa chọn đáp án')
         return
       }
       toastr.info('Bạn đã trả lời thành công')
-        this.$store.dispatch('answer', Object.assign({}, this.current, {userCheck : this.cloneUserCheck  } ) )
-        $('#quiz-progress').progress('increment')
-    },
+       yield this.$store.dispatch('answer', Object.assign({}, this.current, {userCheck : this.cloneUserCheck  } ) )
+        $('#quiz-progress').progress({
+            value: this.answereds,
+            total: this.userQuestions.length
+        })
+       
+    }),
+
     _cloneCurrentCheck () {
       this.cloneUserCheck = _.clone(this.current.userCheck)
     }

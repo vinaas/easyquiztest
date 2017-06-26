@@ -46,9 +46,10 @@ export class UsersQuizsService {
      * 
      * @memberof UsersQuizsService
      */
-    userAnswerQuestion = Promise.coroutine(function* (id, question) {
-        let usersQuizs = yield this.getBy(id)
-        let questions = yield quizSrv.getQuestionsBy( usersQuizs.quizId )
+    userAnswerQuestion = Promise.coroutine(function* (dto) {
+        let question =  dto.question
+        let usersQuizs = dto.usersQuizsRow
+        let questions = dto.questions
         let answerDetail = usersQuizs.answerDetail
         let mapthroughtUserAnser = questions.map(x => {
             let extUserAnswer =  answerDetail.filter(a => x.id == a.id).shift()

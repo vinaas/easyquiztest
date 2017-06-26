@@ -33,6 +33,7 @@ const state = {
 }
 
 // getters
+// TODO refact here
 const getters = {
   questions : state => state.questions ,
   mapUserQuestions :  state => state.questions.map(x=> {
@@ -58,7 +59,7 @@ const getters = {
   // next : (state)=> true,
   previous: (state) => state.questions.length !== 0 && state.questions.map(x => x).shift().id !== state.currentQuestionId,
   next: (state) => state.questions.length !== 0 && state.currentQuestionId !== state.questions.map(x => x).pop().id,
-  answereds: (state) => state.usersQuizsRow.answerDetail.filter(x => x.userCheck.length !== 0).length
+  answereds: (state) => state.usersQuizsRow.answerDetail.filter(x => x.userCheck && x.userCheck.length !== 0).length
 }
 
 // actions
@@ -77,7 +78,7 @@ const actions = {
         recUsersQuizsRow =  yield usersQuizsSrv.getOne( userId, quizId )
     } catch (error) {
       yield usersQuizsSrv.save({
-                                "answerDetail": [{}],
+                                "answerDetail": [],
                                 "result": "string",
                                 "scopes": 0,
                                 "scopesPraction": "string",
@@ -92,6 +93,7 @@ const actions = {
     commit(mutationTypes.GO_TO_QUESTION, questionId)
   }),
   answer : co(function* ({ dispatch, commit , state } , question) {
+    let rec = yield usersQuizsSrv.userAnswerQuestion( { question : question, questions: state.questions , usersQuizsRow: state.usersQuizsRow } )
     yield dispatch('getUsersQuizsRow', {userId : JSON.parse(sessionStorage.getItem('userinfo')).userId , quizId : state.quizId })
     commit(mutationTypes.ANSWERE_A_QUESTION )
   }),
