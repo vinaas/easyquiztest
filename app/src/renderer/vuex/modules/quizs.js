@@ -21,7 +21,7 @@ const mutationTypes= {
   UPDATE_USE_CHECK_CURRENT_QUESTION : 'UPDATE_USE_CHECK_CURRENT_QUESTION',
   GO_NEXT : 'GO_NEXT',
   GO_PRE : 'GO_PRE',
-  GET_RESULT_QUIZ_TEST : 'GET_RESULT_QUIZ_TEST'
+  END_QUIZ_TEST : 'END_QUIZ_TEST'
 }
 
 const state = {
@@ -60,7 +60,8 @@ const getters = {
   // next : (state)=> true,
   previous: (state) => state.questions.length !== 0 && state.questions.map(x => x).shift().id !== state.currentQuestionId,
   next: (state) => state.questions.length !== 0 && state.currentQuestionId !== state.questions.map(x => x).pop().id,
-  answereds: (state) => state.usersQuizsRow.answerDetail.filter(x => x.userCheck && x.userCheck.length !== 0).length
+  answereds: (state) => state.usersQuizsRow.answerDetail.filter(x => x.userCheck && x.userCheck.length !== 0).length,
+  usersQuizsRow: (state) => state.usersQuizsRow
 }
 
 // actions
@@ -103,6 +104,10 @@ const actions = {
   }),
   goPre  : co( function*( {commit}){
     commit(mutationTypes.GO_PRE)
+  }),
+  end : co ( function *({commit , state}) {
+    let rec = yield usersQuizsSrv.calculateResultQuizTest( Object.assign( {},{ questions: state.questions , usersQuizsRow : state.usersQuizsRow }) )
+    commit(mutationTypes.END_QUIZ_TEST, rec)
   })
 }
 const mutations = {
@@ -130,6 +135,9 @@ const mutations = {
     let currentQuestion  =  state.questions.filter(x=> x.id == state.currentQuestionId )[0]
     let preIndex =  state.questions.indexOf(currentQuestion) -1
     state.currentQuestionId = state.questions[ preIndex ].id
+  },
+  [mutationTypes.END_QUIZ_TEST] ( state, usersQuizsRow) {
+    state.usersQuizsRow = usersQuizsRow
   }
 
 }

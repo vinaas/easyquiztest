@@ -1,10 +1,14 @@
 import Promise from 'bluebird'
 const co = Promise.coroutine
 const pathEntity = '/api/UsersQuizs'
-import { QuestionService } from './question'
-import { QuizService } from './quiz'
+import {
+    QuestionService
+} from './question'
+import {
+    QuizService
+} from './quiz'
 import _ from 'lodash'
-const questionSrv =  new QuestionService()
+const questionSrv = new QuestionService()
 const quizSrv = new QuizService()
 
 export class UsersQuizsService {
@@ -49,34 +53,32 @@ export class UsersQuizsService {
      * @memberof UsersQuizsService
      */
     userAnswerQuestion = co(function* (dto) {
-        let question =  dto.question
+        let question = dto.question
         let usersQuizs = dto.usersQuizsRow
         let questions = dto.questions
         let answerDetail = usersQuizs.answerDetail
         let mapthroughtUserAnser = questions.map(x => {
-            let extUserAnswer =  answerDetail.filter(a => x.id == a.id).shift()
-            if(extUserAnswer){
+            let extUserAnswer = answerDetail.filter(a => x.id == a.id).shift()
+            if (extUserAnswer) {
                 return extUserAnswer
-            }
-            else return x           
+            } else return x
         })
-        console.log('mapthroughtUserAnser',mapthroughtUserAnser)
-        let mapthroughtQuestion = mapthroughtUserAnser.map(x=> {
-            if(x.id == question.id){
+        console.log('mapthroughtUserAnser', mapthroughtUserAnser)
+        let mapthroughtQuestion = mapthroughtUserAnser.map(x => {
+            if (x.id == question.id) {
                 return question
-            }
-            else return x
+            } else return x
         })
-        console.log('mapthroughtQuestion',mapthroughtQuestion)
+        console.log('mapthroughtQuestion', mapthroughtQuestion)
         let entity = Object.assign({}, usersQuizs, {
             answerDetail: mapthroughtQuestion
         })
         let rec = yield this.save(entity)
-        return rec.data
+        return rec
 
     }).bind(this)
 
-    
+
 
     getUserAnserQuestion = co(function* (id, questionId) {
         let entity = yield this.getBy(id)
@@ -86,20 +88,33 @@ export class UsersQuizsService {
         return Object.assign({}, questionEntity, question)
     }).bind(this)
 
-   
-    calculateResultQuizTest = co( function*( dto ){
+
+    calculateResultQuizTest = co(function* (dto) {
+        let me = this
+        console.log('dto', dto)
         let usersQuizsRow = dto.usersQuizsRow
         let questions = dto.questions
         let answerDetail = usersQuizsRow.answerDetail
-        let mapDetail = answerDetail.map(x=> {
+        let mapDetail = answerDetail.map(x => {
             let ret = {}
-            let mapAnswer = x.answersForAQuestions.filter(a=>x.isCorrect==true).map(a=>a.id)
-            let userAnswer = x.userCheck
-            let resultForUserAnswerQuestion = _.isEqual( mapAnswer.sort(), userAnswer.sort() )
-            ret = Object.assign({}, x, { result: resultForUserAnswerQuestion } )
+            let mapAnswer = x.answersForAQuestions.filter(a => a.isCorrect == true).map(a => a.id)
+            let userAnswer = x.userCheck.map(x=>x) // fix mutation vue
+            let resultForUserAnswerQuestion = _.isEqual( mapAnswer.sort(), userAnswer.sort())
+            ret = Object.assign({}, x, {
+                userAnswerResult: resultForUserAnswerQuestion
+            })
+            return ret
         })
 
+        let entity = Object.assign({}, usersQuizsRow, {
+            answerDetail: mapDetail,
+            scopes: mapDetail.filter(x => x.userAnswerResult == true).length / questions.length * 10
+        })
+        entity.scopes = mapDetail.filter( x=>x.userAnswerResult ==true).length / questions.length *10
+        entity.scopesPraction = `${ mapDetail.filter( x=>x.userAnswerResult ==true).length }/${questions.length}`
+        let rec = yield me.save(entity)
+        return rec
 
-    }).bind(this)
+    })
 
 }

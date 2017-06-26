@@ -2,7 +2,8 @@
     <div class="ui fluid-container">
         <div class="ui menu">
             <div class="ui container">
-                <div class="item header item"> <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>
+                <div class="item header item">
+                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>
     
             </div>
         </div>
@@ -11,7 +12,7 @@
                 <div class="ui three column grid">
                     <div class="four wide column">
                         <div class="row" style="padding-bottom:10px">
-                            <button v-on:click="endQuizTest" class="positive ui button fluid" >Kết thúc thi</button>
+                            <button v-on:click="endQuizTest" class="positive ui button fluid">Kết thúc thi</button>
                         </div>
                         <div class="row">
                             <div class="ui card">
@@ -19,13 +20,16 @@
                                 <div class="content">
                                     <div class="ui info message center aligned green">
                                         <div class="header">Thời gian</div>
-                                        <h1><div id="basicUsage">--:--</div> <i class="alarm outline icon"></i></h1>
+                                        <h1>
+                                            <div id="basicUsage">--:--</div>
+                                            <i class="alarm outline icon"></i>
+                                        </h1>
                                     </div>
     
                                 </div>
                                 <!--<div class="extra content">
-                                                                                                                                                                                        
-                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                    
+                                                                                                                                                                                                                                </div>-->
                             </div>
                             <div class="ui card">
     
@@ -34,16 +38,21 @@
                                     <div class="ui info message">
                                         <div class="header">Thông tin thí sinh</div>
                                         <ul class="list">
-                                            <li> <b>SBD :</b> {{user.identification}}</li>
-                                            <li><b>Họ tên:</b> {{user.lastName}} {{user.firstName}} </li>
-                                            <li><b>Ngày sinh:</b>{{user.birthday}} </li>
+                                            <li>
+                                                <b>SBD :</b> {{user.identification}}</li>
+                                            <li>
+                                                <b>Họ tên:</b> {{user.lastName}} {{user.firstName}} </li>
+                                            <li>
+                                                <b>Ngày sinh:</b>{{user.birthday}} </li>
                                         </ul>
                                     </div>
                                     <div class="ui info message">
                                         <div class="header">Thông tin kỳ thi</div>
                                         <ul class="list">
-                                            <li> <b>Kì thi :</b> {{quiz.name}}</li>
-                                            <li><b>Khóa ngày:</b> {{quiz.quizTime}} </li>
+                                            <li>
+                                                <b>Kì thi :</b> {{quiz.name}}</li>
+                                            <li>
+                                                <b>Khóa ngày:</b> {{quiz.quizTime}} </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -103,8 +112,11 @@
                                     <button class="ui button green fluid" @click="answer()">Trả lời</button>
                                     <div class="ui divider"></div>
                                     <div id="nav-buttons" class="ui  buttons fluid  center alinged">
-                                        <button class="ui button left attached blue " v-bind:disabled="!previous " @click="goPrevious()"><i class="left chevron icon"></i>Trước</button>
-                                        <button class="ui button right attached blue " v-bind:disabled="!next" @click="goNext()"> Sau <i class="right chevron icon"></i></button>
+                                        <button class="ui button left attached blue " v-bind:disabled="!previous " @click="goPrevious()">
+                                            <i class="left chevron icon"></i>Trước</button>
+                                        <button class="ui button right attached blue " v-bind:disabled="!next" @click="goNext()"> Sau
+                                            <i class="right chevron icon"></i>
+                                        </button>
                                     </div>
     
                                 </div>
@@ -134,6 +146,34 @@
                     </div>
                 </footer>
             </div>
+            <div id="result" class="ui modal">
+                <i class="close icon"></i>
+                <div class="header">
+                    Kết quả
+                </div>
+                <div class="image content">
+                    <table class="ui celled table">
+                        <thead>
+                            <tr>
+                                <th>Câu</th>
+                                <th>Kết quả</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  v-for="item in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}" >
+                                <td>{{item.number}}</td>
+                                <td>{{item.userAnswerResult? "Đúng" : "Sai"}} </td>
+                                <td>None</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="actions">
+                    <!--<div class="ui button">Cancel</div>
+                    <div class="ui button">OK</div>-->
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -150,101 +190,105 @@ import swal from 'sweetalert'
 const co = Promise.coroutine
 
 export default {
-  name: 'quiz',
-  data: function () {
-    return {
-      cloneUserCheck: []
-    }
-  },
-  computed: mapGetters({
-    quiz: 'quiz',
-    current: 'currentQuestion',
-    userQuestions:'mapUserQuestions',
-    next: 'next',
-    previous: 'previous',
-    answereds: 'answereds',
-    user:'user'
-  }),
-  components: {},
-  mounted: function () {
-  },
-  methods: {
-    goToQuestion (id) {
-      this.$store.dispatch('goToQuestion', id)
+    name: 'quiz',
+    data: function () {
+        return {
+            cloneUserCheck: []
+        }
+    },
+    computed: mapGetters({
+        quiz: 'quiz',
+        current: 'currentQuestion',
+        userQuestions: 'mapUserQuestions',
+        next: 'next',
+        previous: 'previous',
+        answereds: 'answereds',
+        user: 'user',
+        usersQuizsRow : 'usersQuizsRow'
+    }),
+    components: {},
+    mounted: function () {
+    },
+    methods: {
+        goToQuestion(id) {
+            this.$store.dispatch('goToQuestion', id)
                 .then(() => {
-                  this._cloneCurrentCheck()
+                    this._cloneCurrentCheck()
                 })
-    },
-    goNext () {
-      this.$store.dispatch('goNext')
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
-    },
-    goPrevious () {
-      this.$store.dispatch('goPre')
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
-    },
-    answer : co ( function *() {
-      toastr.options.timeOut = 100
-      if (this.cloneUserCheck.length == 0) {
-        toastr.warning('Bạn chưa chọn đáp án')
-        return
-      }
-      toastr.info('Bạn đã trả lời thành công')
-       yield this.$store.dispatch('answer', Object.assign({}, this.current, {userCheck : this.cloneUserCheck  } ) )
-        $('#quiz-progress').progress({
-            value: this.answereds,
-            total: this.userQuestions.length
-        })
-       
-    }) ,
-    endQuizTest:function(){
-      
-        swal({
-            title: "Kết thúc bài kiểm tra",
-            text: "Bạn có chắc chắn muốn kết thúc bài kiểm tra không?",
-            type: "info",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true,
-            confirmButtonText: "Kết thúc",
-            cancelButtonText: "Tiếp tục làm bài",
-            },
-            function(){
-            setTimeout(function(){
-                swal.close();
-            }, 2000);
-            });
-    },
-
-    _cloneCurrentCheck () {
-      this.cloneUserCheck = _.clone(this.current.userCheck)
-    }
-  },
-  created : co( function*() {
-    yield this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8')
-    yield  this.$store.dispatch('getQuestions', this.quiz.id )
-    yield  this.$store.dispatch('getUsersQuizsRow',{userId : '592ff76d5fc5ed23ec231333' , quizId: this.quiz.id })
-    yield  this.$store.dispatch('goToQuestion', this.userQuestions[0].id )
-    // load timer
-    var totalSecond = this.quiz.totalTime * 60 ,
-        display = document.querySelector('#basicUsage')
-        startTimer(totalSecond, display)
-    this._cloneCurrentCheck()
-    
-    $('#quiz-progress').progress({
-        label: 'ratio',
-        value: this.answereds,
-        total: this.userQuestions.length ,
-        text: {
-          ratio: '{value}/{total}'
         },
-        showActivity: false
+        goNext() {
+            this.$store.dispatch('goNext')
+                .then(() => {
+                    this._cloneCurrentCheck()
+                })
+        },
+        goPrevious() {
+            this.$store.dispatch('goPre')
+                .then(() => {
+                    this._cloneCurrentCheck()
+                })
+        },
+        answer: co(function* () {
+            toastr.options.timeOut = 100
+            if (this.cloneUserCheck.length == 0) {
+                toastr.warning('Bạn chưa chọn đáp án')
+                return
+            }
+            toastr.info('Bạn đã trả lời thành công')
+            yield this.$store.dispatch('answer', Object.assign({}, this.current, { userCheck: this.cloneUserCheck }))
+            $('#quiz-progress').progress({
+                value: this.answereds,
+                total: this.userQuestions.length
+            })
+
+        }),
+        endQuizTest: co(function* () {
+
+            swal({
+                title: "Kết thúc bài kiểm tra",
+                text: "Bạn có chắc chắn muốn kết thúc bài kiểm tra không?",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                confirmButtonText: "Kết thúc",
+                cancelButtonText: "Tiếp tục làm bài",
+            },
+                 co (function *() {
+                    yield this.$store.dispatch('end')
+                    $('#result')
+                        .modal('show')
+                    swal.close()
+
+
+                }).bind(this) )
+        }),
+
+        _cloneCurrentCheck() {
+            this.cloneUserCheck = _.clone(this.current.userCheck)
+        }
+    },
+    created: co(function* () {
+        yield this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8')
+        yield this.$store.dispatch('getQuestions', this.quiz.id)
+        yield this.$store.dispatch('getUsersQuizsRow', { userId: '592ff76d5fc5ed23ec231333', quizId: this.quiz.id })
+        yield this.$store.dispatch('goToQuestion', this.userQuestions[0].id)
+        // load timer
+        var totalSecond = this.quiz.totalTime * 60,
+            display = document.querySelector('#basicUsage')
+        startTimer(totalSecond, display)
+        this._cloneCurrentCheck()
+
+        $('#quiz-progress').progress({
+            label: 'ratio',
+            value: this.answereds,
+            total: this.userQuestions.length,
+            text: {
+                ratio: '{value}/{total}'
+            },
+            showActivity: false
+        })
     })
-  })
 
 }
 
