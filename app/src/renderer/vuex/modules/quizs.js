@@ -18,7 +18,9 @@ const mutationTypes= {
   RECEIVE_USERS_QUIZS_ROW : 'RECEIVE_USERS_QUIZS_ROW',
   GO_TO_QUESTION : 'GO_TO_QUESTION',
   ANSWERE_A_QUESTION : 'ANSWERE_A_QUESTION',
-  UPDATE_USE_CHECK_CURRENT_QUESTION : 'UPDATE_USE_CHECK_CURRENT_QUESTION'
+  UPDATE_USE_CHECK_CURRENT_QUESTION : 'UPDATE_USE_CHECK_CURRENT_QUESTION',
+  GO_NEXT : 'GO_NEXT',
+  GO_PRE : 'GO_PRE'
 }
 
 const state = {
@@ -52,10 +54,10 @@ const getters = {
     { number : state.questions.map(x=>x.id).indexOf(state.currentQuestionId)+1 } )
     return userQuestion
   }).shift()||{},
-  previous :(state)=> true,
-  next : (state)=> true,
-  // previous: (state) => state.questions.length !== 0 && state.questions.map(x => x).shift().id !== state.currentQuestion.id,
-  // next: (state) => state.questions.length !== 0 && state.currentQuestion.id !== state.questions.map(x => x).pop().id,
+  // previous :(state)=> true,
+  // next : (state)=> true,
+  previous: (state) => state.questions.length !== 0 && state.questions.map(x => x).shift().id !== state.currentQuestionId,
+  next: (state) => state.questions.length !== 0 && state.currentQuestionId !== state.questions.map(x => x).pop().id,
   answereds: (state) => state.usersQuizsRow.answerDetail.filter(x => x.userCheck.length !== 0).length
 }
 
@@ -90,10 +92,14 @@ const actions = {
     commit(mutationTypes.GO_TO_QUESTION, questionId)
   }),
   answer : co(function* ({ dispatch, commit , state } , question) {
-    console.log('quétin',question)
-    let rec = yield usersQuizsSrv.userAnswerQuestion( state.usersQuizsRow.id, question )
     yield dispatch('getUsersQuizsRow', {userId : JSON.parse(sessionStorage.getItem('userinfo')).userId , quizId : state.quizId })
     commit(mutationTypes.ANSWERE_A_QUESTION )
+  }),
+  goNext  : co( function*( {commit}){
+    commit(mutationTypes.GO_NEXT)
+  }),
+  goPre  : co( function*( {commit}){
+    commit(mutationTypes.GO_PRE)
   })
 }
 const mutations = {
@@ -107,12 +113,22 @@ const mutations = {
     state.questions = questions
   },
   [mutationTypes.RECEIVE_USERS_QUIZS_ROW](state, usersQuizsRow ){
-    console.log('mutationTypes usersQuizsRow',usersQuizsRow)
     state.usersQuizsRow = usersQuizsRow
   },
   [mutationTypes.ANSWERE_A_QUESTION]( state ){
    
+  },
+  [mutationTypes.GO_NEXT] (state) {
+    let currentQuestion  =  state.questions.filter(x=> x.id == state.currentQuestionId )[0]
+    let nextIndex =  state.questions.indexOf(currentQuestion) +1
+    state.currentQuestionId = state.questions[ nextIndex ].id
+  },
+  [mutationTypes.GO_PRE] (state) {
+    let currentQuestion  =  state.questions.filter(x=> x.id == state.currentQuestionId )[0]
+    let preIndex =  state.questions.indexOf(currentQuestion) -1
+    state.currentQuestionId = state.questions[ preIndex ].id
   }
+
 }
 export default {
   state,

@@ -192,13 +192,13 @@ export default {
                 })
     },
     goNext () {
-      this.$store.dispatch('goToQuestion', )
+      this.$store.dispatch('goNext')
                 .then(() => {
                   this._cloneCurrentCheck()
                 })
     },
     goPrevious () {
-      this.$store.dispatch('goToQuestion', { id: this.current.id - 1 })
+      this.$store.dispatch('goPre')
                 .then(() => {
                   this._cloneCurrentCheck()
                 })
