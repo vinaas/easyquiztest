@@ -11,7 +11,7 @@
                 <div class="ui three column grid">
                     <div class="four wide column">
                         <div class="row" style="padding-bottom:10px">
-                            <router-link class="positive ui button fluid" to="/">Kết thúc thi</router-link>
+                            <button v-on:click="endQuizTest" class="positive ui button fluid" >Kết thúc thi</button>
                         </div>
                         <div class="row">
                             <div class="ui card">
@@ -140,12 +140,12 @@
 
 <script>
 
-// import * as Timer from 'easytimer'
 import { mapGetters, mapActions } from 'vuex'
 import toastr from 'toastr'
 import startTimer from '../../common/coundown.js'
 import _ from 'lodash'
 import Promise from 'bluebird'
+import swal from 'sweetalert'
 
 const co = Promise.coroutine
 
@@ -167,22 +167,6 @@ export default {
   }),
   components: {},
   mounted: function () {
-    setTimeout(function () {
-      $('#quiz-progress').progress({
-        label: 'ratio',
-        value: me.answereds,
-        total: me.userQuestions.length ,
-        text: {
-          ratio: '{value}/{total}'
-        },
-        showActivity: false
-      })
-    }, 500)
-    var me = this
-       
-    // var totalSecond = this.quiz.totalTime * 60 ,
-    //      display = document.querySelector('#basicUsage')
-    //     startTimer(totalSecond, display)
   },
   methods: {
     goToQuestion (id) {
@@ -216,16 +200,32 @@ export default {
             total: this.userQuestions.length
         })
        
-    }),
+    }) ,
+    endQuizTest:function(){
+      
+        swal({
+            title: "Kết thúc bài kiểm tra",
+            text: "Bạn có chắc chắn muốn kết thúc bài kiểm tra không?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            confirmButtonText: "Kết thúc",
+            cancelButtonText: "Tiếp tục làm bài",
+            },
+            function(){
+            setTimeout(function(){
+                swal.close();
+            }, 2000);
+            });
+    },
 
     _cloneCurrentCheck () {
       this.cloneUserCheck = _.clone(this.current.userCheck)
     }
   },
   created : co( function*() {
-    // yield this.$store.dispatch('login', JSON.parse( sessionStorage.getItem('userinfo')).userId )
     yield this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8')
-    console.log(this.quiz)
     yield  this.$store.dispatch('getQuestions', this.quiz.id )
     yield  this.$store.dispatch('getUsersQuizsRow',{userId : '592ff76d5fc5ed23ec231333' , quizId: this.quiz.id })
     yield  this.$store.dispatch('goToQuestion', this.userQuestions[0].id )
@@ -234,8 +234,8 @@ export default {
         display = document.querySelector('#basicUsage')
         startTimer(totalSecond, display)
     this._cloneCurrentCheck()
-     setTimeout( ()=> {
-      $('#quiz-progress').progress({
+    
+    $('#quiz-progress').progress({
         label: 'ratio',
         value: this.answereds,
         total: this.userQuestions.length ,
@@ -243,8 +243,7 @@ export default {
           ratio: '{value}/{total}'
         },
         showActivity: false
-      })
-    }, 500)
+    })
   })
 
 }

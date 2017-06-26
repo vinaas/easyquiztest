@@ -1,17 +1,19 @@
-import Promise from 'bluebird';
-const pathEntity = '/api/UsersQuizs';
+import Promise from 'bluebird'
+const co = Promise.coroutine
+const pathEntity = '/api/UsersQuizs'
 import { QuestionService } from './question'
 import { QuizService } from './quiz'
+import _ from 'lodash'
 const questionSrv =  new QuestionService()
-const quizSrv = new QuizService();
+const quizSrv = new QuizService()
 
 export class UsersQuizsService {
 
-    getAll = Promise.coroutine(function* () {
+    getAll = co(function* () {
         let ret = yield axios.get(pathEntity)
         return ret.data
     })
-    getBy = Promise.coroutine(function* (id) {
+    getBy = co(function* (id) {
         let ret = yield axios.get(`${pathEntity}/${id}`)
         return ret.data
     })
@@ -21,7 +23,7 @@ export class UsersQuizsService {
      * @return {UsersQuizs}
      * @memberof UsersQuizsService
      */
-    getOne = Promise.coroutine(function* (userId, quizId) {
+    getOne = co(function* (userId, quizId) {
         let filter = {
             fields: {
                 quizId: quizId,
@@ -33,11 +35,11 @@ export class UsersQuizsService {
         })
         return ret.data
     })
-    save = Promise.coroutine(function* (bindingEntity) {
+    save = co(function* (bindingEntity) {
         let ret = yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity)
         return ret.data
     })
-    remove = Promise.coroutine(function* (id) {
+    remove = co(function* (id) {
         let ret = yield axios.delete(`${pathEntity}/${id}`)
         return ret.data
     })
@@ -46,7 +48,7 @@ export class UsersQuizsService {
      * 
      * @memberof UsersQuizsService
      */
-    userAnswerQuestion = Promise.coroutine(function* (dto) {
+    userAnswerQuestion = co(function* (dto) {
         let question =  dto.question
         let usersQuizs = dto.usersQuizsRow
         let questions = dto.questions
@@ -76,7 +78,7 @@ export class UsersQuizsService {
 
     
 
-    getUserAnserQuestion = Promise.coroutine(function* (id, questionId) {
+    getUserAnserQuestion = co(function* (id, questionId) {
         let entity = yield this.getBy(id)
         let answerDetail = entity.answerDetail
         let questionEntity = yield questionSrv.getBy(questionId)
@@ -84,8 +86,20 @@ export class UsersQuizsService {
         return Object.assign({}, questionEntity, question)
     }).bind(this)
 
-    exists = Promise.coroutine( function*(userId, quizId){
-        
-    })
+   
+    calculateResultQuizTest = co( function*( dto ){
+        let usersQuizsRow = dto.usersQuizsRow
+        let questions = dto.questions
+        let answerDetail = usersQuizsRow.answerDetail
+        let mapDetail = answerDetail.map(x=> {
+            let ret = {}
+            let mapAnswer = x.answersForAQuestions.filter(a=>x.isCorrect==true).map(a=>a.id)
+            let userAnswer = x.userCheck
+            let resultForUserAnswerQuestion = _.isEqual( mapAnswer.sort(), userAnswer.sort() )
+            ret = Object.assign({}, x, { result: resultForUserAnswerQuestion } )
+        })
+
+
+    }).bind(this)
 
 }
