@@ -269,7 +269,7 @@ export default {
         }
     },
     created: co(function* () {
-        yield this.$store.dispatch('getQuiz', '592e41ea5420803fec1137a8')
+        yield this.$store.dispatch('getQuiz', '59510cf0bb487b0608a6399a')
         yield this.$store.dispatch('getQuestions', this.quiz.id)
         yield this.$store.dispatch('getUsersQuizsRow', { userId: '592ff76d5fc5ed23ec231333', quizId: this.quiz.id })
         yield this.$store.dispatch('goToQuestion', this.userQuestions[0].id)

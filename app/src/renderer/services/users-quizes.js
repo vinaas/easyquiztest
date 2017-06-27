@@ -1,12 +1,10 @@
 import Promise from 'bluebird'
 const co = Promise.coroutine
 const pathEntity = '/api/UsersQuizs'
-import {
-    QuestionService
-} from './question'
-import {
-    QuizService
-} from './quiz'
+import {    QuestionService} from './question'
+import {    QuizService} from './quiz'
+import Logger from '../../common/logger'
+const logger = Logger('UsersQuizsService')
 import _ from 'lodash'
 const questionSrv = new QuestionService()
 const quizSrv = new QuizService()
@@ -63,13 +61,13 @@ export class UsersQuizsService {
                 return extUserAnswer
             } else return x
         })
-        console.log('mapthroughtUserAnser', mapthroughtUserAnser)
+        logger.debug('mapthroughtUserAnser', mapthroughtUserAnser)
         let mapthroughtQuestion = mapthroughtUserAnser.map(x => {
             if (x.id == question.id) {
                 return question
             } else return x
         })
-        console.log('mapthroughtQuestion', mapthroughtQuestion)
+        logger.debug('mapthroughtQuestion', mapthroughtQuestion)
         let entity = Object.assign({}, usersQuizs, {
             answerDetail: mapthroughtQuestion
         })
@@ -91,14 +89,15 @@ export class UsersQuizsService {
 
     calculateResultQuizTest = co(function* (dto) {
         let me = this
-        console.log('dto', dto)
+        logger.debug('*****Begin calculateResultQuizTest paras', dto)
         let usersQuizsRow = dto.usersQuizsRow
         let questions = dto.questions
         let answerDetail = usersQuizsRow.answerDetail
+        logger.debug('answerDetail', answerDetail)
         let mapDetail = answerDetail.map(x => {
             let ret = {}
-            let mapAnswer = x.answersForAQuestions.filter(a => a.isCorrect == true).map(a => a.id)
-            let userAnswer = x.userCheck.map(x=>x) // fix mutation vue
+            let mapAnswer = x.answersForAQuestions.filter(a => a.isCorrect == true).map(a => a.id) 
+            let userAnswer = (x.userCheck)? x.userCheck.map(x=>x) : [] // fix mutation vue
             let resultForUserAnswerQuestion = _.isEqual( mapAnswer.sort(), userAnswer.sort())
             ret = Object.assign({}, x, {
                 userAnswerResult: resultForUserAnswerQuestion
@@ -113,6 +112,7 @@ export class UsersQuizsService {
         entity.scopes = mapDetail.filter( x=>x.userAnswerResult ==true).length / questions.length *10
         entity.scopesPraction = `${ mapDetail.filter( x=>x.userAnswerResult ==true).length }/${questions.length}`
         let rec = yield me.save(entity)
+        logger.info("*****end calculateResultQuizTest")
         return rec
 
     })
