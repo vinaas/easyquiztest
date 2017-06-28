@@ -28,8 +28,8 @@
     
                                 </div>
                                 <!--<div class="extra content">
-                                                                                                                                                                                                    
-                                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                            
+                                                                                                                                                                                                                                        </div>-->
                             </div>
                             <div class="ui card">
     
@@ -149,29 +149,34 @@
             <div id="result" class="ui modal">
                 <i class="close icon"></i>
                 <div class="header">
-                    Kết quả
+                    Kết quả: {{usersQuizsRow.scopesPraction}} - Điểm : {{usersQuizsRow.scopes}}
                 </div>
                 <div class="image content">
                     <table class="ui celled table">
                         <thead>
                             <tr>
                                 <th>Câu</th>
-                                <th>Kết quả</th>
-                                <th>Notes</th>
+                                <th>Trả lời</th>
+                                <th>Đáp án</th>
+                                <th>Kết quả </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr  v-for="item in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}" >
-                                <td>{{item.number}}</td>
+                            <tr v-for="(item , index) in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}">
+                                <td>{{index +1 }}</td>
+                                <td> {{ (item.userCheck)? item.userCheck.map(x=> item.answersForAQuestions.filter(y=>y.id==x).shift().name ).sort():'Chưa trả lời' }} </td>
+                                <td>
+                                    {{item.answersForAQuestions.filter(x=>x.isCorrect==true).map(x=>x.name).sort()}}
+                                </td>
                                 <td>{{item.userAnswerResult? "Đúng" : "Sai"}} </td>
-                                <td>None</td>
+                                <!--<td>None</td>-->
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="actions">
                     <!--<div class="ui button">Cancel</div>
-                    <div class="ui button">OK</div>-->
+                            <div class="ui button">OK</div>-->
                 </div>
             </div>
         </div>
@@ -204,7 +209,7 @@ export default {
         previous: 'previous',
         answereds: 'answereds',
         user: 'user',
-        usersQuizsRow : 'usersQuizsRow'
+        usersQuizsRow: 'usersQuizsRow'
     }),
     components: {},
     mounted: function () {
@@ -254,14 +259,14 @@ export default {
                 confirmButtonText: "Kết thúc",
                 cancelButtonText: "Tiếp tục làm bài",
             },
-                 co (function *() {
+                co(function* () {
                     yield this.$store.dispatch('end')
                     $('#result')
                         .modal('show')
                     swal.close()
 
 
-                }).bind(this) )
+                }).bind(this))
         }),
 
         _cloneCurrentCheck() {
