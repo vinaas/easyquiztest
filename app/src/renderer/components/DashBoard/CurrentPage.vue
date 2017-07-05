@@ -48,47 +48,45 @@ import Promise from 'bluebird'
 const _authServices = new AuthServices()
 
 export default {
-    mounted: function () {
-        var me = this;
-        $('#login').api({
-            mockResponseAsync: Promise.coroutine(function* (st, cb) {
-                yield me.login();
-                cb(true);
-            }),
-            on: 'click'
+  mounted: function () {
+    var me = this
+    $('#login').api({
+      mockResponseAsync: Promise.coroutine(function* (st, cb) {
+        yield me.login()
+        cb(true)
+      }),
+      on: 'click'
+    })
+  },
+  data: function () { return { username: '', password: '' } },
+  methods: {
+    login: Promise.coroutine(function* () {
+      try {
+        let ret = yield _authServices.login({
+          'username': this.username,
+          'password': this.password
         })
-    },
-    data: function () { return { username: '', password: '' } },
-    methods: {
-        login: Promise.coroutine(function* () {
-            try {
-                let ret = yield _authServices.login({
-                    'username': this.username,
-                    'password': this.password
-                })
-                if (ret) {
-                    try {
-                        let roles = yield _authServices.getUserRoles();
-                        if (roles.filter(x => x.name == 'admin').length !== 0) {
-                            yield this.$store.dispatch('login', ret.userId)
-                            this.$router.push({ path: 'admin' })
-                            toastr.info('Đăng nhập thành công')
-                        } else {
+        if (ret) {
+          try {
+            let roles = yield _authServices.getUserRoles()
+            if (roles.filter(x => x.name == 'admin').length !== 0) {
+              yield this.$store.dispatch('login', ret.userId)
+              this.$router.push({ path: 'admin' })
+              toastr.info('Đăng nhập thành công')
+            } else {
 
-                        }
-                    } catch (error) {
-                        this.$router.push({ path: 'quiz' })
-                        yield this.$store.dispatch('login', ret.userId)
-                        toastr.info('Đăng nhập thành công')
-                    }
-
-                }
-
-            } catch (error) {
-                toastr.error('Đăng nhập không thành công', 'Invalid login')
             }
-        })
-    }
+          } catch (error) {
+            this.$router.push({ path: 'quiz' })
+            yield this.$store.dispatch('login', ret.userId)
+            toastr.info('Đăng nhập thành công')
+          }
+        }
+      } catch (error) {
+        toastr.error('Đăng nhập không thành công', 'Invalid login')
+      }
+    })
+  }
 
 }
 </script>

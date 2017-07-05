@@ -22,21 +22,21 @@
 
 <script>
 export default {
-    mounted: function () {
-        $(document)
+  mounted: function () {
+    $(document)
             .ready(function () {
-                $('.ui.dropdown').dropdown({
-                    on: 'hover'
-                })
-                $('.ui.menu a.item')
+              $('.ui.dropdown').dropdown({
+                on: 'hover'
+              })
+              $('.ui.menu a.item')
                     .on('click', function () {
-                        $(this)
+                      $(this)
                             .addClass('active')
                             .siblings()
                             .removeClass('active')
                     })
             })
-    }
+  }
 }
 </script>
 

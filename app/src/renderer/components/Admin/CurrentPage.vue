@@ -63,119 +63,115 @@ import swal from 'sweetalert'
 import _ from 'lodash'
 const logger = Logger('Admin Quiz List')
 export default {
-    computed: {
-        ...mapState('adminQuizs', {
-            all: state => state.all,
-            current: state => state.currentQuiz
-        }),
-        ...mapGetters('adminQuizs', {
-            title: 'title'
-        })
-    },
+  computed: {
+    ...mapState('adminQuizs', {
+      all: state => state.all,
+      current: state => state.currentQuiz
+    }),
+    ...mapGetters('adminQuizs', {
+      title: 'title'
+    })
+  },
 
-    mounted: function () {
-        let me = this
-        $('.ui.form')
+  mounted: function () {
+    let me = this
+    $('.ui.form')
             .form({
-                fields: {
-                    name: {
-                        identifier: 'name',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please enter your name'
-                        }]
-                    },
-                    totalTime: {
-                        identifier: 'totalTime',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please enter totalTime'
-                        }]
-                    }
-
+              fields: {
+                name: {
+                  identifier: 'name',
+                  rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter your name'
+                  }]
                 },
-                onSuccess: function (event, fields) {
-                    event.preventDefault()
-                    return true
-                },
-                onFailure: function () {
-                    toastr.error('Lưu không thành công')
-                    return false
+                totalTime: {
+                  identifier: 'totalTime',
+                  rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter totalTime'
+                  }]
                 }
+
+              },
+              onSuccess: function (event, fields) {
+                event.preventDefault()
+                return true
+              },
+              onFailure: function () {
+                toastr.error('Lưu không thành công')
+                return false
+              }
 
             })
 
-        $('.ui.form').api({
-            mockResponseAsync: Promise.coroutine(function* (st, cb) {
-                yield me.save();
-                cb();
-                $('.ui.modal').modal('hide')
-                toastr.success('Lưu thành công')
-            }),
-            on: 'submit'
-        })
-        $('#saveQuiz').modal({
-            closable: false,
-            onHidden: function () {
-                $('.ui.form').form('reset')
-                me.$store.dispatch('adminQuizs/updateCurrent', {})
-            }
-        })
-        me.$forceUpdate()
+    $('.ui.form').api({
+      mockResponseAsync: Promise.coroutine(function* (st, cb) {
+        yield me.save()
+        cb()
+        $('.ui.modal').modal('hide')
+        toastr.success('Lưu thành công')
+      }),
+      on: 'submit'
+    })
+    $('#saveQuiz').modal({
+      closable: false,
+      onHidden: function () {
+        $('.ui.form').form('reset')
+        me.$store.dispatch('adminQuizs/updateCurrent', {})
+      }
+    })
+    me.$forceUpdate()
+  },
+  methods: {
+    addQuiz: function () {
+      logger.debug('add')
+      this.$store.dispatch('adminQuizs/selectQuiz', {})
 
+      $('#saveQuiz')
+                .modal('show')
     },
-    methods: {
-        addQuiz: function () {
-            logger.debug('add')
-            this.$store.dispatch('adminQuizs/selectQuiz', {})
+    toSave: function (item) {
+      logger.debug(item)
 
-            $('#saveQuiz')
+      this.$store.dispatch('adminQuizs/selectQuiz', item)
+
+      $('#saveQuiz')
                 .modal('show')
-        },
-        toSave: function (item) {
-            logger.debug(item)
-
-            this.$store.dispatch('adminQuizs/selectQuiz', item)
-
-            $('#saveQuiz')
-                .modal('show')
-        },
-        save: Promise.coroutine(function* () {
-            yield this.$store.dispatch('adminQuizs/saveQuiz', this.current)
-            yield this.$store.dispatch('adminQuizs/getAll')
-        }),
-        updateCurrent: function (e) {
-            let cloneQuiz = Object.assign({}, this.current, { [e.target.name]: e.target.value })
-            this.$store.dispatch('adminQuizs/updateCurrent', cloneQuiz)
-        },
-        toRemove: Promise.coroutine(function* (item) {
-            let me = this;
-            swal({
-                title: "Bạn có chắc chắn?",
-                text: "Xóa dữ liệu : " + item.name,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Có, Xóa",
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true,
-            },
+    },
+    save: Promise.coroutine(function* () {
+      yield this.$store.dispatch('adminQuizs/saveQuiz', this.current)
+      yield this.$store.dispatch('adminQuizs/getAll')
+    }),
+    updateCurrent: function (e) {
+      let cloneQuiz = Object.assign({}, this.current, { [e.target.name]: e.target.value })
+      this.$store.dispatch('adminQuizs/updateCurrent', cloneQuiz)
+    },
+    toRemove: Promise.coroutine(function* (item) {
+      let me = this
+      swal({
+        title: 'Bạn có chắc chắn?',
+        text: 'Xóa dữ liệu : ' + item.name,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'Có, Xóa',
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true
+      },
                 Promise.coroutine(function* () {
-                    yield me.$store.dispatch('adminQuizs/removeQuiz', item)
-                    yield me.$store.dispatch('adminQuizs/getAll')
-                    swal("Đã xóa!", "Dữ liệu đã bị xóa", "success");
+                  yield me.$store.dispatch('adminQuizs/removeQuiz', item)
+                  yield me.$store.dispatch('adminQuizs/getAll')
+                  swal('Đã xóa!', 'Dữ liệu đã bị xóa', 'success')
                 }))
+    })
 
-        })
-
-    },
-    created() {
-        var me = this
-        this.$store.dispatch('adminQuizs/getAll').then(() => {
-        })
-
-
-    }
+  },
+  created () {
+    var me = this
+    this.$store.dispatch('adminQuizs/getAll').then(() => {
+    })
+  }
 
 }
 </script>

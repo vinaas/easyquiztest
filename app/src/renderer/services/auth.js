@@ -5,10 +5,10 @@ Promise.config({
   }
 })
 export class AuthServices {
-  get isAuthenticated() {
+  get isAuthenticated () {
     return !!this.token()
   }
-  get token() {
+  get token () {
     return sessionStorage.getItem('auth-token')
   }
 
@@ -23,7 +23,7 @@ export class AuthServices {
       'password': password
     })
     this._setToken(ret.data)
-    return ret.data;
+    return ret.data
   });
   getUserRoles = Promise.coroutine(function* () {
     var user = JSON.parse(sessionStorage.getItem('userinfo'))
@@ -35,13 +35,13 @@ export class AuthServices {
   logout = Promise.coroutine(function* () {
     return yield axios.post('api/ApplicationUsers/logout')
   })
-  getUserInfo() {
+  getUserInfo () {
     if (!this.token) {
       return
     }
     return JSON.parse(sessionStorage.getItem('userinfo'))
   }
-  _setToken(ret) {
+  _setToken (ret) {
     sessionStorage.setItem('userinfo', JSON.stringify(ret))
     axios.defaults.headers.common['Authorization'] = ret.id
   }
