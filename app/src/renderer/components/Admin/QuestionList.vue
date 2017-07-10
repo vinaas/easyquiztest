@@ -72,7 +72,6 @@
     <table id="questions" class="display dataTable" cellspacing="0" width="100%">
       <thead>
         <tr>
-         
           <th>Nội dung</th>
           <th>Mô tả</th>
           <th>Hoạt động</th>
@@ -92,8 +91,7 @@
   import _ from 'lodash'
   import Promise from 'Bluebird'
   const AnswersName = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-  const configColumns = [
-    {
+  const configColumns = [{
       "data": "content"
     },
     {
@@ -106,7 +104,7 @@
   const configColumnDefs = [{
     "targets": -1,
     "data": null,
-    "defaultContent": "<button class='ui primary button' style='width:100px'>câu trả lời</button>"
+    "defaultContent": '<button class="editor_edit">Edit</button> / <button class="editor_remove">Delete</button>'
   }]
   const co = Promise.coroutine
   var $ = require('jquery');
@@ -118,7 +116,6 @@
 
         answers: [],
         question: {
-          id: "",
           type: false
         },
         questionAnswers: {}
@@ -132,9 +129,9 @@
     },
 
     created: function () {
-       this.question.quizId=this.$route.params.id;
-        this.getDataTable();
-        console.log('aaa',this.question);
+      this.question.quizId = this.$route.params.id;
+      this.showDataTable();
+
 
     },
     mounted: function () {
@@ -164,7 +161,7 @@
       $('.ui.form').api({
         mockResponseAsync: Promise.coroutine(function* (st, cb) {
           yield me.newQuestion()
-          me.getDataTable();
+          me.showDataTable();
           cb()
           $('.ui.modal').modal('hide')
 
@@ -174,24 +171,27 @@
     },
 
     methods: {
-      getDataTable(){
-         let me = this;
-        
-      this.$store.dispatch('adminQuestions/getQuestionsOfQuiz',this.$route.params.id).then(() => {
-
+      showDataTable: co(function* () {
+        let me = this;
+        yield this.$store.dispatch('adminQuestions/getQuestionsOfQuiz', this.$route.params.id);
         $(document).ready(() => {
-
-
-          let table = $('#questions').DataTable({
+          $('#questions').DataTable().destroy();
+           let table = $('#questions').DataTable({
             data: _.clone(me.questions),
 
-            "columns":configColumns,
+            "columns": configColumns,
             "columnDefs": configColumnDefs
           })
-          $('#questions tbody').on('click', 'tr', function () {
-            console.log('data', JSON.stringify(table.row(this).data().answersForAQuestions))
-            me.itemQuestion = table.row(this).data();
-            me.answers = table.row(this).data().answersForAQuestions.map(x => {
+            $('#questions').on('click', 'tr .editor_remove', function () {
+               let selectedRow=table.row( $(this).parents('tr') ).data();
+               alert('@@@@',selectedRow[0]);
+            });
+          $('#questions').on('click', 'tr .editor_edit', function () {
+            let selectedRow=table.row( $(this).parents('tr') ).data();
+
+        
+            me.itemQuestion = selectedRow;
+            me.answers = selectedRow.answersForAQuestions.map(x => {
               return _.clone(x)
             })
             let postQuestion = {};
@@ -201,13 +201,14 @@
             postQuestion.quizId = me.itemQuestion.quizId;
             postQuestion.type = me.itemQuestion.type;
             postQuestion.answersForAQuestions = Object.assign({}, me.answers);
-         
-            $('#updateQuestion').modal('show');
+
+           $('#updateQuestion').modal('show');
 
           });
+
         })
-      })
-      },
+
+      }),
       openModelQuestion: function () {
         $('#openModelQuestion').modal('show');
       },
@@ -215,7 +216,7 @@
 
         try {
 
-          yield this.$store.dispatch('adminQuestions/saveQuestion',this.question)
+          yield this.$store.dispatch('adminQuestions/saveQuestion', this.question)
           swal('Thông báo!', 'Tạo mới câu hỏi thành công', 'success')
         } catch (error) {
           swal('Thông báo!', 'Tạo mới câu hỏi thất bại', 'error')
