@@ -45,7 +45,8 @@
                     <td>{{item.quizTime}}</td>
                     <td>
                         <button class="ui button primary" v-on:click="toSave(item)"> Cập nhật</button>
-                        <button class="ui button " v-on:click="toRemove(item)"> Xóa</button>
+                        <button class="ui button divided link items"><a :href="'/#/admin/questionList/' + item.id" class="item">Câu hỏi</a></button>
+                    
                     </td>
     
                 </tr>
@@ -124,6 +125,10 @@ export default {
     me.$forceUpdate()
   },
   methods: {
+    toQuestion:function(item){
+        logger.debug('link to Question',JSON.stringify(item));
+        // this.$router.push({ path: 'questionList'+item.id })
+    },
     addQuiz: function () {
       logger.debug('add')
       this.$store.dispatch('adminQuizs/selectQuiz', {})

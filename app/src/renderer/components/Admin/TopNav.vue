@@ -4,9 +4,8 @@
             <router-link class="item header item" to="/">
                 <img class="logo" src="../assets/vinaas-logo.png">EasyQuizTest</router-link>
             <a href="javascript:void()" class="item">Quản lý thí sinh</a>
-            <a href="javascript:void()" class="item">Quản lý đề thi</a>
-            <router-link class="item" to="/admin/questionList/12">Quan ly cau hoi</router-link>
-            <div class="ui dropdown item right">
+            <a :href='"/#/admin/"' class="item">Quản lý đề thi</a></button>
+                <div class="ui dropdown item right">
                 admin
                 <i class="dropdown icon"></i>
                 <div class="menu">
