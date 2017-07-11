@@ -1,23 +1,23 @@
 <template>
   <div class="ui main text container">
 
-    <div id="edit_Question" class="ui modal">
+    <div id="save_question" class="ui modal save_question">
       <i class="close icon"></i>
       <div class="header">
-        <h1>Cập nhật câu hỏi</h1>
+        <h1>{{question.id==undefined?'Tạo mới':'Cập nhật'}}</h1>
       </div>
       <div class="ui content">
         <form class="ui form">
           <div class="field">
             <label>Mô tả</label>
-            <input type="text" v-model="updateQuestion.description" placeholder="Mô tả">
+            <input type="text" v-model="question.description" placeholder="Mô tả">
           </div>
           <div class="field">
             <label>Kiểu</label>
-            <select v-model="updateQuestion.type" name="type">
+            <select v-model="question.type" name="type">
               <option value="">--Chọn kiểu--</option>
-              <option value="radio">Radio</option> 
-              <option value="checkbox">CheckBox</option>
+              <option value="radio">Một kết quả đúng</option> 
+              <option value="checkbox">Nhiều kết quả đúng</option>
             </select>
           </div>
           <button class="ui button green" type="submit" data-tooltip="Lưu"><i class="save icon"></i></button>
@@ -25,39 +25,14 @@
       </div>
     </div>
 
-
-    <div id="openQuestion" class="ui modal">
-      <i class="close icon"></i>
-      <div class="header">
-        <h1>Tạo mới câu hỏi</h1>
-      </div>
-      <div class="ui content">
-        <form class="ui form">
-          <div class="field">
-            <label>Mô tả</label>
-            <input type="text" v-model="question.description" placeholder="Mô tả" name="description">
-          </div>
-          <div class="field">
-            <label>Kiểu</label>
-            <select v-model="question.type" name="type">
-              <option value="">--Chọn kiểu--</option>
-              <option value="radio">Radio</option>
-              <option value="checkbox">CheckBox</option>
-            </select>
-          </div>
-          <button class="ui button green" type="submit"><i class="save icon"></i></button>
-        </form>
-      </div>
-    </div>
-
-    <div id="show_answers" class="ui modal">
+    <div class="show_answers ui modal">
       <i class="close icon"></i>
       <div class="header">
         <h1>Danh sách câu trả lời cho câu hỏi</h1>
       </div>
       <div class="ui content">
         <div class="btn-position-right">
-          <span data-tooltip='Lưu' data-position="top left"><i class="save icon editor_edit blue" v-on:click="updateAnswers()"></i></span>
+          <span data-tooltip='Lưu' data-position="top left"><i class="save icon editor_edit blue" v-on:click="saveAnswers()"></i></span>
 
         </div>
 
@@ -89,19 +64,19 @@
     </div>
     <div class='btn-position-right'>
       <span data-tooltip="Tạo mới">
-      <i class="add to circle icon green" v-on:click="openQuestion()"></i></span>
+      <i class="add to circle icon green" v-on:click="addQuestion()"></i></span>
     </div>
     <br>
     <table id="questions" class="cell-border" cellspacing="0" width="100%">
       <thead>
         <tr>
-          <th>Nội dung</th>
+          <th>Kiểu</th>
           <th>Mô tả</th>
           <th>Hoạt động</th>
         </tr>
       </thead>
-     
-        
+
+
     </table>
   </div>
 
@@ -117,7 +92,7 @@
   import Promise from 'Bluebird'
   const AnswersName = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
   const configColumns = [{
-      "data": "content"
+      "data": "type"
     },
     {
       "data": "description"
@@ -138,11 +113,8 @@
   export default {
     data() {
       return {
-        updateQuestion: {},
         answers: [],
-        question: {
-          type: false
-        },
+        question: {},
         questionAnswers: {}
       }
     },
@@ -156,12 +128,10 @@
     created: function () {
       this.question.quizId = this.$route.params.id;
       this.showDataTable();
-
-
     },
     mounted: function () {
       let me = this;
-      $('#edit_Question .ui.form')
+      $('.save_question .ui.form')
         .form({
           fields: {
             type: {
@@ -171,7 +141,6 @@
                 prompt: 'Xin vui lòng chọn kiểu'
               }]
             }
-
           },
           onSuccess: function (event, fields) {
             event.preventDefault()
@@ -179,80 +148,42 @@
           },
           onFailure: function () {
             toastr.error('Lưu không thành công')
+
             return false
           }
 
         });
 
-      $('#edit_Question .ui.form').api({
+      $('.save_question .ui.form').api({
         mockResponseAsync: co(function* (st, cb) {
           try {
-            yield me.editQuestion()
+            yield me.save();
             cb()
-            $('.ui.modal').modal('hide')
+            $('.save_question').modal('hide')
           } catch (error) {
             $('.ui.modal').modal('show')
           }
 
         }),
         on: 'submit'
+      });
+      $('.save_question').modal({
+        closable: false,
+        onHidden: function () {
+          $('.save_question .ui.form').form('reset')
+        }
       })
-      $('#openQuestion .ui.form')
-        .form({
-          fields: {
-            type: {
-              identifier: 'type',
-              rules: [{
-                type: 'empty',
-                prompt: 'Xin vui lòng chọn kiểu'
-              }]
-            }
 
-          },
-          onSuccess: function (event, fields) {
-            event.preventDefault()
-            return true
-          },
-          onFailure: function () {
-            toastr.error('Lưu không thành công')
-            return false
-          }
-
-        });
-      $('#openQuestion .ui.form').api({
-        mockResponseAsync: co(function* (st, cb) {
-          try {
-            yield me.newQuestion()
-            cb()
-            $('.ui.modal').modal('hide')
-          } catch (error) {
-            $('.ui.modal').modal('show')
-          }
-
-
-        }),
-        on: 'submit'
-      })
     },
 
     methods: {
-      editQuestion: co(function* () {
-        try {
-          yield this.$store.dispatch('adminQuestions/saveQuestion', this.updateQuestion);
-          swal('Thông báo!', 'Cập nhật câu hỏi thành công', 'success')
-          this.showDataTable();
-        } catch (error) {
-          swal('Thông báo!', 'Cập nhật câu hỏi thất bại', 'error')
-        }
-
-      }),
       showDataTable: co(function* () {
         let me = this;
         yield this.$store.dispatch('adminQuestions/getQuestionsOfQuiz', this.$route.params.id);
         $(document).ready(() => {
 
           $('#questions').DataTable().destroy();
-        
+
           let table = $('#questions').DataTable({
             data: _.clone(me.questions),
 
@@ -260,9 +191,10 @@
             "columnDefs": configColumnDefs
           })
           $('#questions').off('click');
-          $('#questions').on('click', 'tr .edit_question', function () {
+          $('#questions').on('click', 'tr .edit_question', co(function* () {
+
             let dataQuestion = table.row($(this).parents('tr')).data();
-            console.log('dataQuestion', dataQuestion);
+
             let question = {};
             question.content = dataQuestion.content;
             question.id = dataQuestion.id;
@@ -270,14 +202,13 @@
             question.quizId = dataQuestion.quizId;
             question.type = dataQuestion.type;
             question.answersForAQuestions = dataQuestion.answersForAQuestions.map(x => {
-
               return _.clone(x)
             })
 
-            me.updateQuestion = Object.assign({}, question);
-            $('#edit_Question').modal('show');
+            me.question = Object.assign({}, me.question, question);
+            $('.save_question').last().modal('show')
 
-          });
+          }));
           $('#questions').on('click', 'tr .editor_remove', function () {
 
             let selectedRow = table.row($(this).parents('tr')).data();
@@ -304,79 +235,93 @@
               }))
           });
           $('#questions').on('click', 'tr .go_to_answers', function () {
-            let selectedRow                   = table.row($(this).parents('tr')).data();
-            me.itemQuestion                   = selectedRow;
-            me.answers                        = selectedRow.answersForAQuestions.map(x => {
+            let selectedRow = table.row($(this).parents('tr')).data();
+            me.questionAnswers = Object.assign({}, selectedRow);
+            let getanswers = selectedRow.answersForAQuestions.map(x => {
+
               return _.clone(x)
             })
-            // let postQuestion                  = {};
-            // postQuestion.content              = me.itemQuestion.content;
-            // postQuestion.description          = me.itemQuestion.description;
-            // postQuestion.id                   = me.itemQuestion.id;
-            // postQuestion.quizId               = me.itemQuestion.quizId;
-            // postQuestion.type                 = me.itemQuestion.type;
-            // postQuestion.answersForAQuestions = Object.assign({}, me.answers);
-            $('#show_answers').modal('show');
+            me.answers = getanswers;
+            $('.show_answers').last()
+              .modal({
+                allowMultiple: false,
+                closable: false,
+                onDeny: function () {
+                  me.answers = [];
+                  return false;
+                },
+                onApprove: function () {
+                  me.answers = [];
+                }
+              })
+              .modal('show')
+
           });
 
         })
 
       }),
-      openQuestion: function () {
-        $('#openQuestion').modal('show');
+      addQuestion: function () {
+        $('.save_question').modal('show');
       },
-      newQuestion: Promise.coroutine(function* () {
-
+      save: co(function* () {
         try {
-
           yield this.$store.dispatch('adminQuestions/saveQuestion', this.question)
-          this.showDataTable();
-          swal('Thông báo!', 'Tạo mới câu hỏi thành công', 'success')
-          this.question = {};
+          yield this.showDataTable();
+
+          if (this.question.id == undefined) {
+            swal('Thông báo!', 'Tạo mới câu hỏi thành công', 'success')
+
+          } else {
+
+            swal('Thông báo!', 'Cập nhật câu hỏi thành công', 'success')
+          }
         } catch (error) {
-          swal('Thông báo!', 'Tạo mới câu hỏi thất bại', 'error')
+          if (this.question.id == undefined) {
+            swal('Thông báo!', 'Tạo mới câu hỏi thất bại', 'error')
+
+
+          } else {
+            swal('Thông báo!', 'Cập nhật câu hỏi thất bại', 'error')
+          }
         }
-
-
       }),
       deleteAnswer: function (ans) {
         this.answers = _.reject(this.answers, ans);
       },
-      updateAnswers: co(function* () {
+      saveAnswers: co(function* () {
         try {
+          //this.answers=this.answers[0]==undefined?this.answers.push({'id':this.questionAnswers.id}):this.answers
           yield this.$store.dispatch('adminQuestions/updateAnswers', this.answers)
-
+          yield this.showDataTable();
           swal('Thông báo!', 'Cập nhật thành công', 'success')
         } catch (error) {
           swal('Thông báo!', 'Cập nhật không thất bại', 'error')
         }
       }),
       addAnswer: function () {
+        this.answers = this.answers[0] == undefined ? [] : this.answers;
         this.answers.push(this.configAnswer());
       },
       configAnswer: function () {
-        let answer        = {};
-        let lengthAns     = this.answers[0] == undefined ? 0  : this.answers.length - 1;
+        let answer = {};
+        let lengthAns = this.answers[0] == undefined ? 0 : this.answers.length - 1;
         let convertNumber = AnswersName[lengthAns].charCodeAt(0);
-        let name          = String.fromCharCode(convertNumber + 1);
+        let name = String.fromCharCode(convertNumber + 1);
         answer.questionId = this.questionAnswers.id;
-        answer.id         = 0;
-        answer.name       = this.answers[0] == undefined ? 'A': name;
-        answer.content    = "";
-        answer.isCorrect  = false;
+        answer.name = this.answers[0] == undefined ? 'A' : name;
+        answer.content = "";
+        answer.isCorrect = false;
+
         return answer;
       }
-
     }
-
-
   }
 </script>
 <style scoped>
   .btn-position-right {
     text-align: right;
   }
-
 
   .ui.text.container {
     max-width: 2000px !important;

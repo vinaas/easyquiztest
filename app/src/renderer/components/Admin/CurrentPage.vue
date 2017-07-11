@@ -138,7 +138,7 @@
         logger.debug('add')
         this.$store.dispatch('adminQuizs/selectQuiz', {})
 
-        $('.saveQuiz')
+        $('.saveQuiz').last()
           .modal('show')
       },
       toSave: co (function* (item) {
