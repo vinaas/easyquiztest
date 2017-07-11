@@ -88,7 +88,7 @@
       </div>
     </div>
     <div class='btn-position-right'>
-     <span data-tooltip="Tạo mới">
+      <span data-tooltip="Tạo mới">
       <i class="add to icon green" v-on:click="openQuestion()"></i></span>
     </div>
     <br>
@@ -181,17 +181,21 @@
           }
 
         });
-        
+
       $('#edit_Question .ui.form').api({
         mockResponseAsync: co(function* (st, cb) {
-          yield me.editQuestion()
-          cb()
-          $('.ui.modal').modal('hide')
+          try {
+            yield me.editQuestion()
+            cb()
+            $('.ui.modal').modal('hide')
+          } catch (error) {
+            $('.ui.modal').modal('show')
+          }
 
         }),
         on: 'submit'
       })
-       $('#openQuestion .ui.form')
+      $('#openQuestion .ui.form')
         .form({
           fields: {
             type: {
@@ -215,9 +219,14 @@
         });
       $('#openQuestion .ui.form').api({
         mockResponseAsync: co(function* (st, cb) {
-          yield me.newQuestion()
-          cb()
-          $('.ui.modal').modal('hide')
+          try {
+            yield me.newQuestion()
+            cb()
+            $('.ui.modal').modal('hide')
+          } catch (error) {
+            $('.ui.modal').modal('show')
+          }
+
 
         }),
         on: 'submit'
@@ -229,7 +238,7 @@
         try {
           yield this.$store.dispatch('adminQuestions/saveQuestion', this.updateQuestion);
           swal('Thông báo!', 'Cập nhật câu hỏi thành công', 'success')
-          yield this.showDataTable();
+          this.showDataTable();
         } catch (error) {
           swal('Thông báo!', 'Cập nhật câu hỏi thất bại', 'error')
         }
@@ -239,14 +248,16 @@
         let me = this;
         yield this.$store.dispatch('adminQuestions/getQuestionsOfQuiz', this.$route.params.id);
         $(document).ready(() => {
+
           $('#questions').DataTable().destroy();
+          $('#questions').empty();
           let table = $('#questions').DataTable({
             data: _.clone(me.questions),
 
             "columns": configColumns,
             "columnDefs": configColumnDefs
           })
-
+          $('#questions').off('click');
           $('#questions').on('click', 'tr .edit_question', function () {
             let dataQuestion = table.row($(this).parents('tr')).data();
             console.log('dataQuestion', dataQuestion);
@@ -257,14 +268,16 @@
             question.quizId = dataQuestion.quizId;
             question.type = dataQuestion.type;
             question.answersForAQuestions = dataQuestion.answersForAQuestions.map(x => {
+
               return _.clone(x)
             })
-            me.updateQuestion = Object.assign({}, question);
 
+            me.updateQuestion = Object.assign({}, question);
             $('#edit_Question').modal('show');
 
           });
           $('#questions').on('click', 'tr .editor_remove', function () {
+
             let selectedRow = table.row($(this).parents('tr')).data();
             swal({
                 title: 'Bạn có chắc chắn?',
@@ -315,8 +328,9 @@
         try {
 
           yield this.$store.dispatch('adminQuestions/saveQuestion', this.question)
-          yield this.showDataTable();
+          this.showDataTable();
           swal('Thông báo!', 'Tạo mới câu hỏi thành công', 'success')
+          this.question = {};
         } catch (error) {
           swal('Thông báo!', 'Tạo mới câu hỏi thất bại', 'error')
         }
