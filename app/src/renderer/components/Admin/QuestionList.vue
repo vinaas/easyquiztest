@@ -82,17 +82,17 @@
         </table>
 
         <div class='btn-position-right'><span data-tooltip="Tạo mới">
-             <i class="add to icon green" v-on:click="addAnswer()"></i></span>
+             <i class="add to circle icon green" v-on:click="addAnswer()"></i></span>
         </div>
 
       </div>
     </div>
     <div class='btn-position-right'>
       <span data-tooltip="Tạo mới">
-      <i class="add to icon green" v-on:click="openQuestion()"></i></span>
+      <i class="add to circle icon green" v-on:click="openQuestion()"></i></span>
     </div>
     <br>
-    <table id="questions" class="display dataTable" cellspacing="0" width="100%">
+    <table id="questions" class="cell-border" cellspacing="0" width="100%">
       <thead>
         <tr>
           <th>Nội dung</th>
@@ -100,6 +100,8 @@
           <th>Hoạt động</th>
         </tr>
       </thead>
+     
+        
     </table>
   </div>
 
@@ -250,7 +252,7 @@
         $(document).ready(() => {
 
           $('#questions').DataTable().destroy();
-          $('#questions').empty();
+        
           let table = $('#questions').DataTable({
             data: _.clone(me.questions),
 
