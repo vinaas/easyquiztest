@@ -355,15 +355,15 @@
         this.answers.push(this.configAnswer());
       },
       configAnswer: function () {
-        let answer = {};
-        let lengthAns = this.answers[0] == undefined ? 0 : this.answers.length - 1;
+        let answer        = {};
+        let lengthAns     = this.answers[0] == undefined ? 0  : this.answers.length - 1;
         let convertNumber = AnswersName[lengthAns].charCodeAt(0);
-        let name = String.fromCharCode(convertNumber + 1);
+        let name          = String.fromCharCode(convertNumber + 1);
         answer.questionId = this.questionAnswers.id;
-        answer.id = 0;
-        answer.name = this.answers[0] == undefined ? 'A' : name;
-        answer.content = "";
-        answer.isCorrect = false;
+        answer.id         = 0;
+        answer.name       = this.answers[0] == undefined ? 'A': name;
+        answer.content    = "";
+        answer.isCorrect  = false;
         return answer;
       }
 

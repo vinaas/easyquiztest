@@ -4,7 +4,7 @@
     <h1>Danh sách các đề thi</h1>
     <span  data-tooltip='Tạo mới' v-on:click="addQuiz()"><i class="add circle icon green"></i>  </span>
     
-    <div id="saveQuiz" class="ui modal">
+    <div id="saveQuiz" class="ui modal saveQuiz">
       <i class="close icon"></i>
       <div class="header">
         {{title}}
@@ -67,6 +67,7 @@
   import swal from 'sweetalert'
   import _ from 'lodash'
   const logger = Logger('Admin Quiz List')
+  const co = Promise.coroutine
   export default {
     computed: {
       ...mapState('adminQuizs', {
@@ -119,7 +120,7 @@
         }),
         on: 'submit'
       })
-      $('#saveQuiz').modal({
+      $('.saveQuiz').modal({
         closable: false,
         onHidden: function () {
           $('.ui.form').form('reset')
@@ -137,17 +138,17 @@
         logger.debug('add')
         this.$store.dispatch('adminQuizs/selectQuiz', {})
 
-        $('#saveQuiz')
+        $('.saveQuiz')
           .modal('show')
       },
-      toSave: function (item) {
+      toSave: co (function* (item) {
         logger.debug(item)
+        // $('.saveQuiz').remove()
+        yield this.$store.dispatch('adminQuizs/selectQuiz', item)
 
-        this.$store.dispatch('adminQuizs/selectQuiz', item)
-
-        $('#saveQuiz')
+        $('.saveQuiz').last()
           .modal('show')
-      },
+      }),
       save: Promise.coroutine(function* () {
         yield this.$store.dispatch('adminQuizs/saveQuiz', this.current)
         yield this.$store.dispatch('adminQuizs/getAll')
