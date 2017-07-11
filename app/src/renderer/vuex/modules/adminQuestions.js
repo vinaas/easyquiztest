@@ -22,21 +22,28 @@ const mutationTypes = {
   RESET_CURRENT: 'RESET_CURRENT',
   UPDATE_CURRENT: 'UPDATE_CURRENT',
   UPDATE_ANSWERS: 'UPDATE_ANSWERS',
-  QUESTIONS_OF_QUIZ:'QUESTIONS_OF_QUIZ'
- 
-}
+  QUESTIONS_OF_QUIZ:'QUESTIONS_OF_QUIZ',
+  SELECT_ANSWERS:'SELECT_ANSWERS',
+  UPDATE_ANSWERS_CURRENT:'UPDATE_ANSWERS_CURRENT'
+  }
 const state = {
   all: [],
   currentQuestion: {},
-  questionsOfQuiz:[]
+  questionsOfQuiz:[],
+  currentAnswers:{}
 }
 
 const mutations = {
+  [mutationTypes.UPDATE_ANSWERS_CURRENT](state, selectedAnswers) {
+    state.currentAnswers = selectedAnswers
+  },
+  [mutationTypes.SELECT_ANSWERS](state, selectedAnswers) {
+      state.currentAnswers = selectedAnswers
+  },
   [mutationTypes.SELECT_QUESTION](state, selectedQuestion) {
-    let filter = state.all.filter(x => selectedQuestion && x.id == selectedQuestion.id)
-    if (filter.length) {
-      state.currentQuestion = filter[0]
-    }
+   
+      state.currentQuestion = selectedQuestion
+   
   },
   [mutationTypes.SAVE_QUESTION](state) {},
   [mutationTypes.REMOVE_QUESTION](state) {},
@@ -68,10 +75,10 @@ const actions = {
       questionList
     })
   }),
-  selectQuestion: function ({
+  selectAnswers: function ({
     commit
-  }, selectedQuestion) {
-    commit(mutationTypes.SELECT_QUESTION, selectedQuestion)
+  }, selectedAnswers) {
+    commit(mutationTypes.SELECT_ANSWERS, selectedAnswers)
   },
   saveQuestion: Promise.coroutine(function* ({
     commit
@@ -98,12 +105,18 @@ const actions = {
       let questionsOfQuiz=yield quizService.getQuestionsBy(quizId)
       commit(mutationTypes.QUESTIONS_OF_QUIZ,{questionsOfQuiz})
   })
-
+  ,
+  updateAnswersCurrent: Promise.coroutine(function* ({
+    commit
+  }, selectedAnswers) {
+    commit(mutationTypes.UPDATE_ANSWERS_CURRENT,selectedAnswers)
+  })
   
 
 }
 
 const getters = {
+  currentAnswers:state=>state.currentAnswers,
   questionsOfQuiz:state=>state.questionsOfQuiz,
   all: state => state.all,
   currentQuestion: state => state.currentQuestion,
