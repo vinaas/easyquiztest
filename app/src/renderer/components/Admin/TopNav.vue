@@ -3,7 +3,7 @@
         <div class="ui container">
             <router-link class="item header item" to="/">
                 <img class="logo" src="../assets/vinaas-logo.png">EasyQuizTest</router-link>
-            <a href="javascript:void()" class="item">Quản lý thí sinh</a>
+            <!--<a href="javascript:void()" class="item">Quản lý thí sinh</a>-->
             <a :href='"/#/admin/"' class="item">Quản lý đề thi</a></button>
                 <div class="ui dropdown item right">
                 admin

@@ -115,7 +115,7 @@
   } from 'vuex'
   import _ from 'lodash'
   import Promise from 'Bluebird'
-  const AnswersName = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+  const AnswersName = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
   const configColumns = [{
       "data": "content"
     },
@@ -304,18 +304,18 @@
               }))
           });
           $('#questions').on('click', 'tr .go_to_answers', function () {
-            let selectedRow = table.row($(this).parents('tr')).data();
-            me.itemQuestion = selectedRow;
-            me.answers = selectedRow.answersForAQuestions.map(x => {
+            let selectedRow                   = table.row($(this).parents('tr')).data();
+            me.itemQuestion                   = selectedRow;
+            me.answers                        = selectedRow.answersForAQuestions.map(x => {
               return _.clone(x)
             })
-            let postQuestion = {};
-            postQuestion.content = me.itemQuestion.content;
-            postQuestion.description = me.itemQuestion.description;
-            postQuestion.id = me.itemQuestion.id;
-            postQuestion.quizId = me.itemQuestion.quizId;
-            postQuestion.type = me.itemQuestion.type;
-            postQuestion.answersForAQuestions = Object.assign({}, me.answers);
+            // let postQuestion                  = {};
+            // postQuestion.content              = me.itemQuestion.content;
+            // postQuestion.description          = me.itemQuestion.description;
+            // postQuestion.id                   = me.itemQuestion.id;
+            // postQuestion.quizId               = me.itemQuestion.quizId;
+            // postQuestion.type                 = me.itemQuestion.type;
+            // postQuestion.answersForAQuestions = Object.assign({}, me.answers);
             $('#show_answers').modal('show');
           });
 
