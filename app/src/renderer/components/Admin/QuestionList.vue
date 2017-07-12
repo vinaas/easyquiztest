@@ -1,12 +1,5 @@
 <template>
   <div class="ui main text container">
-  <button v-on:click="addAnswer()">ok</button>
-
-            <ul v-for="(ans, i) in currentAnswers.answersForAQuestions">
-              <li>{{i}}</li>
-             
-            </ul>
-        
     <div class="saveQuestion ui modal">
       <i class="close icon"></i>
       <div class="header">
@@ -30,7 +23,7 @@
         </form>
       </div>
     </div>
-    
+
 
     <div class="show_answers ui modal">
       <i class="close icon"></i>
@@ -48,13 +41,17 @@
           <thead>
             <tr>
               <th>Tên</th>
-              
+              <th>Nội dung</th>
+              <th>kiểu</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(ans,i) in lst.data">
-              <td>{{i}}</td>
-              
+            <tr v-for="ans in answers">
+              <td>{{ans.name}}</td>
+              <td><textarea name="content" v-model="ans.content"></textarea></td>
+              <td><input type="checkbox" name="isCorrect" v-model="ans.isCorrect"></td>
+              <td ><i class="delete icon editor_remove red" v-on:click="deleteAnswer(ans)"></i></td>
             </tr>
           </tbody>
         </table>
@@ -117,7 +114,8 @@
   export default {
     data() {
       return {
-        questionAnswers: {}
+        question: {},
+        answers:[]
       }
     },
 
@@ -125,22 +123,17 @@
       ...mapState('adminQuestions', {
         questions: state => state.questionsOfQuiz,
         current: state => state.currentQuestion,
-        lst : state => state.lst
-      }),
-      ...mapGetters('adminQuestions',{
-currentAnswers: 'currentAnswers'
+        currentAnswers: state => state.currentAnswers
       })
     },
 
     created: co(function* () {
-      alert(this.$route.params.id)
-      yield new Promise(rs=>{
-        setTimeout(function(){ alert("Hello"); rs(true) }, 3000);
-      })
+
       yield this.showDataTable();
 
     }),
     mounted: function () {
+       console.log('me @@@@@',this.answers,this.question);
       let me = this
       $('.ui.form')
         .form({
@@ -191,7 +184,7 @@ currentAnswers: 'currentAnswers'
     },
 
     methods: {
-      updateAnswerCurrent:function(){
+      updateAnswerCurrent: function () {
 
       },
       updateCurrent: co(function* (e) {
@@ -248,13 +241,25 @@ currentAnswers: 'currentAnswers'
           });
           $('#questions').on('click', 'tr .go_to_answers', function () {
             let selectedAnswers = table.row($(this).parents('tr')).data();
-            let answers = selectedAnswers.answersForAQuestions.map(x => {
+            let answers = _.isEmpty(selectedAnswers.answersForAQuestionsselectedAnswers)==true?[]:selectedAnswers.answersForAQuestions.map(x => {
               return _.clone(x)
             });
+            me.answers=answers;
             delete selectedAnswers.answersForAQuestions;
-            selectedAnswers.answersForAQuestions = answers
-             me.$store.dispatch('adminQuestions/selectAnswers',selectedAnswers)
-              $('.show_answers').last().modal('show')
+            me.question=selectedAnswers;
+            $('.show_answers').last().modal({
+              closable: false,
+              observeChanges:false,
+             	onApprove : function() {
+
+                   me.answers=me.splice(0,0);
+                   me.question=Object.assign({},{});
+                   $('.show_answers').last().modal('hide');
+                   console.log('me');
+                   return false;
+                }
+
+            }).modal('show')
 
           });
 
@@ -273,43 +278,29 @@ currentAnswers: 'currentAnswers'
 
       }),
       deleteAnswer: co(function* (ans) {
-        let itemAnswers = _.reject(this.currentAnswers.answersForAQuestions, ans);
-        delete this.currentAnswers.answersForAQuestions;
-        this.currentAnswers.answersForAQuestions = itemAnswers;
-        yield this.$store.dispatch('adminQuestions/updateAnswersCurrent', this.currentAnswers);
-      }),
+         this.answers= _.reject(this.answers, ans);
+        }),
       saveAnswers: co(function* () {
-        try {
-          //this.answers=this.answers[0]==undefined?this.answers.push({'id':this.questionAnswers.id}):this.answers
-          yield this.$store.dispatch('adminQuestions/updateAnswers', this.answers)
-          yield this.showDataTable();
-          swal('Thông báo!', 'Cập nhật thành công', 'success')
+         try {
+          this.question.answersForAQuestions=this.answers;
+          console.log('this.',JSON.stringify(this.question));
+           yield this.$store.dispatch('adminQuestions/updateAnswers',this.question)
+           yield this.showDataTable();
+           toastr.success('Lưu thành công')
         } catch (error) {
-          swal('Thông báo!', 'Cập nhật không thất bại', 'error')
+           toastr.error('Lưu không thành công')
         }
+        
       }),
-      add: function(){
-        this.$store.dispatch('adminQuestions/add')
-      },
-      addAnswer: co(  function*() {
-        // alert('clicked')
-        console.log('router', this.$route.params.id)
-         this.currentAnswers.answersForAQuestions.push(this.configAnswer());
-        yield this.$store.dispatch('adminQuestions/updateAnswersCurrent', this.currentAnswers)
-         console.log('current answer',this.currentAnswers)
-        //  console.log('this.currentAnswers',JSON.stringify(this.currentAnswers.answersForAQuestions[0].questionId));
+      addAnswer: co(function* () {
+        this.answers.push(this.configAnswer());
       }),
       configAnswer: function () {
         let answer = {};
-        let lengthAns = _.isEmpty(this.currentAnswers.answersForAQuestions) == true ? 0 : this.currentAnswers.answersForAQuestions.length - 1;
-        let convertNumber = AnswersName[lengthAns].charCodeAt(0);
-        let name = String.fromCharCode(convertNumber + 1);
-        answer.questionId = this.currentAnswers.id;
-        answer.name = _.isEmpty(this.currentAnswers.answersForAQuestions) == true ? 'A' : name;
+        answer.questionId = this.question.id;
+        answer.name = AnswersName[this.answers.length];
         answer.content = "";
         answer.isCorrect = false;
-       
-       
         return answer;
       }
     }

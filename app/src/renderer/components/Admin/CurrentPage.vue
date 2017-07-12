@@ -37,7 +37,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in all">
+              <tr v-for="item in all">
           <td class="collapsing">
             {{item.name}}
           </td>
@@ -46,7 +46,7 @@
           <td>{{item.quizTime}}</td>
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)"><i class="edit icon edit_question blue" ></i></span>|
-            <router-link :to="{ name: 'questionList', params: { id: item.id }}">User</router-link>
+            <a :href="'/#/admin/questionList/' + item.id" class="item" data-tooltip="Link câu hỏi" data-position="top left"><i class="linkify icon go_to_answers orange"></i></a>
          
           </td>
 
@@ -98,7 +98,6 @@
                 prompt: 'Please enter totalTime'
               }]
             }
-
           },
           onSuccess: function (event, fields) {
             event.preventDefault()
@@ -176,20 +175,12 @@
             yield me.$store.dispatch('adminQuizs/getAll')
             swal('Đã xóa!', 'Dữ liệu đã bị xóa', 'success')
           }))
-      }),
-      doiTen : function(id){
-        alert(id)
-        console.log('router', this.$router)
-        location.href = '#/admin/questionList/'+id
-        // this.$router.push({ path: 'admin/questionList', params: { id: id } })
-      }
-
+      })
     },
     created() {
       var me = this
       this.$store.dispatch('adminQuizs/getAll').then(() => {})
     }
-
   }
 </script>
 <style scoped>

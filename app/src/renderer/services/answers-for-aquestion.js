@@ -1,5 +1,8 @@
 import Promise from 'bluebird'
-import {QuestionService} from './question'
+import {
+  QuestionService
+} from './question'
+
 const questionSrv = new QuestionService()
 const pathEntity = '/api/AnswersForAQuestions'
 const co = Promise.coroutine
@@ -22,13 +25,17 @@ export class AnswersForAQuestionService {
     let ret = yield axios.delete(`${pathEntity}/${id}`)
     return ret.data
   })
- 
-  updateAnswers = co(function* ( answers) {
-    let questionId = answers[0].questionId
-    
-    let oldAnswers = yield questionSrv.removeAnswersBy(questionId)
-    let tasks = answers.map(x => this.save(x))
-    let rec = yield Promise.all(tasks)
-     return rec;
+
+  updateAnswers = co(function* (question) {
+    let questionId = question.questionId
+    let rec;
+    if (_isEmpty(question.answersForAQuestions) == true) {
+        rec = yield this.save(question);
+    } else {
+      let oldAnswers = yield questionSrv.removeAnswersBy(questionId)
+      let tasks = question.answersForAQuestions.map(x => this.save(x))
+      rec = yield Promise.all(tasks)
+    }
+    return rec;
   })
 }
