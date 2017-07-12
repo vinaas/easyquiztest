@@ -9,11 +9,13 @@ const mutationTypes = {
   REMOVE_QUIZ: 'REMOVE_QUIZ',
   SELECT_QUIZ: 'SELECT_QUIZ',
   RESET_CURRENT: 'RESET_CURRENT',
-  UPDATE_CURRENT: 'UPDATE_CURRENT'
+  UPDATE_CURRENT: 'UPDATE_CURRENT',
+  ADD_TO_LIST : 'ADD_TO_LIST'
 }
 const state = {
   all: [],
-  currentQuiz: {}
+  currentQuiz: {},
+  lst :[]
 }
 
 const mutations = {
@@ -36,6 +38,7 @@ const mutations = {
   }
 }
 const actions = {
+
   getAll: Promise.coroutine(function* ({ commit }) {
     let quizList = yield quizService.getAll()
     commit(mutationTypes.RECEIVE_QUIZS, {

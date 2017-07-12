@@ -45,6 +45,7 @@ export default [{
     }
   },
   {
+    name: 'questionList',
     path: 'questionList/:id',
     component: require('components/Admin/questionList')
   }

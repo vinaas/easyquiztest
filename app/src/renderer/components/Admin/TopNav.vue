@@ -5,6 +5,7 @@
                 <img class="logo" src="../assets/vinaas-logo.png">EasyQuizTest</router-link>
             <!--<a href="javascript:void()" class="item">Quản lý thí sinh</a>-->
             <a :href='"/#/admin/"' class="item">Quản lý đề thi</a></button>
+             <router-link :to="{ name: 'questionList', params: { id: '592e41ea5420803fec1137a8' }}">Question List</router-link>
                 <div class="ui dropdown item right">
                 admin
                 <i class="dropdown icon"></i>

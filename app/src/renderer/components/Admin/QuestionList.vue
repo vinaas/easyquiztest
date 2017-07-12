@@ -1,7 +1,13 @@
 <template>
   <div class="ui main text container">
+  <button v-on:click="addAnswer()">ok</button>
 
-    <div  class="saveQuestion ui modal">
+            <ul v-for="(ans, i) in currentAnswers.answersForAQuestions">
+              <li>{{i}}</li>
+             
+            </ul>
+        
+    <div class="saveQuestion ui modal">
       <i class="close icon"></i>
       <div class="header">
         <h1></h1>
@@ -24,6 +30,7 @@
         </form>
       </div>
     </div>
+    
 
     <div class="show_answers ui modal">
       <i class="close icon"></i>
@@ -41,17 +48,13 @@
           <thead>
             <tr>
               <th>Tên</th>
-              <th>Nội dung</th>
-              <th>Đúng</th>
-              <th></th>
+              
             </tr>
           </thead>
           <tbody>
-            <tr v-for="ans in currentAnswers.answersForAQuestions">
-              <td>{{ans.name}}</td>
-              <td><textarea name="content" :value="ans.content" @input="updateCurrent"></textarea></td>
-              <td><input type="checkbox" name="isCorrect" :value="ans.isCorrect" @input="updateCurrent"></td>
-              <td v-on:click="deleteAnswer(ans)"><i class="delete icon editor_remove red"></i></td>
+            <tr v-for="(ans,i) in lst.data">
+              <td>{{i}}</td>
+              
             </tr>
           </tbody>
         </table>
@@ -114,7 +117,7 @@
   export default {
     data() {
       return {
-          questionAnswers: {}
+        questionAnswers: {}
       }
     },
 
@@ -122,15 +125,22 @@
       ...mapState('adminQuestions', {
         questions: state => state.questionsOfQuiz,
         current: state => state.currentQuestion,
-        currentAnswers:state=>state.currentAnswers
+        lst : state => state.lst
+      }),
+      ...mapGetters('adminQuestions',{
+currentAnswers: 'currentAnswers'
       })
     },
 
     created: co(function* () {
-        yield this.showDataTable();
-        
+      alert(this.$route.params.id)
+      yield new Promise(rs=>{
+        setTimeout(function(){ alert("Hello"); rs(true) }, 3000);
+      })
+      yield this.showDataTable();
+
     }),
-  mounted: function () {
+    mounted: function () {
       let me = this
       $('.ui.form')
         .form({
@@ -174,19 +184,22 @@
         closable: false,
         onHidden: function () {
           $('.ui.form').form('reset')
-          me.$store.dispatch('adminQuestions/updateCurrent', {})
+          me.$store.dispatch('adminQuestions/updateAnswersCurrent', {})
         }
       })
       me.$forceUpdate()
     },
 
     methods: {
+      updateAnswerCurrent:function(){
+
+      },
       updateCurrent: co(function* (e) {
         let cloneQuiz = Object.assign({}, this.current, {
           [e.target.name]: e.target.value
         });
         cloneQuiz.quizId = this.$route.params.id
-        yield this.$store.dispatch('adminQuestions/updateCurrent', cloneQuiz)
+        yield this.$store.dispatch('adminQuestions/updateCurrentQuestion', cloneQuiz)
       }),
       showDataTable: co(function* () {
         let me = this;
@@ -204,7 +217,7 @@
           $('#questions').off('click');
           $('#questions').on('click', 'tr .edit_question', co(function* () {
             let itemQuestion = table.row($(this).parents('tr')).data();
-            yield me.$store.dispatch('adminQuestions/selectQuestion', itemQuestion)
+            yield me.$store.dispatch('adminQuestions/currentQuestion', itemQuestion)
             $('.saveQuestion').last().modal('show')
 
           }));
@@ -235,14 +248,13 @@
           });
           $('#questions').on('click', 'tr .go_to_answers', function () {
             let selectedAnswers = table.row($(this).parents('tr')).data();
-            me.$store.dispatch('adminQuestions/selectAnswers',selectedAnswers)
-            // console.log('select',JSON.stringify(selectedRow));
-            // me.questionAnswers = Object.assign({}, selectedRow);
-            // let getanswers = selectedRow.answersForAQuestions.map(x => {
-            //   return _.clone(x)
-            // })
-            // me.answers = getanswers;
-            $('.show_answers').last().modal('show')
+            let answers = selectedAnswers.answersForAQuestions.map(x => {
+              return _.clone(x)
+            });
+            delete selectedAnswers.answersForAQuestions;
+            selectedAnswers.answersForAQuestions = answers
+             me.$store.dispatch('adminQuestions/selectAnswers',selectedAnswers)
+              $('.show_answers').last().modal('show')
 
           });
 
@@ -250,22 +262,22 @@
 
       }),
       addQuestion: co(function* () {
-         yield this.$store.dispatch('adminQuestions/selectQuestion', {})
-         $('.saveQuestion').last().modal('show')
+        yield this.$store.dispatch('adminQuestions/currentQuestion', {})
+        $('.saveQuestion').last().modal('show')
       }),
       save: co(function* () {
-         
-           yield this.$store.dispatch('adminQuestions/saveQuestion',this.current)
-          yield this.showDataTable();
-         
-            
+
+        yield this.$store.dispatch('adminQuestions/saveQuestion', this.current)
+        yield this.showDataTable();
+
+
       }),
       deleteAnswer: co(function* (ans) {
-         let itemAnswers=_.reject(this.currentAnswers.answersForAQuestions,ans);
-         delete this.currentAnswers.answersForAQuestions;
-         this.currentAnswers.answersForAQuestions=itemAnswers;
-          yield this.$store.dispatch('adminQuestions/updateAnswersCurrent',this.currentAnswers);
-       }),
+        let itemAnswers = _.reject(this.currentAnswers.answersForAQuestions, ans);
+        delete this.currentAnswers.answersForAQuestions;
+        this.currentAnswers.answersForAQuestions = itemAnswers;
+        yield this.$store.dispatch('adminQuestions/updateAnswersCurrent', this.currentAnswers);
+      }),
       saveAnswers: co(function* () {
         try {
           //this.answers=this.answers[0]==undefined?this.answers.push({'id':this.questionAnswers.id}):this.answers
@@ -276,13 +288,16 @@
           swal('Thông báo!', 'Cập nhật không thất bại', 'error')
         }
       }),
-      addAnswer: co(function *() {
-        this.currentAnswers.answersForAQuestions.push(this.configAnswer());
-         
-        let ha=this.currentAnswers.answersForAQuestions.map(x=>{return _.clone(x);});
-        console.log('ahsa',this.currentAnswers);
-                
-        yield this.$store.dispatch('adminQuestions/updateAnswersCurrent',this.currentAnswers) 
+      add: function(){
+        this.$store.dispatch('adminQuestions/add')
+      },
+      addAnswer: co(  function*() {
+        // alert('clicked')
+        console.log('router', this.$route.params.id)
+         this.currentAnswers.answersForAQuestions.push(this.configAnswer());
+        yield this.$store.dispatch('adminQuestions/updateAnswersCurrent', this.currentAnswers)
+         console.log('current answer',this.currentAnswers)
+        //  console.log('this.currentAnswers',JSON.stringify(this.currentAnswers.answersForAQuestions[0].questionId));
       }),
       configAnswer: function () {
         let answer = {};
@@ -293,7 +308,9 @@
         answer.name = _.isEmpty(this.currentAnswers.answersForAQuestions) == true ? 'A' : name;
         answer.content = "";
         answer.isCorrect = false;
-       return _.clone(answer);
+       
+       
+        return answer;
       }
     }
   }

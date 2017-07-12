@@ -18,19 +18,22 @@ const mutationTypes = {
   RECEIVE_QUESTIONS: 'RECEIVE_QUESTIONS',
   SAVE_QUESTION: 'SAVE_QUESTION',
   REMOVE_QUESTION: 'REMOVE_QUESTION',
-  SELECT_QUESTION: 'SELECT_QUESTION',
+  CURRENT_QUESTION: 'CURRENT_QUESTION',
+  UPDATE_CURRENT_QUESTION: 'UPDATE_CURRENT_QUESTION',
   RESET_CURRENT: 'RESET_CURRENT',
   UPDATE_CURRENT: 'UPDATE_CURRENT',
   UPDATE_ANSWERS: 'UPDATE_ANSWERS',
   QUESTIONS_OF_QUIZ:'QUESTIONS_OF_QUIZ',
   SELECT_ANSWERS:'SELECT_ANSWERS',
-  UPDATE_ANSWERS_CURRENT:'UPDATE_ANSWERS_CURRENT'
+  UPDATE_ANSWERS_CURRENT:'UPDATE_ANSWERS_CURRENT',
+  ADD_TO_LIST : 'ADD_TO_LIST'
   }
 const state = {
   all: [],
   currentQuestion: {},
   questionsOfQuiz:[],
-  currentAnswers:{}
+  currentAnswers:{},
+  lst:{ data:['A']}
 }
 
 const mutations = {
@@ -40,11 +43,9 @@ const mutations = {
   [mutationTypes.SELECT_ANSWERS](state, selectedAnswers) {
       state.currentAnswers = selectedAnswers
   },
-  [mutationTypes.SELECT_QUESTION](state, selectedQuestion) {
-   
-      state.currentQuestion = selectedQuestion
-   
-  },
+  [mutationTypes.CURRENT_QUESTION](state, selectedQuestion) {
+         state.currentQuestion = selectedQuestion
+   },
   [mutationTypes.SAVE_QUESTION](state) {},
   [mutationTypes.REMOVE_QUESTION](state) {},
   [mutationTypes.RECEIVE_QUESTIONS](state, {
@@ -55,7 +56,7 @@ const mutations = {
   [mutationTypes.RESET_CURRENT](state) {
     state.currentQuestion = {}
   },
-  [mutationTypes.UPDATE_CURRENT](state, question) {
+  [mutationTypes.UPDATE_CURRENT_QUESTION](state, question) {
     state.currentQuestion = question
   },
 
@@ -64,8 +65,20 @@ const mutations = {
   },
   [mutationTypes.QUESTIONS_OF_QUIZ](state,{questionsOfQuiz}) {
      state.questionsOfQuiz=questionsOfQuiz
-  }}
+  },
+    [mutationTypes.ADD_TO_LIST] (state){
+      state.lst.data = ["AAA","BBB"]
+    }
+
+}
+  
 const actions = {
+    add: function( {commit} ){
+    commit(mutationTypes.ADD_TO_LIST)
+  },
+   currentQuestion: function ({ commit }, selectedQuestion) {
+    commit(mutationTypes.CURRENT_QUESTION,selectedQuestion)
+  },
   getAll: Promise.coroutine(function* ({
     commit
   }) {
@@ -92,10 +105,10 @@ const actions = {
   }, question) {
     var ret = yield questionService.remove(question.id)
   }),
-  updateCurrent: Promise.coroutine(function* ({
+  updateCurrentQuestion: Promise.coroutine(function* ({
     commit
   }, selectedQuestion) {
-    commit(mutationTypes.UPDATE_CURRENT, selectedQuestion)
+    commit(mutationTypes.UPDATE_CURRENT_QUESTION, selectedQuestion)
   }),
   updateAnswers: Promise.coroutine(function* ({commit}, answers) {
       yield answerService.updateAnswers(answers)
