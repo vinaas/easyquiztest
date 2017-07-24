@@ -1,5 +1,6 @@
 <template>
   <div class="ui main text container">
+  
     <div class="saveQuestion ui modal">
       <i class="close icon"></i>
       <div class="header">
@@ -25,43 +26,7 @@
     </div>
 
 
-    <div class="show_answers ui modal">
-      <i class="close icon"></i>
-      <div class="header">
-        <h1>Danh sách câu trả lời cho câu hỏi</h1>
-      </div>
-      <div class="ui content">
-        <div class="btn-position-right">
-          <span data-tooltip='Lưu' data-position="top left"><i class="save icon editor_edit blue" v-on:click="saveAnswers()"></i></span>
 
-        </div>
-
-        <br>
-        <table id="listAnswers" class="ui celled table" cellspacing="0" width="100%">
-          <thead>
-            <tr>
-              <th>Tên</th>
-              <th>Nội dung</th>
-              <th>kiểu</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="ans in answers">
-              <td>{{ans.name}}</td>
-              <td><textarea name="content" v-model="ans.content"></textarea></td>
-              <td><input type="checkbox" name="isCorrect" v-model="ans.isCorrect"></td>
-              <td ><i class="delete icon editor_remove red" v-on:click="deleteAnswer(ans)"></i></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class='btn-position-right'><span data-tooltip="Tạo mới">
-             <i class="add to circle icon green" v-on:click="addAnswer()"></i></span>
-        </div>
-
-      </div>
-    </div>
     <div class='btn-position-right'>
       <span data-tooltip="Tạo mới">
       <i class="add to circle icon green" v-on:click="addQuestion()"></i></span>
@@ -78,11 +43,60 @@
 
 
     </table>
-  </div>
+   
+    <modal name="answers" :width="900"
+         :height="600" :clickToClose="false">
+       <div class="container-modal">
+        <div class="header">
+          <span>Danh sách câu trả lời cho câu hỏi</span>
+          <span @click="$modal.hide('answers')" style="position: absolute;
+    margin-left: 605px;
+    margin-top: -43px;
+    text-align: right;">
+        ❌
+         </span>
+        </div>
+        
+        
+        <div class="ui content">
+          <div class="btn-position-right">
+            <span data-tooltip='Lưu' data-position="top left"><i class="save icon editor_edit blue" v-on:click="saveAnswers()"></i></span>
+
+          </div>
+
+          
+          <table id="listAnswers" class="ui celled table" cellspacing="0" width="100%">
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Nội dung</th>
+                <th>kiểu</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="ans in answers">
+                <td>{{ans.name}}</td>
+                <td><textarea name="content" v-model="ans.content"></textarea></td>
+                <td><input type="checkbox" name="isCorrect" v-model="ans.isCorrect"></td>
+                <td><i class="delete icon editor_remove red" v-on:click="deleteAnswer(ans)"></i></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class='btn-position-right'><span data-tooltip="Tạo mới">
+             <i class="add to circle icon green" v-on:click="addAnswer()"></i></span>
+          </div>
+
+        </div>
+        </div>
+    </modal>
+   </div>
 
 </template>
 
 <script>
+  import Vue from 'vue'
   import 'datatables.net-dt/css/jquery.datatables.css';
   import {
     mapState,
@@ -91,6 +105,9 @@
   import _ from 'lodash'
   import Promise from 'Bluebird'
   import toastr from 'toastr'
+  import vmodal from 'vue-js-modal'
+
+  Vue.use(vmodal)
   const AnswersName = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
   const configColumns = [{
       "data": "type"
@@ -112,10 +129,11 @@
   require('datatables.net')(window, $);
 
   export default {
+
     data() {
       return {
         question: {},
-        answers:[]
+        answers: []
       }
     },
 
@@ -133,7 +151,7 @@
 
     }),
     mounted: function () {
-       console.log('me @@@@@',this.answers,this.question);
+      console.log('me @@@@@', this.answers, this.question);
       let me = this
       $('.ui.form')
         .form({
@@ -184,6 +202,9 @@
     },
 
     methods: {
+      show: function () {
+        this.$modal.show('answers');
+      },
       updateAnswerCurrent: function () {
 
       },
@@ -241,25 +262,14 @@
           });
           $('#questions').on('click', 'tr .go_to_answers', function () {
             let selectedAnswers = table.row($(this).parents('tr')).data();
-            let answers = _.isEmpty(selectedAnswers.answersForAQuestionsselectedAnswers)==true?[]:selectedAnswers.answersForAQuestions.map(x => {
-              return _.clone(x)
-            });
-            me.answers=answers;
+            let answers = _.isEmpty(selectedAnswers.answersForAQuestions) == true ? [] :
+              selectedAnswers.answersForAQuestions.map(x => {
+                  return _.clone(x)
+              });
+            me.answers = answers;
             delete selectedAnswers.answersForAQuestions;
-            me.question=selectedAnswers;
-            $('.show_answers').last().modal({
-              closable: false,
-              observeChanges:false,
-             	onApprove : function() {
-
-                   me.answers=me.splice(0,0);
-                   me.question=Object.assign({},{});
-                   $('.show_answers').last().modal('hide');
-                   console.log('me');
-                   return false;
-                }
-
-            }).modal('show')
+            me.question = selectedAnswers;
+            me.$modal.show('answers');
 
           });
 
@@ -278,23 +288,28 @@
 
       }),
       deleteAnswer: co(function* (ans) {
-         this.answers= _.reject(this.answers, ans);
-        }),
+        this.answers = _.reject(this.answers, ans);
+      }),
       saveAnswers: co(function* () {
-         try {
-          this.question.answersForAQuestions=this.answers;
-          console.log('this.',JSON.stringify(this.question));
-           yield this.$store.dispatch('adminQuestions/updateAnswers',this.question)
-           yield this.showDataTable();
-           toastr.success('Lưu thành công')
+        try {
+         console.log('save',this.question);
+         
+          yield this.$store.dispatch('adminQuestions/updateAnswers', this.question)
+          yield this.showDataTable();
+          toastr.success('Lưu thành công')
         } catch (error) {
-           toastr.error('Lưu không thành công')
+          toastr.error('Lưu không thành công')
         }
-        
+
       }),
-      addAnswer: co(function* () {
+      addAnswer: function () {
         this.answers.push(this.configAnswer());
-      }),
+        
+        this.question.answersForAQuestions=this.answers.map(x => {
+                  return _.clone(x)
+              });;
+        console.log('aa',this.question);
+      },
       configAnswer: function () {
         let answer = {};
         answer.questionId = this.question.id;
@@ -307,11 +322,21 @@
   }
 </script>
 <style scoped>
+
+  .container-modal{
+    height: 100%;
+  overflow-x: scroll;
+  margin: 0 auto;
+  padding: 3em;
+  font: 100%/1.4 serif;
+  border: 1px solid rgba(0,0,0,0.25)
+
+     }
   .btn-position-right {
     text-align: right;
   }
-
   .ui.text.container {
-    max-width: 2000px !important;
+       max-width: 2000px !important;
   }
+
 </style>

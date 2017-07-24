@@ -29,4 +29,10 @@ export class QuestionService {
     let ret = yield axios.delete(`${pathEntity}/${id}/answersForAQuestions`)
     return ret.data
   })
+  updateAnswers= co(function* (question) {
+     yield axios.delete(`${pathEntity}/${question.id}/answersForAQuestions`);
+     yield this.save(question);
+    return true;
+  })
+
 }

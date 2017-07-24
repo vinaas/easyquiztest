@@ -110,8 +110,8 @@ const actions = {
   }, selectedQuestion) {
     commit(mutationTypes.UPDATE_CURRENT_QUESTION, selectedQuestion)
   }),
-  updateAnswers: Promise.coroutine(function* ({commit}, answers) {
-      yield answerService.updateAnswers(answers)
+  updateAnswers: Promise.coroutine(function* ({commit}, question) {
+      yield questionService.updateAnswers(question)
       commit(mutationTypes.UPDATE_ANSWERS)
   }),
   getQuestionsOfQuiz: Promise.coroutine(function* ({commit}, quizId) {

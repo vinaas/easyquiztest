@@ -26,16 +26,4 @@ export class AnswersForAQuestionService {
     return ret.data
   })
 
-  updateAnswers = co(function* (question) {
-    let questionId = question.questionId
-    let rec;
-    if (_isEmpty(question.answersForAQuestions) == true) {
-        rec = yield this.save(question);
-    } else {
-      let oldAnswers = yield questionSrv.removeAnswersBy(questionId)
-      let tasks = question.answersForAQuestions.map(x => this.save(x))
-      rec = yield Promise.all(tasks)
-    }
-    return rec;
-  })
 }
