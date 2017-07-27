@@ -18,5 +18,9 @@ export class ApplicationUserService {
     let ret = yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity)
     return ret.data
   })
- 
+ remove = co(function* (id) {
+   
+    let ret = yield axios.delete(`${pathEntity}/${id}`)
+    return ret.data
+  })
 }

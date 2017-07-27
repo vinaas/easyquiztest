@@ -11,7 +11,8 @@ const mutationTypes = {
     PATCH_APPLICATION_USERS: 'PATCH_APPLICATION_USERS',
     CURRENT: 'CURRENT',
     RESET_CURRENT: 'RESET_CURRENT',
-    UPDATE_CURRENT: 'UPDATE_CURRENT'
+    UPDATE_CURRENT: 'UPDATE_CURRENT',
+    REMOVE: 'REMOVE'
 }
 const state = {
     all: [],
@@ -21,6 +22,9 @@ const state = {
 }
 
 const mutations = {
+     [mutationTypes.REMOVE](state) {
+  
+    },
     [mutationTypes.RESET_CURRENT](state, selected) {
 
         state.current = {
@@ -81,6 +85,12 @@ const actions = {
         var ret = yield applicationUserService.patch(app)
           commit(mutationTypes.PATCH_APPLICATION_USERS)
     }),
+     remove: co(function* ({
+    commit
+  }, app) {
+    var ret = yield applicationUserService.remove(app.id)
+  })
+        
 }
 
 const getters = {

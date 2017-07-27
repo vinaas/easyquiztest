@@ -17,6 +17,10 @@ import store from 'renderer/vuex/store'
 import appConfig from '../../application.json'
 import 'axios'
 axios.defaults.baseURL = appConfig.endpointApi
+// set header when reload
+const userinfo = JSON.parse(sessionStorage.getItem('userinfo'))
+userinfo ? axios.defaults.headers.common['Authorization'] = userinfo.id : null
+
 export default {
   store
 }

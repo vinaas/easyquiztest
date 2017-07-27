@@ -257,7 +257,34 @@
 
                     }));
 
+                      $('#application').on('click', 'tr .remove_app_user', function () {
 
+            let selectedRow = table.row($(this).parents('tr')).data();
+            console.log('123',selectedRow);
+            swal({
+                title: 'Bạn có chắc chắn?',
+                text: 'Xóa dữ liệu : ' + selectedRow.username,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'Có, Xóa',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+              },
+              co(function* () {
+
+                try {
+                   
+                  yield me.$store.dispatch('adminApplicationUsers/remove', {
+                    id: selectedRow.id
+                  })
+                  me.showDataTable();
+                  swal('Đã xóa!', 'Dữ liệu đã bị xóa', 'success')
+                } catch (error) {
+                  swal('Thông báo!', 'Lỗi không thể xóa', 'error')
+                }
+              }))
+          });
 
 
                 })
