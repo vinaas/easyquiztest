@@ -2,6 +2,7 @@
   "name": "ApplicationUser",
   "base": "User",
   "idInjection": true,
+   "forceId":false,
   "options": {
     "validateUpsert": true
   },

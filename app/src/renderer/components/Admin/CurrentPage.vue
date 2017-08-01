@@ -46,7 +46,8 @@
           <td>{{item.quizTime}}</td>
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)"><i class="edit icon edit_question blue" ></i></span>|
-            <a :href="'/#/admin/questionList/' + item.id" class="item" data-tooltip="Link câu hỏi" data-position="top left"><i class="linkify icon go_to_answers orange"></i></a>
+            <a :href="'/#/admin/questionList/' + item.id" class="item" data-tooltip="Link Quản lý câu hỏi" data-position="top left"><i class="linkify icon go_to_answers orange"></i></a>|
+             <a :href="'/#/admin/appuserslist/' + item.id" class="item" data-tooltip="Link Quản lý Users" data-position="top left"><i class="linkify icon go_to_answers orange"></i></a>
          
           </td>
 

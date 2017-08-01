@@ -6,7 +6,7 @@ import _ from 'lodash'
 export class ApplicationUserService {
   getAll = co(function* () {
     let ret = yield axios.get(pathEntity);
-      return ret.data.map(x => {
+       return ret.data.map(x => {
       x.email = x.email || '';
       x.identification = x.identification || '';
       x.username = x.username || '';
@@ -14,9 +14,11 @@ export class ApplicationUserService {
     })
    
   })
+ 
  patch= co(function* (bindingEntity) {
-    let ret = yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity)
-    return ret.data
+     
+     let ret =bindingEntity.id==undefined?yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity):yield axios.patch(`${pathEntity}/${bindingEntity.id}`, bindingEntity);
+     return ret.data;
   })
  remove = co(function* (id) {
    
