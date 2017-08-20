@@ -52,7 +52,7 @@
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
 export default {
-  
+
 }
 
 </script>

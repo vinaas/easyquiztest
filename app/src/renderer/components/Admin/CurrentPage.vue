@@ -131,8 +131,8 @@
     },
     methods: {
       toQuestion: function (item) {
-        logger.debug('link to Question', JSON.stringify(item));
-        // this.$router.push({ path: 'questionList'+item.id })
+        logger.debug('link to Question', JSON.stringify(item))
+      // this.$router.push({ path: 'questionList'+item.id })
       },
       addQuiz: function () {
         logger.debug('add')
@@ -141,7 +141,7 @@
         $('.saveQuiz').last()
           .modal('show')
       },
-      toSave: co (function* (item) {
+      toSave: co(function* (item) {
         logger.debug(item)
         // $('.saveQuiz').remove()
         yield this.$store.dispatch('adminQuizs/selectQuiz', item)
@@ -162,15 +162,15 @@
       toRemove: Promise.coroutine(function* (item) {
         let me = this
         swal({
-            title: 'Bạn có chắc chắn?',
-            text: 'Xóa dữ liệu : ' + item.name,
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Có, Xóa',
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-          },
+          title: 'Bạn có chắc chắn?',
+          text: 'Xóa dữ liệu : ' + item.name,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#DD6B55',
+          confirmButtonText: 'Có, Xóa',
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
+        },
           Promise.coroutine(function* () {
             yield me.$store.dispatch('adminQuizs/removeQuiz', item)
             yield me.$store.dispatch('adminQuizs/getAll')
@@ -178,7 +178,7 @@
           }))
       })
     },
-    created() {
+    created () {
       var me = this
       this.$store.dispatch('adminQuizs/getAll').then(() => {})
     }

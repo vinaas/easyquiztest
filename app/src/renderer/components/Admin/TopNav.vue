@@ -4,8 +4,9 @@
             <router-link class="item header item" to="/">
                 <img class="logo" src="../assets/vinaas-logo.png">EasyQuizTest</router-link>
             <!--<a href="javascript:void()" class="item">Quản lý thí sinh</a>-->
-            <a :href='"/#/admin/"' class="item">Quản lý đề thi</a>
-            <a :href='"/#/admin/appuserslist"' class="item">Quản lý user</a>
+            <router-link to="/admin" class="item">Quản lý đề thi</router-link>
+            <router-link to="/admin/appuserslist" class="item">Quản thí sinh</router-link>
+
             <div class="ui dropdown item right">
                 admin
                 <i class="dropdown icon"></i>
@@ -22,21 +23,21 @@
 
 <script>
 export default {
-  mounted: function () {
-    $(document)
+    mounted: function () {
+        $(document)
             .ready(function () {
-              $('.ui.dropdown').dropdown({
-                on: 'hover'
-              })
-              $('.ui.menu a.item')
+                $('.ui.dropdown').dropdown({
+                    on: 'hover'
+                })
+                $('.ui.menu a.item')
                     .on('click', function () {
-                      $(this)
+                        $(this)
                             .addClass('active')
                             .siblings()
                             .removeClass('active')
                     })
             })
-  }
+    }
 }
 </script>
 

@@ -20,8 +20,8 @@ export class QuizService {
   getQuestionsBy = Promise.coroutine(function*(id) {
     let ret = yield axios.get(`${pathEntity}/${id}/questions`)
     return ret.data.map(x => {
-      x.content= x.content || '';
-      x.description = x.description || '';
+      x.content = x.content || ''
+      x.description = x.description || ''
       return x
     })
   })

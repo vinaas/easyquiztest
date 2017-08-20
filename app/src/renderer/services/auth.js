@@ -44,6 +44,5 @@ export class AuthServices {
   _setToken (ret) {
     sessionStorage.setItem('userinfo', JSON.stringify(ret))
     axios.defaults.headers.common['Authorization'] = ret.id
-    
   }
 }

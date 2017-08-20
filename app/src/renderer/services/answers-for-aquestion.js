@@ -26,11 +26,11 @@ export class AnswersForAQuestionService {
     return ret.data
   })
   updateAnswers = co(function* (question) {
-    let answers = question.answersForAQuestions;
+    let answers = question.answersForAQuestions
     let oldAnswers = yield questionSrv.removeAnswersBy(question.id)
     let tasks = answers.map(x => this.save(x))
     let rec = yield Promise.all(tasks)
-     return rec;
-    })
+    return rec
+  })
 
 }

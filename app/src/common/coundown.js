@@ -1,7 +1,7 @@
 export default function (duration, display) {
   var timer = duration,
     minutes, seconds
-    display.textContent = duration/60 + ':' + "00"
+  display.textContent = duration / 60 + ':' + '00'
   setInterval(function () {
     minutes = parseInt(timer / 60, 10)
     seconds = parseInt(timer % 60, 10)

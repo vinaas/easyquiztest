@@ -6,9 +6,9 @@ export class QuestionService {
   getAll = co(function* () {
     let ret = yield axios.get(pathEntity)
     return ret.data.map(x => {
-      x.type = x.type || '';
-      x.content = x.content || '';
-      x.description = x.description || '';
+      x.type = x.type || ''
+      x.content = x.content || ''
+      x.description = x.description || ''
       return x
     })
   })
@@ -30,9 +30,9 @@ export class QuestionService {
     return ret.data
   })
   updateAnswers= co(function* (question) {
-     yield axios.delete(`${pathEntity}/${question.id}/answersForAQuestions`);
-     yield this.save(question);
-    return true;
+    yield axios.delete(`${pathEntity}/${question.id}/answersForAQuestions`)
+    yield this.save(question)
+    return true
   })
 
 }

@@ -10,12 +10,12 @@ const mutationTypes = {
   SELECT_QUIZ: 'SELECT_QUIZ',
   RESET_CURRENT: 'RESET_CURRENT',
   UPDATE_CURRENT: 'UPDATE_CURRENT',
-  ADD_TO_LIST : 'ADD_TO_LIST'
+  ADD_TO_LIST: 'ADD_TO_LIST'
 }
 const state = {
   all: [],
   currentQuiz: {},
-  lst :[]
+  lst: []
 }
 
 const mutations = {
