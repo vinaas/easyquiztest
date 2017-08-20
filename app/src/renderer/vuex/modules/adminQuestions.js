@@ -30,7 +30,7 @@ const mutationTypes = {
   }
 const state = {
   all: [],
-  currentQuestion: {},
+ 
   questionsOfQuiz:[],
   currentAnswers:{},
   lst:{ data:['A']}
@@ -43,9 +43,6 @@ const mutations = {
   [mutationTypes.SELECT_ANSWERS](state, selectedAnswers) {
       state.currentAnswers = selectedAnswers
   },
-  [mutationTypes.CURRENT_QUESTION](state, selectedQuestion) {
-         state.currentQuestion = selectedQuestion
-   },
   [mutationTypes.SAVE_QUESTION](state) {},
   [mutationTypes.REMOVE_QUESTION](state) {},
   [mutationTypes.RECEIVE_QUESTIONS](state, {
@@ -53,37 +50,22 @@ const mutations = {
   }) {
     state.all = questionList
   },
-  [mutationTypes.RESET_CURRENT](state) {
-    state.currentQuestion = {}
-  },
-  [mutationTypes.UPDATE_CURRENT_QUESTION](state, question) {
-    state.currentQuestion = question
-  },
-
   [mutationTypes.UPDATE_ANSWERS](state) {
 
   },
   [mutationTypes.QUESTIONS_OF_QUIZ](state,{questionsOfQuiz}) {
      state.questionsOfQuiz=questionsOfQuiz
-  },
-    [mutationTypes.ADD_TO_LIST] (state){
-      state.lst.data = ["AAA","BBB"]
-    }
-
+  }
 }
   
 const actions = {
     add: function( {commit} ){
     commit(mutationTypes.ADD_TO_LIST)
   },
-   currentQuestion: function ({ commit }, selectedQuestion) {
-    commit(mutationTypes.CURRENT_QUESTION,selectedQuestion)
-  },
-  getAll: Promise.coroutine(function* ({
+   getAll: Promise.coroutine(function* ({
     commit
   }) {
     let questionList = yield questionService.getAll()
-
     commit(mutationTypes.RECEIVE_QUESTIONS, {
       questionList
     })
@@ -105,13 +87,9 @@ const actions = {
   }, question) {
     var ret = yield questionService.remove(question.id)
   }),
-  updateCurrentQuestion: Promise.coroutine(function* ({
-    commit
-  }, selectedQuestion) {
-    commit(mutationTypes.UPDATE_CURRENT_QUESTION, selectedQuestion)
-  }),
+  
   updateAnswers: Promise.coroutine(function* ({commit}, question) {
-      yield questionService.updateAnswers(question)
+      yield answerService.updateAnswers(question)
       commit(mutationTypes.UPDATE_ANSWERS)
   }),
   getQuestionsOfQuiz: Promise.coroutine(function* ({commit}, quizId) {
@@ -132,8 +110,8 @@ const getters = {
   currentAnswers:state=>state.currentAnswers,
   questionsOfQuiz:state=>state.questionsOfQuiz,
   all: state => state.all,
-  currentQuestion: state => state.currentQuestion,
-  title: state => _.isEmpty(state.currentQuestion) ? 'Tạo mới' : 'Cập nhật'
+  currentQuestion: state => state.currentQuestion
+
 }
 export default {
   namespaced: true,

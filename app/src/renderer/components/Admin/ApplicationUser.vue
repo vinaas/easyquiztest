@@ -1,13 +1,13 @@
 <template>
     <div class="ui main container">
-
+        <h1>Danh sách user</h1>
         <div class="createApp ui modal">
             <i class="close icon"></i>
             <div class="header">
                 <h1>{{checked==true?"Cập nhật":"Tạo mới"}}</h1>
             </div>
             <div class="ui content">
-                <form class="ui form">
+                <form class="ui form create">
                     <div class="two fields">
                         <div class="field">
                             <label>Tên</label>
@@ -48,7 +48,7 @@
                         <div class="field" v-show="checked==false">
                             <label>Mật khẩu</label>
 
-                            <input type="password" name="password" placeholder="password" v-model="current.password">
+                            <input type="password" name="password" v-model="current.password">
                         </div>
                         <div class="field">
                             <label>Số báo danh</label>
@@ -67,9 +67,71 @@
             </div>
         </div>
 
-        <div class='btn-position-right'>
+          <div class="updateApp ui modal">
+            <i class="close icon"></i>
+            <div class="header">
+                <h1>{{checked==true?"Cập nhật":"Tạo mới"}}</h1>
+            </div>
+            <div class="ui content">
+                <form class="ui form update">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Tên</label>
+
+                            <input type="text" name="firstName" placeholder="Tên" v-model="current.firstName">
+                        </div>
+                        <div class="field">
+                            <label>Họ</label>
+
+                            <input type="text" name="lastName" placeholder="Họ" v-model="current.lastName">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Tên tài khoản</label>
+
+                            <input type="text" name="username" placeholder="Tên đầy đủ" v-model="current.username" Disabled>
+                        </div>
+                        <div class="field">
+                            <label>Địa chỉ</label>
+
+                            <input type="text" name="address" placeholder="Địa chỉ" v-model="current.address">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Ngày sinh</label>
+
+                            <input type="date" name="birthday" placeholder="Ngày sinh" v-model="current.birthday">
+                        </div>
+                        <div class="field">
+                            <label>Email</label>
+
+                            <input type="text" name="email" placeholder="Email" v-model="current.email" Disabled>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        
+                        <div class="field">
+                            <label>Số báo danh</label>
+
+                            <input type="text" name="identification" placeholder="Số báo danh" v-model="current.identification">
+                        </div>
+                        <div class="field" v-show="checked==true">
+                            <label>EmailVerified</label>
+                            <input type="checkbox" v-model="current.emailVerified">
+
+                        </div>
+                    </div>
+
+                    <div class="ui primary submit button">Submit</div>
+                </form>
+            </div>
+        </div>
+
+        <div>
             <span data-tooltip="Tạo mới">
-      <i class="add to circle icon green" v-on:click="add(checked)"></i></span>
+      <i class="add to circle icon green" v-on:click="add()"></i></span>
         </div>
         <br>
         <table id="application" class="cell-border" cellspacing="0" width="100%">
@@ -124,6 +186,7 @@
             return {
                 current: {},
                 checked: false
+            
 
             }
         },
@@ -143,10 +206,11 @@
         }),
         mounted: function () {
 
-            let me = this
-            $('.ui.form')
+            let me = this;
+           
+            $('.ui.form.create')
                 .form({
-                    fields: {
+                    fields:{
                         password: {
                             identifier: 'password',
                             rules: [{
@@ -169,19 +233,22 @@
                             }]
                         }
 
-                    },
-                    onSuccess: function (event, fields) {
+                    }
+                ,
+                     onSuccess: function (event, fields) {
+
                         event.preventDefault()
                         return true
                     },
                     onFailure: function () {
+
                         toastr.error('Lưu không thành công')
                         return false
                     }
 
                 })
 
-            $('.ui.form').api({
+            $('.ui.form.create').api({
                 mockResponseAsync: co(function* (st, cb) {
                     yield me.save()
                     cb()
@@ -191,10 +258,64 @@
                 }),
                 on: 'submit'
             })
+             $('.ui.form.update')
+                .form({
+                    fields:{
+                        
+                        email: {
+                            identifier: 'email',
+                            rules: [{
+                                type: 'email',
+                                prompt: 'Vui lòng họ email'
+                            }]
+                        },
+                        username: {
+                            identifier: 'username',
+                            rules: [{
+                                type: 'empty',
+                                prompt: 'Vui lòng họ email'
+                            }]
+                        }
+
+                    }
+                ,
+                     onSuccess: function (event, fields) {
+
+                        event.preventDefault()
+                        return true
+                    },
+                    onFailure: function () {
+
+                        toastr.error('Lưu không thành công')
+                        return false
+                    }
+
+                })
+
+            $('.ui.form.update').api({
+                mockResponseAsync: co(function* (st, cb) {
+                    yield me.save()
+                    cb()
+                    $('.ui.modal').modal('hide')
+                    toastr.success('Lưu thành công')
+                    this.current = {}
+                }),
+                on: 'submit'
+            })
+            
             $('.createApp').modal({
                 closable: false,
                 onHidden: co(function* () {
-                    $('.ui.form').form('reset');
+                    $('.ui.form.create').form('reset');
+                    this.current = {}
+
+
+                })
+            })
+             $('.updateApp').modal({
+                closable: false,
+                onHidden: co(function* () {
+                    $('.ui.form.update').form('reset');
                     this.current = {}
 
 
@@ -204,6 +325,7 @@
         },
         methods: {
             save: co(function* () {
+                 console.log('@',JSON.stringify(this.current));
                 yield this.$store.dispatch('adminApplicationUsers/patch', this.current)
                 yield this.viewDataTable()
 
@@ -212,9 +334,10 @@
                 logger.debug('add', this.checked);
                 this.current = {};
                 this.checked = false;
-
+                
                 $('.createApp').last()
                     .modal('show')
+                    
             },
             viewDataTable: co(function* () {
                 let me = this;
@@ -234,9 +357,9 @@
                         let selected = table.row($(this).parents('tr')).data();
                         me.current = _.clone(selected);
                         me.checked = true;
-                        me.current.password = "1111";
+                                
                         logger.debug('edit', me.checked)
-                        $('.createApp').last().modal('show');
+                        $('.updateApp').last().modal('show');
                     }));
 
                     $('#application').on('click', 'tr .remove_app_user', function () {
