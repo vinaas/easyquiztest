@@ -43,10 +43,9 @@ export default [{
     beforeEnter: (to, from, next) => {
       next()
     }
-  },
-   {
-     name: 'appuserslist',
-    path: 'appuserslist/:id',
+  },{
+  
+    path: 'appuserslist',
     component: require('components/Admin/ApplicationUser'),
     beforeEnter: (to, from, next) => {
       next()
