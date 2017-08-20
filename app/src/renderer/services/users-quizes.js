@@ -1,8 +1,12 @@
 import Promise from 'bluebird'
 const co = Promise.coroutine
 const pathEntity = '/api/UsersQuizs'
-import { QuestionService} from './question'
-import { QuizService} from './quiz'
+import {
+  QuestionService
+} from './question'
+import {
+  QuizService
+} from './quiz'
 import Logger from '../../common/logger'
 const logger = Logger('UsersQuizsService')
 import _ from 'lodash'
@@ -19,21 +23,21 @@ export class UsersQuizsService {
     let ret = yield axios.get(`${pathEntity}/${id}`)
     return ret.data
   })
-    /**
-     * getOne with ( userId, quizId)
-     * @param userId, quizId
-     * @return {UsersQuizs}
-     * @memberof UsersQuizsService
-     */
+  /**
+   * getOne with ( userId, quizId)
+   * @param userId, quizId
+   * @return {UsersQuizs}
+   * @memberof UsersQuizsService
+   */
   getOne = co(function* (userId, quizId) {
     let filter = {
-      fields: {
+      where: {
         quizId: quizId,
         applicationUserId: userId
       }
     }
     let ret = yield axios.get(`${pathEntity}/findOne`, {
-      params: filter
+      params: {filter : filter}
     })
     return ret.data
   })
@@ -45,11 +49,11 @@ export class UsersQuizsService {
     let ret = yield axios.delete(`${pathEntity}/${id}`)
     return ret.data
   })
-    /**
-     * paras  (id, question)
-     *
-     * @memberof UsersQuizsService
-     */
+  /**
+   * paras  (id, question)
+   *
+   * @memberof UsersQuizsService
+   */
   userAnswerQuestion = co(function* (dto) {
     let question = dto.question
     let usersQuizs = dto.usersQuizsRow
