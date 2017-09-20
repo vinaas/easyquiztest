@@ -37,7 +37,7 @@ export class UsersQuizsService {
       }
     }
     let ret = yield axios.get(`${pathEntity}/findOne`, {
-      params: {filter : filter}
+      params: {filter: filter}
     })
     return ret.data
   })

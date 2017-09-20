@@ -28,8 +28,8 @@
 
                                 </div>
                                 <!--<div class="extra content">
-                                                                                                                                                                                                                
-                                                                                                                                                                                                                                            </div>-->
+                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                </div>-->
                             </div>
                             <div class="ui card">
 
@@ -112,7 +112,7 @@
                                     <button class="ui button green fluid" @click="answer()">Trả lời</button>
                                     <div class="ui divider"></div>
                                     <div id="nav-buttons" class="ui  buttons fluid  center alinged">
-                                        <button class="ui button left attached blue " v-bind:disabled="!previous " @click="goPrevious()">
+                                        <button class="ui button left attached blue " v-bind:disabled="!previous" @click="goPrevious()">
                                             <i class="left chevron icon"></i>Trước</button>
                                         <button class="ui button right attached blue " v-bind:disabled="!next" @click="goNext()"> Sau
                                             <i class="right chevron icon"></i>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="actions">
                     <!--<div class="ui button">Cancel</div>
-                                <div class="ui button">OK</div>-->
+                                    <div class="ui button">OK</div>-->
                 </div>
             </div>
         </div>
@@ -196,7 +196,7 @@ const co = Promise.coroutine
 
 export default {
     name: 'quiz',
-    data: function () {
+    data: function() {
         return {
             cloneUserCheck: []
         }
@@ -212,7 +212,7 @@ export default {
         usersQuizsRow: 'usersQuizsRow'
     }),
     components: {},
-    mounted: function () {
+    mounted: function() {
     },
     methods: {
         goToQuestion(id) {
@@ -292,7 +292,6 @@ export default {
     })
 
 }
-
 </script>
 <style scoped>
 #nav-buttons {

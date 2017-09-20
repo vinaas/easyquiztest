@@ -5,6 +5,7 @@ export default {
   getBy (id) {
 
   }
+  
 }
 const exams = [{
   'id': '1', // mã kì thi
