@@ -2,8 +2,9 @@
   <div class="ui main container">
     <!--<h1 class="ui header">Bảng quản lý</h1>-->
     <h1>Danh sách các đề thi</h1>
-    <span  data-tooltip='Tạo mới' v-on:click="addQuiz()"><i class="add circle icon green"></i>  </span>
-    
+    <div class="ui inverted segment">
+    <span  data-tooltip='Tạo mới' v-on:click="addQuiz()"><button class="ui inverted blue button">Tạo Mới</button> </span>
+   </div>
     <div id="saveQuiz" class="ui modal saveQuiz">
       <i class="close icon"></i>
       <div class="header">
