@@ -134,7 +134,7 @@
       <i class="add to circle icon green" v-on:click="add()"></i></span>
         </div>
         <br>
-        <table id="application" class="cell-border" cellspacing="0" width="100%">
+        <table id="application" class="ui red table" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>Tài khoản</th>
@@ -230,7 +230,8 @@ const configColumns = [{
                       }]
                     }
 
-                  },    
+                  },
+    
                   onSuccess: function (event, fields) {
                     event.preventDefault()
                     return true
@@ -271,7 +272,8 @@ const configColumns = [{
                       }]
                     }
 
-                  },    
+                  },
+    
                   onSuccess: function (event, fields) {
                     event.preventDefault()
                     return true
