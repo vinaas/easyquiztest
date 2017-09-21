@@ -50,7 +50,7 @@
           </td>
           <td>{{item.numberOfQuestions}} </td>
           <td>{{item.totalTime}} phút</td>
-          <td>{{item.quizTime}}</td>
+          <td>{{item.quizTime | moment}}</td>
           <td></td>
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)"><i class="edit icon edit_question blue" ></i></span>|
@@ -98,9 +98,18 @@
   import toastr from 'toastr'
   import swal from 'sweetalert'
   import _ from 'lodash'
+  import * as moment from '../../../common/moment.js'
+  
   const logger = Logger('Admin Quiz List')
   const co = Promise.coroutine
   export default {
+
+       // format ngày tháng năm 
+    filters: {
+    moment: function(date) {
+      return moment(date).format('DD-MM-YYYY');
+    }
+  },
     computed: {
       ...mapState('adminQuizs', {
         all: state => state.all,
@@ -110,6 +119,7 @@
         title: 'title'
       })
     },
+   
 
     mounted: function () {
       let me = this
