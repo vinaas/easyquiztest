@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Danh sách các đề thi</h1>
-        <table class="ui celled striped table">
+        <table class="ui red table">
             <thead>
                 <tr>
                     <th colspan="3">
