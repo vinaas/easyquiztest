@@ -64,7 +64,7 @@
   </div>
 </template>
 <script>
-import * as moment from '../../../common/moment.js'
+import moment from 'moment'
 import { mapState, mapGetters } from 'vuex'
 import Logger from '../../../common/logger.js'
 import Promise from 'bluebird'
@@ -76,8 +76,8 @@ const co = Promise.coroutine
 export default {
   // Format ngày tháng năm/////////////////////////////
   filters: {
-    moment: function(date) {
-      return moment(date).format('DD-MM-YYYY');
+    moment: function (date) {
+      return moment(date).format('DD-MM-YYYY')
     }
   },
   computed: {
@@ -89,11 +89,11 @@ export default {
       title: 'title'
     })
   },
-  mounted: function() {
+  mounted: function () {
     let me = this
-    $(document).ready(function() {
-      $('#example').DataTable();
-    });
+    $(document).ready(function () {
+      $('#example').DataTable()
+    })
     $('.ui.form')
       .form({
         fields: {
@@ -112,11 +112,11 @@ export default {
             }]
           }
         },
-        onSuccess: function(event, fields) {
+        onSuccess: function (event, fields) {
           event.preventDefault()
           return true
         },
-        onFailure: function() {
+        onFailure: function () {
           toastr.error('Lưu không thành công')
           return false
         }
@@ -134,7 +134,7 @@ export default {
     })
     $('.saveQuiz').modal({
       closable: false,
-      onHidden: function() {
+      onHidden: function () {
         $('.ui.form').form('reset')
         me.$store.dispatch('adminQuizs/updateCurrent', {})
       }
@@ -142,23 +142,23 @@ export default {
     me.$forceUpdate()
   },
   methods: {
-    goNext() {
+    goNext () {
       this.$store.dispatch('goNext')
         .then(() => {
           this._cloneCurrentCheck()
         })
     },
-    goPrevious() {
+    goPrevious () {
       this.$store.dispatch('goPre')
         .then(() => {
           this._cloneCurrentCheck()
         })
     },
-    toQuestion: function(item) {
+    toQuestion: function (item) {
       logger.debug('link to Question', JSON.stringify(item))
       // this.$router.push({ path: 'questionList'+item.id })
     },
-    addQuiz: function() {
+    addQuiz: function () {
       logger.debug('add')
       this.$store.dispatch('adminQuizs/selectQuiz', {})
 
@@ -177,7 +177,7 @@ export default {
       yield this.$store.dispatch('adminQuizs/saveQuiz', this.current)
       yield this.$store.dispatch('adminQuizs/getAll')
     }),
-    updateCurrent: function(e) {
+    updateCurrent: function (e) {
       let cloneQuiz = Object.assign({}, this.current, {
         [e.target.name]: e.target.value
       })
@@ -203,7 +203,7 @@ export default {
     })
 
   },
-  created() {
+  created () {
     var me = this
     this.$store.dispatch('adminQuizs/getAll').then(() => { })
   }
