@@ -156,10 +156,7 @@
     import _ from 'lodash'
     const logger = Logger('Admin AppicationUsers List')
     const co = Promise.coroutine
-    import {
-        mapState,
-        mapGetters
-    } from 'vuex'
+    import {mapState, mapGetters} from 'vuex'
     import 'datatables.net-dt/css/jquery.datatables.css'
 var $ = require('jquery')
 require('datatables.net')(window, $)
@@ -230,7 +227,8 @@ const configColumns = [{
                       }]
                     }
 
-                  },    
+                  },
+    
                   onSuccess: function (event, fields) {
                     event.preventDefault()
                     return true
@@ -271,7 +269,8 @@ const configColumns = [{
                       }]
                     }
 
-                  },    
+                  },
+    
                   onSuccess: function (event, fields) {
                     event.preventDefault()
                     return true
