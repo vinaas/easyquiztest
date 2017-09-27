@@ -2,9 +2,12 @@
   "name": "Question",
   "base": "PersistedModel",
   "idInjection": true,
-  "forceId": false,
   "options": {
     "validateUpsert": true
+  },
+  "forceId": false,
+  "scope": {
+    "include": "answersForAQuestions"
   },
   "properties": {
     "description": {
@@ -18,9 +21,6 @@
     }
   },
   "validations": [],
-  "scope": {
-    "include": "answersForAQuestions"
-  },
   "relations": {
     "quiz": {
       "type": "belongsTo",
@@ -33,11 +33,13 @@
       "foreignKey": "questionId"
     }
   },
-  "acls": [{
-    "accessType": "WRITE",
-    "principalType": "ROLE",
-    "principalId": "admin",
-    "permission": "ALLOW"
-  }],
+  "acls": [
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }

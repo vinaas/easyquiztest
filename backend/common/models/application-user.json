@@ -2,10 +2,10 @@
   "name": "ApplicationUser",
   "base": "User",
   "idInjection": true,
-   "forceId":false,
   "options": {
     "validateUpsert": true
   },
+  "forceId": false,
   "properties": {
     "firstName": {
       "type": "string"

@@ -14,42 +14,47 @@
     ]
   },
   "User": {
-    "dataSource": "mongoDs"
+    "dataSource": "mypostgres",
+    "public": false
   },
   "AccessToken": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": false
   },
   "ACL": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": false
   },
   "Role": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": false
   },
   "Quiz": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": true
   },
   "Question": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": true
   },
   "ApplicationUser": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": true
   },
   "UsersQuizs": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
     "public": true
   },
   "AnswersForAQuestion": {
-    "dataSource": "mongoDs",
+    "dataSource": "mypostgres",
+    "public": true
+  },
+  "Container": {
+    "dataSource": "file_storage",
     "public": true
   }
 }
