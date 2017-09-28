@@ -27,6 +27,7 @@ const mutations = {
   },
   [mutationTypes.SAVE_QUIZ] (state) { },
   [mutationTypes.REMOVE_QUIZ] (state) { },
+  // buoc2 cap nhat state => cap nhat lai giao dien
   [mutationTypes.RECEIVE_QUIZS] (state, { quizList }) {
     state.all = quizList
   },
@@ -41,6 +42,8 @@ const actions = {
 
   getAll: Promise.coroutine(function* ({ commit }) {
     let quizList = yield quizService.getAll()
+    // buoc1 action 
+    // lay data tu api => done=> commit 1 cai mutation 
     commit(mutationTypes.RECEIVE_QUIZS, {
       quizList
     })

@@ -205,6 +205,7 @@ export default {
   },
   created () {
     var me = this
+    logger.debug('quan ly bo de')
     this.$store.dispatch('adminQuizs/getAll').then(() => { })
   }
 }
