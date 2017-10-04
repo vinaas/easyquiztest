@@ -31,6 +31,14 @@ export default [{
   }
 },
 {
+  path: '/kithi',
+  component: require('components/KiThiView'),
+  beforeEnter: (to, from, next) => {
+      // alert('ok');
+    next()
+  }
+},
+{
   path: '/admin',
   component: require('components/AdminView'),
   children: [{

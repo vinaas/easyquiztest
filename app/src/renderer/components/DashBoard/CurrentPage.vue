@@ -70,16 +70,21 @@ export default {
        // console.log('ussername',ret.username)
         if (ret) {
           try {
-            let roles = yield _authServices.getUserRoles()
-            if (roles.filter(x => x.name == 'admin').length !== 0) {
-              yield this.$store.dispatch('login', ret.userId)
-              this.$router.push({ path: 'admin' })
-              toastr.info('Đăng nhập thành công admin')
-            } else {
-                this.$router.push({ path: 'quiz' })
+            // let roles = yield _authServices.getUserRoles()
+            // if (roles.filter(x => x.name == 'admin').length !== 0) {
+            //   yield this.$store.dispatch('login', ret.userId)
+            //   this.$router.push({ path: 'admin' })
+            //   toastr.info('Đăng nhập thành công admin')
+            // } else {
+            //     this.$router.push({ path: 'quiz' })
+            //     yield this.$store.dispatch('login', ret.userId)
+            //     toastr.info('Đăng nhập thành công quiz')
+            // }
+
+                this.$router.push({ path: 'kithi' })
                 yield this.$store.dispatch('login', ret.userId)
-                toastr.info('Đăng nhập thành công quiz')
-            }
+                toastr.info('Đăng nhập thành công kithi')
+                
           } catch (error) {
             toastr.error('getUserRoles()', error)
           }
