@@ -4,7 +4,7 @@
             <h2 class="ui teal image header">
                               <img src="../assets/logo.png" class="image">
                               <div class="content">
-                                Log-in to your account
+                                Log-in to your account bao
                               </div>
                             </h2>
             <form class="ui large form " v-on:submit.prevent="submit">

@@ -19,7 +19,7 @@ function createWindow () {
     width: 1280
     // kiosk: true
   })
-  mainWindow.setMenu(null)
+ // mainWindow.setMenu(null)
   mainWindow.loadURL(winURL)
 
   mainWindow.on('closed', () => {

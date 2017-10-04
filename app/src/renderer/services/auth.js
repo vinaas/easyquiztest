@@ -23,6 +23,7 @@ export class AuthServices {
       'password': password
     })
     this._setToken(ret.data)
+  console.log('ret.data',ret.data)
     return ret.data
   });
   getUserRoles = Promise.coroutine(function* () {

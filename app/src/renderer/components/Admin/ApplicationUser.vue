@@ -89,24 +89,20 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Tên tài khoản</label>
-
                             <input type="text" name="username" placeholder="Tên đầy đủ" v-model="current.username" Disabled>
                         </div>
                         <div class="field">
                             <label>Địa chỉ</label>
-
                             <input type="text" name="address" placeholder="Địa chỉ" v-model="current.address">
                         </div>
                     </div>
                     <div class="two fields">
                         <div class="field">
                             <label>Ngày sinh</label>
-
                             <input type="date" name="birthday" placeholder="Ngày sinh" v-model="current.birthday">
                         </div>
                         <div class="field">
                             <label>Email</label>
-
                             <input type="text" name="email" placeholder="Email" v-model="current.email" Disabled>
                         </div>
                     </div>
@@ -114,13 +110,11 @@
                         
                         <div class="field">
                             <label>Số báo danh</label>
-
                             <input type="text" name="identification" placeholder="Số báo danh" v-model="current.identification">
                         </div>
                         <div class="field" v-show="checked==true">
                             <label>EmailVerified</label>
                             <input type="checkbox" v-model="current.emailVerified">
-
                         </div>
                     </div>
 
@@ -139,9 +133,7 @@
                 <tr>
                     <th>Tài khoản</th>
                     <th>Email</th>
-
                     <th>Số báo danh</th>
-
                     <th>Hoạt động</th>
                 </tr>
             </thead>
