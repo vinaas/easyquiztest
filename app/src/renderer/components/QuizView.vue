@@ -3,7 +3,11 @@
         <div class="ui menu">
             <div class="ui container">
                 <div class="item header item">
-                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>
+                    <!--<img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>-->
+                    <router-link class="item header item" to="/"> 
+                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
+                    </router-link>
+                </div>
 
             </div>
         </div>
@@ -28,8 +32,8 @@
 
                                 </div>
                                 <!--<div class="extra content">
-                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                    </div>-->
                             </div>
                             <div class="ui card">
 
@@ -176,7 +180,7 @@
                 </div>
                 <div class="actions">
                     <!--<div class="ui button">Cancel</div>
-                                    <div class="ui button">OK</div>-->
+                                        <div class="ui button">OK</div>-->
                 </div>
             </div>
         </div>
@@ -195,101 +199,101 @@ import swal from 'sweetalert'
 const co = Promise.coroutine
 
 export default {
-  name: 'quiz',
-  data: function () {
-    return {
-      cloneUserCheck: []
-    }
-  },
-  computed: mapGetters({
-    quiz: 'quiz',
-    current: 'currentQuestion',
-    userQuestions: 'mapUserQuestions',
-    next: 'next',
-    previous: 'previous',
-    answereds: 'answereds',
-    user: 'user',
-    usersQuizsRow: 'usersQuizsRow'
-  }),
-  components: {},
-  mounted: function () {
-  },
-  methods: {
-    goToQuestion (id) {
-      this.$store.dispatch('goToQuestion', id)
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
+    name: 'quiz',
+    data: function() {
+        return {
+            cloneUserCheck: []
+        }
     },
-    goNext () {
-      this.$store.dispatch('goNext')
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
-    },
-    goPrevious () {
-      this.$store.dispatch('goPre')
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
-    },
-    answer: co(function* () {
-      toastr.options.timeOut = 100
-      if (this.cloneUserCheck.length == 0) {
-        toastr.warning('Bạn chưa chọn đáp án')
-        return
-      }
-      toastr.info('Bạn đã trả lời thành công')
-      yield this.$store.dispatch('answer', Object.assign({}, this.current, { userCheck: this.cloneUserCheck }))
-      $('#quiz-progress').progress({
-        value: this.answereds,
-        total: this.userQuestions.length
-      })
+    computed: mapGetters({
+        quiz: 'quiz',
+        current: 'currentQuestion',
+        userQuestions: 'mapUserQuestions',
+        next: 'next',
+        previous: 'previous',
+        answereds: 'answereds',
+        user: 'user',
+        usersQuizsRow: 'usersQuizsRow'
     }),
-    endQuizTest: co(function* () {
-      swal({
-        title: 'Kết thúc bài kiểm tra',
-        text: 'Bạn có chắc chắn muốn kết thúc bài kiểm tra không?',
-        type: 'info',
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-        confirmButtonText: 'Kết thúc',
-        cancelButtonText: 'Tiếp tục làm bài'
-      },
+    components: {},
+    mounted: function() {
+    },
+    methods: {
+        goToQuestion(id) {
+            this.$store.dispatch('goToQuestion', id)
+                .then(() => {
+                    this._cloneCurrentCheck()
+                })
+        },
+        goNext() {
+            this.$store.dispatch('goNext')
+                .then(() => {
+                    this._cloneCurrentCheck()
+                })
+        },
+        goPrevious() {
+            this.$store.dispatch('goPre')
+                .then(() => {
+                    this._cloneCurrentCheck()
+                })
+        },
+        answer: co(function* () {
+            toastr.options.timeOut = 100
+            if (this.cloneUserCheck.length == 0) {
+                toastr.warning('Bạn chưa chọn đáp án')
+                return
+            }
+            toastr.info('Bạn đã trả lời thành công')
+            yield this.$store.dispatch('answer', Object.assign({}, this.current, { userCheck: this.cloneUserCheck }))
+            $('#quiz-progress').progress({
+                value: this.answereds,
+                total: this.userQuestions.length
+            })
+        }),
+        endQuizTest: co(function* () {
+            swal({
+                title: 'Kết thúc bài kiểm tra',
+                text: 'Bạn có chắc chắn muốn kết thúc bài kiểm tra không?',
+                type: 'info',
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                confirmButtonText: 'Kết thúc',
+                cancelButtonText: 'Tiếp tục làm bài'
+            },
                 co(function* () {
-                  yield this.$store.dispatch('end')
-                  $('#result')
+                    yield this.$store.dispatch('end')
+                    $('#result')
                         .modal('show')
-                  swal.close()
+                    swal.close()
                 }).bind(this))
-    }),
+        }),
 
-    _cloneCurrentCheck () {
-      this.cloneUserCheck = _.clone(this.current.userCheck)
-    }
-  },
-  created: co(function* () {
-    yield this.$store.dispatch('getQuiz', 1)
-    yield this.$store.dispatch('getQuestions', this.quiz.id)
-    yield this.$store.dispatch('getUsersQuizsRow', { userId: JSON.parse(sessionStorage.getItem('userinfo')).userId, quizId: this.quiz.id })
-    yield this.$store.dispatch('goToQuestion', this.userQuestions[0].id)
+        _cloneCurrentCheck() {
+            this.cloneUserCheck = _.clone(this.current.userCheck)
+        }
+    },
+    created: co(function* () {
+        yield this.$store.dispatch('getQuiz', 1)
+        yield this.$store.dispatch('getQuestions', this.quiz.id)
+        yield this.$store.dispatch('getUsersQuizsRow', { userId: JSON.parse(sessionStorage.getItem('userinfo')).userId, quizId: this.quiz.id })
+        yield this.$store.dispatch('goToQuestion', this.userQuestions[0].id)
         // load timer
-    var totalSecond = this.quiz.totalTime * 60,
-      display = document.querySelector('#basicUsage')
-    startTimer(totalSecond, display)
-    this._cloneCurrentCheck()
+        var totalSecond = this.quiz.totalTime * 60,
+            display = document.querySelector('#basicUsage')
+        startTimer(totalSecond, display)
+        this._cloneCurrentCheck()
 
-    $('#quiz-progress').progress({
-      label: 'ratio',
-      value: this.answereds,
-      total: this.userQuestions.length,
-      text: {
-        ratio: '{value}/{total}'
-      },
-      showActivity: false
+        $('#quiz-progress').progress({
+            label: 'ratio',
+            value: this.answereds,
+            total: this.userQuestions.length,
+            text: {
+                ratio: '{value}/{total}'
+            },
+            showActivity: false
+        })
     })
-  })
 
 }
 </script>
