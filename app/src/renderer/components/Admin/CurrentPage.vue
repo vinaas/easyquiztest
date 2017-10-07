@@ -1,35 +1,63 @@
+
 <template>
   <div class="ui main container">
-    <h1>Danh sách các kỳ thi</h1>
-    <table class="ui celled padded table">
+    <!--<h1 class="ui header">Bảng quản lý</h1>-->
+    <h1>Danh sách các đề thi</h1>
+    <!-- Exchange button Tạo mới -->
+    <div v-on:click="addQuiz()" class="ui vertical animated button" style="background-color:transparent;border: 1px solid green;margin-bottom:50px">
+      <div class=" hidden content">
+        <i class="plus icon green"></i>
+      </div>
+      <div class="visible content" style="color:green; ">Tạo mới</div>
+    </div>
+
+    <div id="saveQuiz" class="ui modal saveQuiz">
+      <i class="close icon"></i>
+      <div class="header">
+        {{title}}
+      </div>
+      <div class="ui content">
+
+        <form class="ui form">
+          <div class="field">
+            <label>Tên</label>
+            <input type="text" name="name" placeholder="Tên đề thi" :value="current.name" @input="updateCurrent">
+          </div>
+          <div class="field">
+            <label>Thời gian làm bài</label>
+            <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="current.totalTime" @input="updateCurrent">
+          </div>
+          <div class="ui primary submit button">Submit</div>
+        </form>
+      </div>
+
+    </div>
+
+    <table id="example" class="ui celled striped table teal">
       <thead>
         <tr>
-          <th class="single line"></th>
-          <th>Trạng thái</th>
-          <th></th>
+          <th>Số thứ tự</th>
+          <th> Tên </th>
+          <th> Số câu hỏi </th>
+          <th> Thời gian </th>
+          <th> Kỳ thi</th>
+          <th> Hành động</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="(item, index) in all">
+          <td>{{index+1}}</td>
+          <td class="collapsing">{{item.name}}</td>
+          <td>{{item.numberOfQuestions}} </td>
+          <td>{{item.totalTime}} phút</td>
+          <td>{{item.quizTime| moment}}</td>
           <td>
-            Kỳ thi Toán Quốc Gia
-          </td>
-          <td class="single line">
-            Đã thi
-          </td>
-          <td class="right aligned">
-            <button class="ui twitter button">Xem kết quả</button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Thi Tiếng Anh đầu vào
-          </td>
-          <td class="single line">
-            Chưa thi
-          </td>
-          <td class="right aligned">
-            <button class="ui youtube button">Tham gia ngay</button>
+            <span data-tooltip="cập nhật đề thi" data-position="top left" v-on:click="toSave(item)">
+              <i class="edit icon edit_question blue"></i>
+            </span>|
+            <a :href="'/#/admin/questionList/' + item.id" class="item" data-tooltip="Link Quản lý câu hỏi" data-position="top left">
+              <i class="linkify icon go_to_answers orange"></i>
+            </a>
           </td>
         </tr>
       </tbody>
@@ -46,12 +74,10 @@ import swal from 'sweetalert'
 import _ from 'lodash'
 const logger = Logger('Admin Quiz List')
 const co = Promise.coroutine
-
 export default {
-  /////// UPLOAD file with VueJs ///////////////////
   // Format ngày tháng năm/////////////////////////////
   filters: {
-    moment: function(date) {
+    moment: function (date) {
       return moment(date).format('DD-MM-YYYY')
     }
   },
@@ -64,9 +90,9 @@ export default {
       title: 'title'
     })
   },
-  mounted: function() {
+  mounted: function () {
     let me = this
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#example').DataTable()
     })
     $('.ui.form')
@@ -87,17 +113,15 @@ export default {
             }]
           }
         },
-        onSuccess: function(event, fields) {
+        onSuccess: function (event, fields) {
           event.preventDefault()
           return true
         },
-        onFailure: function() {
+        onFailure: function () {
           toastr.error('Lưu không thành công')
           return false
         }
-
       })
-
     $('.ui.form').api({
       mockResponseAsync: Promise.coroutine(function* (st, cb) {
         yield me.save()
@@ -109,7 +133,7 @@ export default {
     })
     $('.saveQuiz').modal({
       closable: false,
-      onHidden: function() {
+      onHidden: function () {
         $('.ui.form').form('reset')
         me.$store.dispatch('adminQuizs/updateCurrent', {})
       }
@@ -117,26 +141,25 @@ export default {
     me.$forceUpdate()
   },
   methods: {
-    goNext() {
+    goNext () {
       this.$store.dispatch('goNext')
         .then(() => {
           this._cloneCurrentCheck()
         })
     },
-    goPrevious() {
+    goPrevious () {
       this.$store.dispatch('goPre')
         .then(() => {
           this._cloneCurrentCheck()
         })
     },
-    toQuestion: function(item) {
+    toQuestion: function (item) {
       logger.debug('link to Question', JSON.stringify(item))
       // this.$router.push({ path: 'questionList'+item.id })
     },
-    addQuiz: function() {
+    addQuiz: function () {
       logger.debug('add')
       this.$store.dispatch('adminQuizs/selectQuiz', {})
-
       $('.saveQuiz').last()
         .modal('show')
     },
@@ -144,7 +167,6 @@ export default {
       logger.debug(item)
       // $('.saveQuiz').remove()
       yield this.$store.dispatch('adminQuizs/selectQuiz', item)
-
       $('.saveQuiz').last()
         .modal('show')
     }),
@@ -152,7 +174,7 @@ export default {
       yield this.$store.dispatch('adminQuizs/saveQuiz', this.current)
       yield this.$store.dispatch('adminQuizs/getAll')
     }),
-    updateCurrent: function(e) {
+    updateCurrent: function (e) {
       let cloneQuiz = Object.assign({}, this.current, {
         [e.target.name]: e.target.value
       })
@@ -176,15 +198,13 @@ export default {
           swal('Đã xóa!', 'Dữ liệu đã bị xóa', 'success')
         }))
     })
-
   },
-  created() {
+  created () {
     var me = this
+    logger.debug('quan ly bo de')
     this.$store.dispatch('adminQuizs/getAll').then(() => { })
   }
 }
-
 </script>
 <style scoped>
-
 </style>

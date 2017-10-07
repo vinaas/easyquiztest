@@ -11,7 +11,6 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Tên</label>
-
                             <input type="text" name="firstName" placeholder="Tên" v-model="current.firstName">
                         </div>
                         <div class="field">
@@ -35,12 +34,10 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Ngày sinh</label>
-
                             <input type="date" name="birthday" placeholder="Ngày sinh" v-model="current.birthday">
                         </div>
                         <div class="field">
                             <label>Email</label>
-
                             <input type="text" name="email" placeholder="Email" v-model="current.email">
                         </div>
                     </div>

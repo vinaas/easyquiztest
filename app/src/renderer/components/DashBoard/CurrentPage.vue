@@ -21,13 +21,13 @@
                             <input type="password" name="password" placeholder="Password" v-model="password">
                         </div>
                     </div>
-                    <button  id="login" class="ui fluid large teal submit button">Đăng Nhập</button>
+                    <button id="login" class="ui fluid large teal submit button">Đăng Nhập</button>
                 </div>
-    
+
                 <div class="ui error message"></div>
-    
+
             </form>
-    
+
             <div class="ui message">
                 Chưa có tài khoản đăng nhập, liên hệ với chúng tôi!
                 <p>tài khoản quản trị
@@ -48,52 +48,50 @@ import Promise from 'bluebird'
 const _authServices = new AuthServices()
 
 export default {
-  mounted: function () {
-    var me = this
-    $('#login').api({
-      mockResponseAsync: Promise.coroutine(function* (st, cb) {
-        yield me.login()
-        cb(true)
-      }),
-      on: 'click'
-    })
-  },
-  data: function () { return { username: '', password: '' } },
-  methods: {
-    login: Promise.coroutine(function* () {
-      //console.log('bbbb')
-      try {
-        let ret = yield _authServices.login({
-          'username': this.username,
-          'password': this.password
+    mounted: function() {
+        var me = this
+        $('#login').api({
+            mockResponseAsync: Promise.coroutine(function* (st, cb) {
+                yield me.login()
+                cb(true)
+            }),
+            on: 'click'
         })
-       // console.log('ussername',ret.username)
-        if (ret) {
-          try {
-            // let roles = yield _authServices.getUserRoles()
-            // if (roles.filter(x => x.name == 'admin').length !== 0) {
-            //   yield this.$store.dispatch('login', ret.userId)
-            //   this.$router.push({ path: 'admin' })
-            //   toastr.info('Đăng nhập thành công admin')
-            // } else {
-            //     this.$router.push({ path: 'quiz' })
-            //     yield this.$store.dispatch('login', ret.userId)
-            //     toastr.info('Đăng nhập thành công quiz')
-            // }
-
-                this.$router.push({ path: 'kithi' })
-                yield this.$store.dispatch('login', ret.userId)
-                toastr.info('Đăng nhập thành công kithi')
-                
-          } catch (error) {
-            toastr.error('getUserRoles()', error)
-          }
-        }
-      } catch (error) {
-        toastr.error('Đăng nhập không thành công', error)
-      }
-    })
-  }
+    },
+    data: function() { return { username: '', password: '' } },
+    methods: {
+        login: Promise.coroutine(function* () {
+            //console.log('bbbb')
+            try {
+                let ret = yield _authServices.login({
+                    'username': this.username,
+                    'password': this.password
+                })
+                // console.log('ussername',ret.username)
+                if (ret) {
+                    try {
+                        // let roles = yield _authServices.getUserRoles()
+                        // if (roles.filter(x => x.name == 'admin').length !== 0) {
+                        //   yield this.$store.dispatch('login', ret.userId)
+                        //   this.$router.push({ path: 'admin' })
+                        //   toastr.info('Đăng nhập thành công admin')
+                        // } else {
+                        //     this.$router.push({ path: 'quiz' })
+                        //     yield this.$store.dispatch('login', ret.userId)
+                        //     toastr.info('Đăng nhập thành công quiz')
+                        // }
+                        this.$router.push({ path: 'kithi' })
+                        yield this.$store.dispatch('login', ret.userId)
+                        toastr.info('Đăng nhập thành công kithi')
+                    } catch (error) {
+                        toastr.error('getUserRoles()', error)
+                    }
+                }
+            } catch (error) {
+                toastr.error('Đăng nhập không thành công', error)
+            }
+        })
+    }
 
 }
 </script>

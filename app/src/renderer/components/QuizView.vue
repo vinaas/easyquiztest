@@ -4,8 +4,8 @@
             <div class="ui container">
                 <div class="item header item">
                     <!--<img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>-->
-                    <router-link class="item header item" to="/"> 
-                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
+                    <router-link class="item header item" to="/">
+                        <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
                     </router-link>
                 </div>
 
@@ -15,8 +15,11 @@
             <div class="row">
                 <div class="ui three column grid">
                     <div class="four wide column">
+                        <router-link class="item header item" to="/kithi">
+                            <button class="ui button red">Quay lại</button>
+                        </router-link>
                         <div class="row" style="padding-bottom:10px">
-                            <button v-on:click="endQuizTest" class="positive ui button fluid">Kết thúc thi</button>
+                            <button v-on:click="endQuizTest" class="positive ui button fluid">Kết thúc thi HIEP</button>
                         </div>
                         <div class="row">
                             <div class="ui card">
@@ -32,8 +35,8 @@
 
                                 </div>
                                 <!--<div class="extra content">
-                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                        </div>-->
                             </div>
                             <div class="ui card">
 
@@ -180,7 +183,7 @@
                 </div>
                 <div class="actions">
                     <!--<div class="ui button">Cancel</div>
-                                        <div class="ui button">OK</div>-->
+                                            <div class="ui button">OK</div>-->
                 </div>
             </div>
         </div>
@@ -274,7 +277,7 @@ export default {
         }
     },
     created: co(function* () {
-        yield this.$store.dispatch('getQuiz', 1)
+        yield this.$store.dispatch('getQuiz', this.$route.params.quizId)
         yield this.$store.dispatch('getQuestions', this.quiz.id)
         yield this.$store.dispatch('getUsersQuizsRow', { userId: JSON.parse(sessionStorage.getItem('userinfo')).userId, quizId: this.quiz.id })
         yield this.$store.dispatch('goToQuestion', this.userQuestions[0].id)
