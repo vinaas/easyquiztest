@@ -23,7 +23,8 @@ export default [{
   ]
 },
 {
-  path: '/Quiz',
+  name: 'Quiz',
+  path: '/Quiz/:quizId',
   component: require('components/QuizView'),
   beforeEnter: (to, from, next) => {
       // alert('ok');
