@@ -1,6 +1,10 @@
 {
   "name": "Container",
+<<<<<<< HEAD
   "base": "Model",
+=======
+  "plural": "containers",
+>>>>>>> bf473c6ca1c86db240d0cf65df2b2804e56bbb8e
   "idInjection": true,
   "options": {
     "validateUpsert": true

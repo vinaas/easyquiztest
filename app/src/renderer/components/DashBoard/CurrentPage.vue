@@ -80,7 +80,7 @@ export default {
                         //     yield this.$store.dispatch('login', ret.userId)
                         //     toastr.info('Đăng nhập thành công quiz')
                         // }
-                        this.$router.push({ path: 'kithi' })
+                        this.$router.push({ path: 'admin' })
                         yield this.$store.dispatch('login', ret.userId)
                         toastr.info('Đăng nhập thành công kithi')
                     } catch (error) {
