@@ -183,7 +183,7 @@
                 </div>
                 <div class="actions">
                     <!--<div class="ui button">Cancel</div>
-                                            <div class="ui button">OK</div>-->
+                    <div class="ui button">OK</div>-->
                 </div>
             </div>
         </div>
@@ -252,7 +252,7 @@ export default {
                 value: this.answereds,
                 total: this.userQuestions.length
             })
-        }),
+        }), 
         endQuizTest: co(function* () {
             swal({
                 title: 'Kết thúc bài kiểm tra',
@@ -268,7 +268,7 @@ export default {
                     yield this.$store.dispatch('end')
                     $('#result')
                         .modal('show')
-                    swal.close()
+                    swal.close();
                 }).bind(this))
         }),
 
@@ -277,6 +277,7 @@ export default {
         }
     },
     created: co(function* () {
+        console.log("id", this.$route.params.quizId)
         yield this.$store.dispatch('getQuiz', this.$route.params.quizId)
         yield this.$store.dispatch('getQuestions', this.quiz.id)
         yield this.$store.dispatch('getUsersQuizsRow', { userId: JSON.parse(sessionStorage.getItem('userinfo')).userId, quizId: this.quiz.id })

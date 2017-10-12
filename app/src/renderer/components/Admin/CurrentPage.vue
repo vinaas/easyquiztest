@@ -33,7 +33,7 @@
 
     </div>
 
-    <table id="example" class="ui celled striped table teal">
+    <table id="example" class="ui celled striped table">
       <thead>
         <tr>
           <th>Số thứ tự</th>
@@ -207,4 +207,5 @@ export default {
 }
 </script>
 <style scoped>
+
 </style>

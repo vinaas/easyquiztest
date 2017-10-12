@@ -27,6 +27,7 @@ const getters = {
 // actions
 const actions = {
   getQuizs: co(function* ({ commit }) {
+    console.log("aaaKithi")
     let recQuizs = yield kiThiService.getAll()
     commit(mutationTypes.RECEIVE_QUIZ, recQuizs)
   })

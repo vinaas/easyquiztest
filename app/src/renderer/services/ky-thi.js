@@ -4,12 +4,12 @@ const co = Promise.coroutine
 
 export class KyThiService {
   getAll = co(function* () {
+    console.log("aaaKyThiService")
     let ret = yield axios.get(pathEntity)
     return ret.data
   })
   getBy = co(function* (id) {
     let ret = yield axios.get(`${pathEntity}/${id}`)
-
     return ret.data
   })
   save = co(function* (bindingEntity) {
