@@ -10,30 +10,63 @@
             </div>
         </div>
         <div class="ui main container">
+            <div id="result_2" class="ui modal">
+                <i class="close icon"></i>
+                <div class="header">
+                    Kết quả: {{usersQuizsRow.scopesPraction}} - Điểm : {{usersQuizsRow.scopes}}
+                </div>
+                <div class="image content">
+                    <table class="ui celled table">
+                        <thead>
+                            <tr>
+                                <th>Câu</th>
+                                <th>Trả lời</th>
+                                <th>Đáp án</th>
+                                <th>Kết quả </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item , index) in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}">
+                                <td>{{index +1 }}</td>
+                                <td> {{ (item.userCheck)? item.userCheck.map(x=> item.answersForAQuestions.filter(y=>y.id==x).shift().name ).sort():'Chưa trả lời' }} </td>
+                                <td>
+                                    {{item.answersForAQuestions.filter(x=>x.isCorrect==true).map(x=>x.name).sort()}}
+                                </td>
+                                <td>{{item.userAnswerResult? "Đúng" : "Sai"}} </td>
+                                <!--<td>None</td>-->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
             <h1>Danh sách các kỳ thi của bạn</h1>
             <table class="ui celled table tbl-header">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Trạng thái</th>
+                        <th>Thời gian</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody class="tbl-content">
                     <tr v-for="item in quizs">
-                        <td>{{item.name}}</td>
-                        <td class="single line">Chưa thi</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{item.quizStatus}}</td>
+                        <td>{{ item.totalTime }} phút</td>
                         <td class="right aligned">
-                            <router-link class="item header item" :to="{ name: 'Quiz', params: { quizId: item.id}}">
-                                <button class="ui youtube button">Tham gia ngay</button>
-                            </router-link>
-                        </td>
-                    </tr>                 
-                    <tr>
-                        <td>Thi Hóa</td>
-                        <td class="single line">Đã thi</td>
-                        <td class="right aligned">
-                            <!--<button v-on:click="seeResults" class="ui twitter button">Xem kết quả</button>-->
+                            <template v-if="item.quizStatus === 'Đã thi'">
+                                <router-link class="item header item" :to="{params: {quizId: item.id}}">
+                                    <button v-on:click="showResults" class="ui twitter button">Xem kết quả</button>
+                                </router-link>
+                            </template>
+                            <template v-if="item.quizStatus === 'Chưa thi'">
+                                <router-link class="item header item" :to="{ name: 'Quiz', params: {quizId: item.id} }">
+                                    <button class="ui youtube button">Tham gia ngay</button>
+                                </router-link>
+                            </template>
                         </td>
                     </tr>
                 </tbody>
@@ -57,16 +90,20 @@ export default {
     name: 'kythi',
     computed: mapGetters({
         quizs: 'ki-thi/quizs',
+        usersQuizsRow: 'usersQuizsRow'
     }),
     components: {},
     mounted: function() {
     },
     methods: {
-
+        showResults: co(function* () {
+            yield this.$store.dispatch('end')
+            $('#result_2')
+            .modal('show')
+        }),
     },
     created: co(function* () {
         yield this.$store.dispatch('ki-thi/getQuizs')
-
     })
 
 }
