@@ -9,6 +9,7 @@ namespace WordParser.Model
 {
     public class ResultQuestion
     {
+        public string Id { get; set; }
         public string Question { get; set; }
         public List<string> Answers { get; set; }
         public List<string> RightAnswers { get; set; }
@@ -16,8 +17,9 @@ namespace WordParser.Model
         public List<string> Categories { get; set; }
         public int Mix { get; set; }
 
-        public ResultQuestion(string text)
+        public ResultQuestion(string fileName, string text)
         {
+            this.Id = fileName;
             var split = Regex.Split(text, "##").Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
             ParseQuestion(split.FirstOrDefault(q => q.FirstOrDefault() == '1'));
             ParseAnswers(split.FirstOrDefault(q => q.FirstOrDefault() == '2'));

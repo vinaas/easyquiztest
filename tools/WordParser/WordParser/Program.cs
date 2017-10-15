@@ -52,7 +52,7 @@ namespace WordParser
                         Console.WriteLine($"Extracting file: {file}");
                         var text = textExtractor.Extract(file).Text;
                         text = Regex.Replace(text, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
-                        var resultQuestion = new ResultQuestion(text);
+                        var resultQuestion = new ResultQuestion(fileName, text);
                         MoveOverwrite(file, Path.Combine(successFolder, fileName));
                         var jsonResult = JsonConvert.SerializeObject(resultQuestion);
                         var jsonPath = Path.Combine(resultFolder, $"{fileName}.json");
