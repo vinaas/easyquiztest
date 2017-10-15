@@ -2994,12 +2994,12 @@
     } else if (duration == null) { // checks for null or undefined
       duration = {}
     } else if (typeof duration === 'object' && ('from' in duration || 'to' in duration)) {
-    diffRes = momentsDifference(createLocal(duration.from), createLocal(duration.to))
+      diffRes = momentsDifference(createLocal(duration.from), createLocal(duration.to))
 
-    duration = {}
-    duration.ms = diffRes.milliseconds
-    duration.M = diffRes.months
-  }
+      duration = {}
+      duration.ms = diffRes.milliseconds
+      duration.M = diffRes.months
+    }
 
     ret = new Duration(duration)
 
