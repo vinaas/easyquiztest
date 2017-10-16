@@ -31,6 +31,7 @@ namespace WordParser.Model
 
         public void ParseQuestion(string text)
         {
+            if(string.IsNullOrWhiteSpace(text)) throw new Exception("Error ##1: Missing Question");
             var result = Regex.Split(text, "\r\n|\r|\n").Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
             if (result.Count <= 1)
             {
@@ -41,6 +42,7 @@ namespace WordParser.Model
 
         public void ParseAnswers(string text)
         {
+            if (string.IsNullOrWhiteSpace(text)) throw new Exception("Error ##2: Missing Answers");
             var result = Regex.Split(text, "\r\n|\r|\n").Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
             if (result.Count <= 1)
             {
@@ -55,6 +57,7 @@ namespace WordParser.Model
 
         public void ParseRightAnswers(string text)
         {
+            if (string.IsNullOrWhiteSpace(text)) throw new Exception("Error ##3: Missing Right Answers");
             var result = Regex.Split(text, "\r\n|\r|\n").Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
             if (result.Count <= 1)
             {
@@ -65,6 +68,7 @@ namespace WordParser.Model
 
         public void ParseHardLevel(string text)
         {
+            if (string.IsNullOrWhiteSpace(text)) throw new Exception("Error ##4: Missing hard level");
             var result = Regex.Split(text, "\r\n|\r|\n").Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
             if (result.Count <= 1)
             {
@@ -79,6 +83,7 @@ namespace WordParser.Model
 
         public void ParseCategories(string text)
         {
+            if (string.IsNullOrWhiteSpace(text)) throw new Exception("Error ##5: Missing categories");
             var result = Regex.Split(text, "\r\n|\r|\n").Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
             if (result.Count <= 1)
             {
@@ -89,6 +94,7 @@ namespace WordParser.Model
 
         public void ParseMix(string text)
         {
+            if (string.IsNullOrWhiteSpace(text)) throw new Exception("Error ##6: Missing mix");
             var result = Regex.Split(text, "\r\n|\r|\n").Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
             if (result.Count <= 1)
             {
