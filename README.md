@@ -29,7 +29,7 @@
 
     - Tạo User từ dữ liệu import.
 
-  - Có thể gửi email hoặc tin nhắn để thông báo Thí Sinh.
+  -  Có thể gửi email hoặc tin nhắn để thông báo Thí Sinh.
 
 ### Diễn ra Kỳ thi
 
