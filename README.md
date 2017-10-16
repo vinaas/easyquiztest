@@ -1,3 +1,73 @@
+**Ghi chú**
+### Xây dựng ngân hàng đề thi (1000 câu)
+
+- Import danh sách Câu Hỏi từ file Word
+
+- Thêm câu hỏi thủ công
+
+### Xây dựng kỳ thi (100 câu)
+
+- Chọn câu hỏi từ ngân hàng Đề thi.
+
+  - Random câu hỏi từ Đề thi
+  - Chọn thủ công dựa theo Danh Mục.
+
+- Thiết lập kỳ thi
+  - Số câu hỏi cho 1 bài thi (20 câu)
+
+  - Câu trả lời được xáo trộn.
+
+  - Thời gian bắt đầu, thời gian kết thúc.
+
+  - Thời gian thi.
+
+- Phân quyền thí sinh sẽ tham gia vào kỳ thi này
+
+  - Lựa chọn từ Danh Sách Thí Sinh có sẵn.
+
+  - Import Danh Sách từ file word, excel
+
+    - Tạo User từ dữ liệu import.
+
+  - Có thể gửi email hoặc tin nhắn để thông báo Thí Sinh.
+
+### Diễn ra Kỳ thi
+
+ 
+
+#### Thí Sinh tham gia thi.
+
+  - Dữ liệu theo từng Thí sinh.
+  
+  - Trạng thái thi
+    - Chưa thi 
+    - Đang thi (Thông tin thời gian thi, thi lúc nào, thi trong bao lâu, số câu hỏi để trả lời)
+    - Đã Thi (thời gian kết thúc, kết quả thi)
+      - Trạng thái đã thi
+      - Kết thúc trước thời gian quy định
+      - Mất mạng khi đang thi.
+      - Hoàn thành đúng thời gian.
+
+#### Thông Tin kỳ thi (dành cho Admin)
+
+  - Số thi sinh đang thi.
+  - Số thi sinh đã thi.
+  - Số thí sinh chưa thi.
+
+### Kết quả Kỳ thi
+
+  - Số thi đã thi, chưa thi.
+  - Thống kê phân tích theo thời gian.
+  - Thống kê theo thí sinh.
+  - Thống kê kết quả thi
+    - Điểm trung bình/thí sinh
+
+
+### Thống kê theo nhiều kỳ thi.
+  - Xếp hạng theo thí sinh.
+  - Xếp hạng theo kỳ thi.
+  - 
+
 # easyquiztest
 
 > Easy QuizTest, a product of VinaAS Ltd,.Co
@@ -78,3 +148,9 @@ npm run lint
 # run webpack in production
 npm run pack
 ```
+
+
+
+
+
+
