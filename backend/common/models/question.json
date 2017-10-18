@@ -18,6 +18,18 @@
     },
     "quizId": {
       "type": "number"
+    },
+    "DifficultLevel" : {
+      "type" : "number"
+    },
+    "category" : [
+      {
+        "tenDanhMuc" : "string",
+        "maDanhMuc" : "string"
+      }
+    ],
+    "isRandom" : {
+      "type" : "boolean"
     }
   },
   "validations": [],

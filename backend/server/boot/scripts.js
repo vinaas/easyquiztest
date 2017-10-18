@@ -2,7 +2,9 @@ module.exports = function (app) {
     var User = app.models.ApplicationUser;
     var Role = app.models.Role;
     var RoleMapping = app.models.RoleMapping;
+    var Question = app.models.Question;
     var Team = app.models.Team;
+    
     User.create([
         { username: 'admin', email: 'admin@vinaas.com', password: '123' },
         { username: 'user', email: 'user@vinaas.com', password: '123' },
@@ -28,7 +30,16 @@ module.exports = function (app) {
             });
         });
     });
-
+    Question.create([
+        {
+            description: 'Nội dung câu hỏi 1',
+              type: '',
+              quizId: 0,
+              DifficultLevel : 5,
+              category : [],
+              isRandom : true
+        }
+    ]);
 
     // PhongBan.create([
 
