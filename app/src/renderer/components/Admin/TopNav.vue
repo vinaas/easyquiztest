@@ -6,6 +6,7 @@
             <!--<a href="javascript:void()" class="item">Quản lý thí sinh</a>-->
             <router-link to="/admin" class="item">Quản lý đề thi</router-link>
             <router-link to="/admin/appuserslist" class="item">Quản thí sinh</router-link>
+            <router-link to="/admin/questionsBank" class="item">Ngân Hàng đề thi</router-link>
 
             <div class="ui dropdown item right">
                 admin
