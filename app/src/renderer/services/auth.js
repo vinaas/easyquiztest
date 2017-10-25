@@ -28,7 +28,7 @@ export class AuthServices {
   getUserRoles = Promise.coroutine(function* () {
     var user = JSON.parse(sessionStorage.getItem('userinfo'))
 
-    let ret = yield axios.get('api/ApplicationUsers/' + user.userId + '/roles')
+    let ret = yield axios.get('api/ApplicationUsers/' + user.userId)
     console.log('user info', ret.data)
     return ret.data
   })

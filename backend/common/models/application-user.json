@@ -21,6 +21,9 @@
     },
     "identification": {
       "type": "string"
+    },
+    "roleId": {
+      "type": "number"
     }
   },
   "validations": [],
@@ -56,6 +59,12 @@
       "accessType": "WRITE",
       "principalType": "ROLE",
       "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
       "permission": "ALLOW"
     }
   ],

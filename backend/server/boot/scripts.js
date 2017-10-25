@@ -6,32 +6,43 @@ module.exports = function (app) {
     var Team = app.models.Team;
     var Quiz = app.models.Quiz;
     var UserQuiz = app.models.UsersQuizs;
-    User.create([
-        { username: 'admin', email: 'admin@vinaas.com', password: '123' },
-        { username: 'user01', email: 'user@vinaas.com', password: '123' },
-        { username: 'user02', email: 'user02@vinaas.com', password: '123' },
-     ], function (err, users) {
-        //create the admin role
-        Role.create({
-            name: 'admin'
-        }, function (err, role) {
-            role.principals.create({
-                principalType: RoleMapping.USER,
-                principalId: users[0].id
-            }, function (err, principal) {
-            });
-        });
+    
+    Role.create([
+        { name: 'admin', description : "Quản trị Viên" },
+        { name: 'user', description : "Thí Sinh" },
+     ], function(err, roles){
+        User.create([
+            { username: 'admin', email: 'admin@vinaas.com', password: '123', roleId : '1' },
+            { username: 'user01', email: 'user@vinaas.com', password: '123', roleId : '2' },
+            { username: 'user02', email: 'user02@vinaas.com', password: '123', roleId : '2'},
+         ]);
+     });
+    // User.create([
+    //     { username: 'admin', email: 'admin@vinaas.com', password: '123' },
+    //     { username: 'user01', email: 'user@vinaas.com', password: '123' },
+    //     { username: 'user02', email: 'user02@vinaas.com', password: '123' },
+    //  ], function (err, users) {
+    //     //create the admin role
+    //     Role.create({
+    //         name: 'admin'
+    //     }, function (err, role) {
+    //         role.principals.create({
+    //             principalType: RoleMapping.USER,
+    //             principalId: users[0].id
+    //         }, function (err, principal) {
+    //         });
+    //     });
 
-        Role.create({
-            name: 'user'
-        }, function (err, role) {
-            role.principals.create({
-                principalType: RoleMapping.USER,
-                principalId: users[1].id
-            }, function (err, principal) {
-            });
-        });
-    });
+    //     Role.create({
+    //         name: 'user'
+    //     }, function (err, role) {
+    //         role.principals.create({
+    //             principalType: RoleMapping.USER,
+    //             principalId: users[1].id
+    //         }, function (err, principal) {
+    //         });
+    //     });
+    // });
     Quiz.create([
         { name : "kì thi thứ 1", startDate: "2017/10/10",  quizTime: "2017/10/10",
           quizStatus: "ACTIVE", totalTime : 30, numberOfQuestions: 20
