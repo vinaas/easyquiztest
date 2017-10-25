@@ -16,31 +16,47 @@
         "DifficultLevel": {
             "type": "number"
         },
-        "Categories": [{
-            "title": "string",
-            "code": "string"
-        }],
+        "Categories": [
+            {
+                "title": "string",
+                "code": "string"
+            }
+        ],
         "IsRandom": {
             "type": "boolean"
         },
         "Ref": {
             "type": "string"
+        },
+        "ListAnswers": {
+            "type": [
+                {
+                    "Content": {
+                        "type": "string"
+                    },
+                    "IsCorrect": {
+                        "type": "boolean",
+                        "default" : false
+                    }
+                }
+            ]
         }
     },
     "validations": [],
     "relations": {
-
         "answersForAQuestions": {
             "type": "hasMany",
             "model": "AnswersForAQuestion",
             "foreignKey": "QuestionId"
         }
     },
-    "acls": [{
-        "accessType": "WRITE",
-        "principalType": "ROLE",
-        "principalId": "admin",
-        "permission": "ALLOW"
-    }],
+    "acls": [
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "admin",
+            "permission": "ALLOW"
+        }
+    ],
     "methods": {}
 }
