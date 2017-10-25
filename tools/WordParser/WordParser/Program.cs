@@ -77,9 +77,6 @@ namespace WordParser
                         var resultQuestion = new ResultQuestion(fileName, text);
                         var result = await CreateQuestionAsync(resultQuestion);
                         MoveOverwrite(file, Path.Combine(successFolder, fileName));
-                        //var jsonResult = JsonConvert.SerializeObject(resultQuestion);
-                        //var jsonPath = Path.Combine(resultFolder, $"{fileName}.json");
-                        //File.WriteAllText(jsonPath, jsonResult, Encoding.UTF8);
                         Console.WriteLine($"Extracted file: {file}");
                         logger.Info($"Extracted file: {file}");
                         successCount++;
