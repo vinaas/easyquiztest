@@ -25,6 +25,7 @@
 
 <script>
 import toastr from 'toastr'
+import appConfig from '../../../../application.json'
 export default {
   
   mounted: function() {
@@ -38,10 +39,14 @@ export default {
           filePaths
         ) {
           if (filePaths && filePaths.length > 0) {
+            var path = require("path");
+
+            var fileExe = path.join(__dirname, '..', 'ParseTools/WordParser.exe');
             toastr.info('Đang import câu hỏi')
             var child = require("child_process").execFile;
-            var executablePath =
-              "D:\Git\EasyQuizTest\easyquiztest\ParseTools\\WordParser.exe";
+            console.log('path', appConfig.WordParsePath);
+            var executablePath = appConfig.WordParsePath;
+               
             var parameters = [filePaths[0]];
             child(executablePath, parameters, (error, stdout, stderr) => {
               if (error) {
