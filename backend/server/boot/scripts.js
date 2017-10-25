@@ -53,25 +53,25 @@ module.exports = function (app) {
     ], function (err, quiz) {
         Question.create([
             {
-                  Description: 'Nội dung câu hỏi 1, kì thi 1',
+                  description: 'Nội dung câu hỏi 1, kì thi 1',
                   quizId: quiz[0].id,
-                  DifficultLevel : 5,
+                  difficultLevel : 5,
                   category : [],
-                  IsRandom : true,
-                  QuestionType: "One",
-                  ListAnswers : [
+                  isRandom : true,
+                  questionType: "ONE",
+                  listAnswers : [
                       { Content : "đáp án A", IsCorrect : "true" },
                       { Content : "đáp án B"}
                   ]
             },
             {
-                Description: 'Nội dung câu hỏi 2, kì thi 1',
+                description: 'Nội dung câu hỏi 2, kì thi 1',
                 quizId:  quiz[0].id,
-                DifficultLevel : 5,
+                difficultLevel : 5,
                 category : [],
-                IsRandom : true,
-                QuestionType: "Multiple",
-                ListAnswers : [
+                isRandom : true,
+                questionType: "MANY",
+                listAnswers : [
                     { Content : "đáp án A", IsCorrect : "true" },
                     { Content : "đáp án B"},
                     { Content : "đáp án C", IsCorrect : "true"}

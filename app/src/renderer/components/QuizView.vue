@@ -72,7 +72,7 @@
                                     <table class="ui table celled">
 
                                         <tbody>
-                                            <tr v-for="a in current.ListAnswers">
+                                            <tr v-for="a in current.listAnswers">
                                                 <td>{{a.name}}</td>
                                                 <td>{{a.Content}}</td>
                                             </tr>
@@ -98,7 +98,7 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <div v-for="(a ,i) in current.ListAnswers" class="field">
+                                            <div v-for="(a ,i) in current.listAnswers" class="field">
                                                 <div v-bind:class="[ 'ui','checkbox', current.type ]">
                                                     <input v-if="current.type=='checkbox'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
                                                     <input v-if="current.type=='radio'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
