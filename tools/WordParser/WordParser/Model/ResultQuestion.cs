@@ -24,7 +24,7 @@ namespace WordParser.Model
     }
     public class ResultQuestion
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Ref { get; set; }
         public string Description { get; set; }
         public List<AnswersForAQuestion> Answers { get; set; }

@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using NLog;
 using NLog.Targets;
 using TikaOnDotNet.TextExtraction;
@@ -25,7 +27,6 @@ namespace WordParser
             var importFolder = "D:\\WordParserSource";
 #else
             var importFolder = args[0];
-           
 #endif
             var target = (FileTarget)LogManager.Configuration.FindTargetByName("f");
             target.FileName = Path.Combine(importFolder, $"log_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.log");
@@ -107,18 +108,23 @@ namespace WordParser
             };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            logger.Info($"Call api/Questions with param: {JsonConvert.SerializeObject(question)} ");
-            var response = await client.PostAsJsonAsync("api/Questions", question);
+            var serializer = new JsonSerializer
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            var jsonQuestion = JObject.FromObject(question, serializer);
+            logger.Info($"Call api/Questions with param: {jsonQuestion} ");
+            var response = await client.PostAsJsonAsync("api/Questions", jsonQuestion);
             response.EnsureSuccessStatusCode();
             if (response.IsSuccessStatusCode)
             {
                 var returnQuestion = await response.Content.ReadAsAsync<ResultQuestion>();
                 foreach (var answersForAQuestion in question.Answers)
                 {
-                    answersForAQuestion.QuestionId = returnQuestion.id;
-                    logger.Info($"Call api/Questions/{returnQuestion.id}/answersForAQuestions with param: {JsonConvert.SerializeObject(answersForAQuestion)} ");
-                    await client.PostAsJsonAsync($"api/Questions/{returnQuestion.id}/answersForAQuestions",
+                    answersForAQuestion.QuestionId = returnQuestion.Id;
+                    var jsonAnswer = JObject.FromObject(answersForAQuestion, serializer);
+                    logger.Info($"Call api/Questions/{returnQuestion.Id}/answersForAQuestions with param: {jsonAnswer} ");
+                    await client.PostAsJsonAsync($"api/Questions/{returnQuestion.Id}/answersForAQuestions",
                         answersForAQuestion);
                 }
             }
