@@ -1,57 +1,46 @@
 {
-  "name": "Question",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "forceId": false,
-  "scope": {
-    "include": "answersForAQuestions"
-  },
-  "properties": {
-    "description": {
-      "type": "string"
+    "name": "Question",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "type": {
-      "type": "string"
+    "forceId": false,
+    "scope": {
+        "include": "answersForAQuestions"
     },
-    "quizId": {
-      "type": "number"
+    "properties": {
+        "Description": {
+            "type": "string"
+        },
+        "DifficultLevel": {
+            "type": "number"
+        },
+        "Categories": [{
+            "title": "string",
+            "code": "string"
+        }],
+        "IsRandom": {
+            "type": "boolean"
+        },
+        "Ref": {
+            "type": "string"
+        }
     },
-    "DifficultLevel" : {
-      "type" : "number"
+    "validations": [],
+    "relations": {
+
+        "answersForAQuestions": {
+            "type": "hasMany",
+            "model": "AnswersForAQuestion",
+            "foreignKey": "QuestionId"
+        }
     },
-    "category" : [
-      {
-        "tenDanhMuc" : "string",
-        "maDanhMuc" : "string"
-      }
-    ],
-    "isRandom" : {
-      "type" : "boolean"
-    }
-  },
-  "validations": [],
-  "relations": {
-    "quiz": {
-      "type": "belongsTo",
-      "model": "Quiz",
-      "foreignKey": "quizId"
-    },
-    "answersForAQuestions": {
-      "type": "hasMany",
-      "model": "AnswersForAQuestion",
-      "foreignKey": "questionId"
-    }
-  },
-  "acls": [
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "admin",
-      "permission": "ALLOW"
-    }
-  ],
-  "methods": {}
+    "acls": [{
+        "accessType": "WRITE",
+        "principalType": "ROLE",
+        "principalId": "admin",
+        "permission": "ALLOW"
+    }],
+    "methods": {}
 }

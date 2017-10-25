@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TikaOnDotNet.TextExtraction;
 using WordParser.Helpers;
@@ -14,19 +17,27 @@ namespace WordParser
     {
         static void Main(string[] args)
         {
+#if DEBUG
+            RunAsync("D:\\WordParserSource").Wait();
+#else
+            RunAsync(args[0]).Wait();
+#endif
+        }
 
-            var files = Directory.EnumerateFiles(AppSettings.ImportFolder, "*.*", SearchOption.TopDirectoryOnly)
+        static async Task RunAsync(string importFolder)
+        {
+            var files = Directory.EnumerateFiles(importFolder, "*.*", SearchOption.TopDirectoryOnly)
                 .Where(s => s.EndsWith(".docx") || s.EndsWith(".doc")).ToList();
-            var successFolder = Path.Combine(AppSettings.ImportFolder, "success");
-            var failFolder = Path.Combine(AppSettings.ImportFolder, "fail");
-            var resultFolder = Path.Combine(AppSettings.ImportFolder, "result");
+            var successFolder = Path.Combine(importFolder, "success");
+            var failFolder = Path.Combine(importFolder, "fail");
+            //var resultFolder = Path.Combine(importFolder, "result");
 
             try
             {
                 // tạo thư mục nếu thư mục không tồn tại
-                if (!Directory.Exists(AppSettings.ImportFolder))
+                if (!Directory.Exists(importFolder))
                 {
-                    Directory.CreateDirectory(AppSettings.ImportFolder);
+                    Directory.CreateDirectory(importFolder);
                 }
                 if (!Directory.Exists(successFolder))
                 {
@@ -36,10 +47,7 @@ namespace WordParser
                 {
                     Directory.CreateDirectory(failFolder);
                 }
-                if (!Directory.Exists(resultFolder))
-                {
-                    Directory.CreateDirectory(resultFolder);
-                }
+
 
                 var textExtractor = new TextExtractor();
                 Console.WriteLine($"There are {files.Count} file(s) found");
@@ -53,10 +61,11 @@ namespace WordParser
                         var text = textExtractor.Extract(file).Text;
                         text = Regex.Replace(text, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
                         var resultQuestion = new ResultQuestion(fileName, text);
+                        var result = await CreateQuestionAsync(resultQuestion);
                         MoveOverwrite(file, Path.Combine(successFolder, fileName));
-                        var jsonResult = JsonConvert.SerializeObject(resultQuestion);
-                        var jsonPath = Path.Combine(resultFolder, $"{fileName}.json");
-                        File.WriteAllText(jsonPath, jsonResult, Encoding.UTF8);
+                        //var jsonResult = JsonConvert.SerializeObject(resultQuestion);
+                        //var jsonPath = Path.Combine(resultFolder, $"{fileName}.json");
+                        //File.WriteAllText(jsonPath, jsonResult, Encoding.UTF8);
                         Console.WriteLine($"Extracted file: {file}");
                         successCount++;
                     }
@@ -72,8 +81,32 @@ namespace WordParser
             {
                 Console.WriteLine(ex.GetBaseException().Message);
             }
-           
-            Console.ReadLine();
+
+        }
+
+        static async Task<bool> CreateQuestionAsync(ResultQuestion question)
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(AppSettings.BackendUrl)
+            };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var response = await client.PostAsJsonAsync("api/Questions", question);
+            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                var returnQuestion = await response.Content.ReadAsAsync<ResultQuestion>();
+                foreach (var answersForAQuestion in question.Answers)
+                {
+                    answersForAQuestion.QuestionId = returnQuestion.id;
+                    await client.PostAsJsonAsync($"api/Questions/{returnQuestion.id}/answersForAQuestions",
+                        answersForAQuestion);
+                }
+            }
+            return response.IsSuccessStatusCode;
+                
         }
 
         private static void MoveOverwrite(string sourceFileName, string destFileName)

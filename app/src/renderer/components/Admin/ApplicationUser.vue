@@ -213,7 +213,7 @@ const configColumns = [{
                       }]
                     },
                     email: {
-                      identifier: 'email',
+                      identifier: 'email', 
                       rules: [{
                         type: 'email',
                         prompt: 'Vui lòng họ email'
