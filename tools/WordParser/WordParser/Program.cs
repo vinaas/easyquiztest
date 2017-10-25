@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NLog;
+using NLog.Targets;
 using TikaOnDotNet.TextExtraction;
 using WordParser.Helpers;
 using WordParser.Model;
@@ -15,17 +17,26 @@ namespace WordParser
 {
     class Program
     {
+        private static NLog.Logger logger;
         static void Main(string[] args)
         {
+
 #if DEBUG
-            RunAsync("D:\\WordParserSource").Wait();
+            var importFolder = "D:\\WordParserSource";
 #else
-            RunAsync(args[0]).Wait();
+            var importFolder = args[0];
+           
 #endif
+            var target = (FileTarget)LogManager.Configuration.FindTargetByName("f");
+            target.FileName = Path.Combine(importFolder, $"log_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.log");
+            LogManager.ReconfigExistingLoggers();
+            logger = NLog.LogManager.GetCurrentClassLogger();
+            RunAsync(importFolder).Wait();
         }
 
         static async Task RunAsync(string importFolder)
         {
+            logger.Info("--- START ---");
             var files = Directory.EnumerateFiles(importFolder, "*.*", SearchOption.TopDirectoryOnly)
                 .Where(s => s.EndsWith(".docx") || s.EndsWith(".doc")).ToList();
             var successFolder = Path.Combine(importFolder, "success");
@@ -51,6 +62,8 @@ namespace WordParser
 
                 var textExtractor = new TextExtractor();
                 Console.WriteLine($"There are {files.Count} file(s) found");
+                logger.Info($"There are {files.Count} file(s) found");
+
                 var successCount = 0;
                 foreach (var file in files)
                 {
@@ -58,6 +71,7 @@ namespace WordParser
                     try
                     {
                         Console.WriteLine($"Extracting file: {file}");
+                        logger.Info($"Extracting file: {file}");
                         var text = textExtractor.Extract(file).Text;
                         text = Regex.Replace(text, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
                         var resultQuestion = new ResultQuestion(fileName, text);
@@ -67,15 +81,19 @@ namespace WordParser
                         //var jsonPath = Path.Combine(resultFolder, $"{fileName}.json");
                         //File.WriteAllText(jsonPath, jsonResult, Encoding.UTF8);
                         Console.WriteLine($"Extracted file: {file}");
+                        logger.Info($"Extracted file: {file}");
                         successCount++;
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Extract file ${file} fail with error: {ex.GetBaseException().Message}");
                         MoveOverwrite(file, Path.Combine(failFolder, fileName));
+                        logger.Error($"Extract file ${file} fail with error: {ex.GetBaseException().Message}");
                     }
                 }
                 Console.WriteLine($"{successCount} file(s) were successfully converted");
+                logger.Info($"{successCount} file(s) were successfully converted");
+                logger.Info("--- END ---");
             }
             catch (Exception ex)
             {
@@ -93,6 +111,7 @@ namespace WordParser
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+            logger.Info($"Call api/Questions with param: {JsonConvert.SerializeObject(question)} ");
             var response = await client.PostAsJsonAsync("api/Questions", question);
             response.EnsureSuccessStatusCode();
             if (response.IsSuccessStatusCode)
@@ -101,6 +120,7 @@ namespace WordParser
                 foreach (var answersForAQuestion in question.Answers)
                 {
                     answersForAQuestion.QuestionId = returnQuestion.id;
+                    logger.Info($"Call api/Questions/{returnQuestion.id}/answersForAQuestions with param: {JsonConvert.SerializeObject(answersForAQuestion)} ");
                     await client.PostAsJsonAsync($"api/Questions/{returnQuestion.id}/answersForAQuestions",
                         answersForAQuestion);
                 }
