@@ -10,28 +10,28 @@
         "include": "answersForAQuestions"
     },
     "properties": {
-        "Description": {
+        "description": {
             "type": "string"
         },
-        "DifficultLevel": {
+        "difficultLevel": {
             "type": "number"
         },
-        "Categories": [
+        "categories": [
             {
                 "title": "string",
                 "code": "string"
             }
         ],
-        "IsRandom": {
+        "isRandom": {
             "type": "boolean"
         },
-        "Ref": {
+        "ref": {
             "type": "string"
         },
-        "QuestionType" : {
+        "questionType" : {
             "type" : "string"
         },
-        "ListAnswers": {
+        "listAnswers": {
             "type": [
                 {
                     "Content": {
