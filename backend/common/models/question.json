@@ -28,6 +28,9 @@
         "Ref": {
             "type": "string"
         },
+        "QuestionType" : {
+            "type" : "string"
+        },
         "ListAnswers": {
             "type": [
                 {
