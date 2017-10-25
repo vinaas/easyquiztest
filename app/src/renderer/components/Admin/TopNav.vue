@@ -41,7 +41,7 @@ export default {
             toastr.info('Đang import câu hỏi')
             var child = require("child_process").execFile;
             var executablePath =
-              "D:\\Git\\EasyQuizTest\\easyquiztest\\tools\\WordParser\\WordParser\\bin\\Release\\WordParser.exe";
+              "D:\Git\EasyQuizTest\easyquiztest\ParseTools\\WordParser.exe";
             var parameters = [filePaths[0]];
             child(executablePath, parameters, (error, stdout, stderr) => {
               if (error) {
