@@ -68,13 +68,13 @@
                                     <div class="header">Câu {{ current.number}}</div>
                                 </div>
                                 <div class="content">
-                                    <h4 class="ui sub header ">{{current.description}}</h4>
+                                    <h4 class="ui sub header ">{{current.Description}}</h4>
                                     <table class="ui table celled">
 
                                         <tbody>
-                                            <tr v-for="a in current.answersForAQuestions">
+                                            <tr v-for="a in current.ListAnswers">
                                                 <td>{{a.name}}</td>
-                                                <td>{{a.content}}</td>
+                                                <td>{{a.Content}}</td>
                                             </tr>
 
                                         </tbody>
@@ -98,7 +98,7 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <div v-for="(a ,i) in current.answersForAQuestions" class="field">
+                                            <div v-for="(a ,i) in current.ListAnswers" class="field">
                                                 <div v-bind:class="[ 'ui','checkbox', current.type ]">
                                                     <input v-if="current.type=='checkbox'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
                                                     <input v-if="current.type=='radio'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
@@ -162,7 +162,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item , index) in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}">
+                            <!-- <tr v-for="(item , index) in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}">
                                 <td>{{index +1 }}</td>
                                 <td> {{ (item.userCheck)? item.userCheck.map(x=> item.answersForAQuestions.filter(y=>y.id==x).shift().name ).sort():'Chưa trả lời' }} </td>
                                 <td>
@@ -170,7 +170,7 @@
                                 </td>
                                 <td>{{item.userAnswerResult? "Đúng" : "Sai"}} </td>
                                 <!--<td>None</td>-->
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>
@@ -191,6 +191,9 @@ import startTimer from '../../common/coundown.js'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import swal from 'sweetalert'
+
+import { AuthServices } from '../services/auth.js'
+const _authServices = new AuthServices()
 
 const co = Promise.coroutine
 
@@ -272,7 +275,8 @@ export default {
   created: co(function* () {
     yield this.$store.dispatch('getQuiz', 1)
     yield this.$store.dispatch('getQuestions', this.quiz.id)
-    yield this.$store.dispatch('getUsersQuizsRow', { userId: JSON.parse(sessionStorage.getItem('userinfo')).userId, quizId: this.quiz.id })
+    
+    yield this.$store.dispatch('getUsersQuizsRow', { userId:  _authServices.getUserInfo().userId, quizId: this.quiz.id })
     yield this.$store.dispatch('goToQuestion', this.userQuestions[0].id)
         // load timer
     var totalSecond = this.quiz.totalTime * 60,

@@ -23,18 +23,19 @@
                     </div>
                     <button id="login" class="ui fluid large teal submit button">Đăng Nhập</button>
                 </div>
-    
+
                 <div class="ui error message"></div>
-    
+
             </form>
-    
+
             <div class="ui message">
                 Chưa có tài khoản đăng nhập, liên hệ với chúng tôi!
                 <p>tài khoản quản trị
-                    <code>admin/1234</code>
+                    <code>admin/123</code>
                 </p>
                 <p>tài khoản thí sinh
-                    <code>user/1234</code>
+                    <code>user01/123</code>
+                    <code>user02/123</code>
                 </p>
                 <!--New to us? <a href="#">Sign Up</a>-->
             </div>
@@ -48,45 +49,48 @@ import Promise from 'bluebird'
 const _authServices = new AuthServices()
 
 export default {
-  mounted: function () {
-    var me = this
-    $('#login').api({
-      mockResponseAsync: Promise.coroutine(function* (st, cb) {
-        yield me.login()
-        cb(true)
-      }),
-      on: 'click'
-    })
-  },
-  data: function () { return { username: '', password: '' } },
-  methods: {
-    login: Promise.coroutine(function* () {
-      try {
-        let ret = yield _authServices.login({
-          'username': this.username,
-          'password': this.password
+    mounted: function() {
+        var me = this
+        $('#login').api({
+            mockResponseAsync: Promise.coroutine(function* (st, cb) {
+                yield me.login()
+                cb(true)
+            }),
+            on: 'click'
         })
-        if (ret) {
-          try {
-            let roles = yield _authServices.getUserRoles()
-            if (roles.filter(x => x.name == 'admin').length !== 0) {
-              yield this.$store.dispatch('login', ret.userId)
-              this.$router.push({ path: 'admin' })
-              toastr.info('Đăng nhập thành công')
-            } else {
+    },
+    data: function() { return { username: '', password: '' } },
+    methods: {
+        login: Promise.coroutine(function* () {
+            try {
+                let ret = yield _authServices.login({
+                    'username': this.username,
+                    'password': this.password
+                })
+                if (ret){
+                    toastr.info('Đăng nhập thành công')
+                    yield this.$store.dispatch('login', ret.userId)
+                    try {
+                        let roles = yield _authServices.getUserRoles()
+                        if (roles.roleId == 1) {
+                            this.$router.push({ path: 'admin' })
+                       
+                        } else if (roles.roleId == 2) {
+                            this.$router.push({ path: 'quiz' })
+                        }else{
 
+                        }
+                    } catch (error) {
+                        toastr.error('Không có quyền truy cập.')
+                    }
+                }else{
+                    toastr.error('Đăng nhập không thành công')
+                }
+            } catch (error) {
+                toastr.error('Không kết nối với server')
             }
-          } catch (error) {
-            this.$router.push({ path: 'quiz' })
-            yield this.$store.dispatch('login', ret.userId)
-            toastr.info('Đăng nhập thành công')
-          }
-        }
-      } catch (error) {
-        toastr.error('Đăng nhập không thành công', 'Invalid login')
-      }
-    })
-  }
+        })
+    }
 
 }
 </script>
