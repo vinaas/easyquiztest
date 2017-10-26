@@ -25,7 +25,9 @@
     },
     "scopesPraction": {
       "type": "string"
-    }
+    },
+    "beginTime" : "date",
+    "userStatus" : "string"
   },
   "validations": [],
   "relations": {

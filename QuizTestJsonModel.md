@@ -1,5 +1,8 @@
 
 ### Json schema theo User cho Bài Thi
+> Khi Thi, kết quả sẽ được cập nhật tự động 15s lần
+
+> Lúc kết thúc thi, có rất nhiều cập nhật từ người thi. Có thể delay để cập nhật 
 
 ```javascript
 {
@@ -75,6 +78,10 @@
    "beginTime" : "xxxx", //thời gian bắt đầu thi, sau khi users bấm nút "Bắt Đầu" 
    "userStatus" : "prepare", //trạng thái của users đăng nhập,  prepare: chưa thi | started : đang thi | completed : đã thi xong
 
+    "minPoint" : 1 - 10, //1 số thí sinh được ưu tiên ĐẬU, sẽ được gán điểm tối thiểu từ 1->10
+    // minPoint: 8 điểm, với bài thi 20 câu, thì số câu trả lời đúng là 16 câu
+    //nếu kết quả nhỏ hơn 16 câu đúng, thì sửa kết quả các câu SAI cho tổng số câu đúng được là 16
+
     //Cập nhật sau khi user kết thúc bài thi
    "summary" : { // sử dụng để hiển thị kết quả
        "result" : "Pass | Failt" //kết quả 
@@ -118,7 +125,7 @@
                   "id" : "1"
                   "content" : "Nội dung đáp án A",
                   "isCorrect" : true,
-               //   "answerByUser" : false //khi users chọn câu trả lời, lưu lựa chọn ở đây | Mặc định false
+                //  "answerByUser" : false //khi users chọn câu trả lời, lưu lựa chọn ở đây | Mặc định false
             },
               {
                   "id" : "2"
