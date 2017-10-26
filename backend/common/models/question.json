@@ -34,10 +34,17 @@
         "listAnswers": {
             "type": [
                 {
-                    "Content": {
+                    "id" : {
+                        "type" : "number"
+                    },
+                    "content": {
                         "type": "string"
                     },
-                    "IsCorrect": {
+                    "isCorrect": {
+                        "type": "boolean",
+                        "default" : false
+                    },
+                    "answerByUser" : {
                         "type": "boolean",
                         "default" : false
                     }

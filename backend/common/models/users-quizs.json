@@ -12,6 +12,11 @@
         "object"
       ]
     },
+    "listQuestions" : {
+      "type" : [
+        "object"
+      ]
+    },
     "result": {
       "type": "string"
     },

@@ -24,7 +24,18 @@
     },
     "numberOfQuestions": {
       "type": "number"
-    }
+    },
+    "listQuestionIds" : {
+      "type" : [
+        {
+          "questionId" : "number"
+        }
+      ]
+    },
+    "created" : "date",
+    "createdUserId" : "number",
+    "lastModified" : "date",
+    "lastModifiedUserId" : "number"
   },
   "validations": [],
   "relations": {

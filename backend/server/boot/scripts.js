@@ -60,8 +60,8 @@ module.exports = function (app) {
                   isRandom : true,
                   questionType: "ONE",
                   listAnswers : [
-                      { Content : "đáp án A", IsCorrect : "true" },
-                      { Content : "đáp án B"}
+                      { content : "đáp án A", isCorrect : "true" },
+                      { content : "đáp án B"}
                   ]
             },
             {
@@ -72,9 +72,9 @@ module.exports = function (app) {
                 isRandom : true,
                 questionType: "MANY",
                 listAnswers : [
-                    { Content : "đáp án A", IsCorrect : "true" },
-                    { Content : "đáp án B"},
-                    { Content : "đáp án C", IsCorrect : "true"}
+                    { content : "đáp án A", isCorrect : "true" },
+                    { content : "đáp án B"},
+                    { content : "đáp án C", isCorrect : "true"}
                 ]
           }
         ]);
