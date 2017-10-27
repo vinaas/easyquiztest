@@ -42,7 +42,6 @@ namespace WordParser
                 .Where(s => s.EndsWith(".docx") || s.EndsWith(".doc")).ToList();
             var successFolder = Path.Combine(importFolder, "success");
             var failFolder = Path.Combine(importFolder, "fail");
-            //var resultFolder = Path.Combine(importFolder, "result");
 
             try
             {
@@ -116,18 +115,6 @@ namespace WordParser
             logger.Info($"Call api/Questions with param: {jsonQuestion} ");
             var response = await client.PostAsJsonAsync("api/Questions", jsonQuestion);
             response.EnsureSuccessStatusCode();
-            if (response.IsSuccessStatusCode)
-            {
-                var returnQuestion = await response.Content.ReadAsAsync<ResultQuestion>();
-                foreach (var answersForAQuestion in question.Answers)
-                {
-                    answersForAQuestion.QuestionId = returnQuestion.Id;
-                    var jsonAnswer = JObject.FromObject(answersForAQuestion, serializer);
-                    logger.Info($"Call api/Questions/{returnQuestion.Id}/answersForAQuestions with param: {jsonAnswer} ");
-                    await client.PostAsJsonAsync($"api/Questions/{returnQuestion.Id}/answersForAQuestions",
-                        answersForAQuestion);
-                }
-            }
             return response.IsSuccessStatusCode;
                 
         }

@@ -18,7 +18,6 @@ namespace WordParser.Model
 
     public class AnswersForAQuestion
     {
-        public int QuestionId { get; set; }
         public string Content { get; set; }
         public bool IsCorrect { get; set; }
     }
@@ -27,11 +26,11 @@ namespace WordParser.Model
         public int Id { get; set; }
         public string Ref { get; set; }
         public string Description { get; set; }
-        public List<AnswersForAQuestion> Answers { get; set; }
+        public List<AnswersForAQuestion> ListAnswers { get; set; }
         public int DifficultLevel { get; set; }
         public List<Category> Categories { get; set; }
         public bool IsRandom { get; set; }
-
+        public string QuestionType { get; set; }
         public ResultQuestion() { }
 
         public ResultQuestion(string fileName, string text)
@@ -69,7 +68,7 @@ namespace WordParser.Model
             {
                 throw new Exception("Error ##2: Number of answers must be larger than 1");
             }
-            this.Answers = result.Skip(1).Select(q => new AnswersForAQuestion
+            this.ListAnswers = result.Skip(1).Select(q => new AnswersForAQuestion
             {
                 Content = q.Trim()
             }).ToList();
@@ -83,10 +82,15 @@ namespace WordParser.Model
             {
                 throw new Exception("Error ##3: Missing Right Answers");
             }
-            foreach (var answersForAQuestion in Answers)
+            foreach (var answersForAQuestion in ListAnswers)
             {
                 answersForAQuestion.IsCorrect = result.Skip(1).Select(q => q.Trim()).Contains(answersForAQuestion.Content);
             }
+            var countCorrect = ListAnswers.Count(q => q.IsCorrect);
+
+            if(countCorrect <= 0) throw new Exception("Error ##3: Missing Right Answers");
+
+            QuestionType = countCorrect > 1 ? "MANY" : "ONE";
         }
 
         public void ParseDifficultLevel(string text)
