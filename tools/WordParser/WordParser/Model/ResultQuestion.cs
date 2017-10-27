@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace WordParser.Model
 {
@@ -18,8 +13,10 @@ namespace WordParser.Model
 
     public class AnswersForAQuestion
     {
+        public int Id { get; set; }
         public string Content { get; set; }
         public bool IsCorrect { get; set; }
+        public bool AnswerByUser { get; set; }
     }
     public class ResultQuestion
     {
@@ -68,8 +65,10 @@ namespace WordParser.Model
             {
                 throw new Exception("Error ##2: Number of answers must be larger than 1");
             }
+            var i = 1;
             this.ListAnswers = result.Skip(1).Select(q => new AnswersForAQuestion
             {
+                Id = i++,
                 Content = q.Trim()
             }).ToList();
         }
