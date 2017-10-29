@@ -68,13 +68,13 @@
                                     <div class="header">Câu {{ current.number}}</div>
                                 </div>
                                 <div class="content">
-                                    <h4 class="ui sub header ">{{current.Description}}</h4>
+                                    <h4 class="ui sub header ">{{current.description}}</h4>
                                     <table class="ui table celled">
 
                                         <tbody>
                                             <tr v-for="a in current.listAnswers">
-                                                <td>{{a.name}}</td>
-                                                <td>{{a.Content}}</td>
+                                                <td style="width: 30px"><input type="checkbox" /></td>
+                                                <td>{{a.content}}</td>
                                             </tr>
 
                                         </tbody>
@@ -99,10 +99,10 @@
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
                                             <div v-for="(a ,i) in current.listAnswers" class="field">
-                                                <div v-bind:class="[ 'ui','checkbox', current.type ]">
-                                                    <input v-if="current.type=='checkbox'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
-                                                    <input v-if="current.type=='radio'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
-                                                    <label>{{a.name}}</label>
+                                                <div v-bind:class="[ 'ui','checkbox', current.questionType ]">
+                                                    <input v-if="current.questionType=='MANY'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
+                                                    <input v-if="current.questionType=='ONE'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
+                                                    <label>{{a.content}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,122 +184,123 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import toastr from "toastr";
+import startTimer from "../../common/coundown.js";
+import _ from "lodash";
+import Promise from "bluebird";
+import swal from "sweetalert";
 
-import { mapGetters, mapActions } from 'vuex'
-import toastr from 'toastr'
-import startTimer from '../../common/coundown.js'
-import _ from 'lodash'
-import Promise from 'bluebird'
-import swal from 'sweetalert'
+import { AuthServices } from "../services/auth.js";
+const _authServices = new AuthServices();
 
-import { AuthServices } from '../services/auth.js'
-const _authServices = new AuthServices()
-
-const co = Promise.coroutine
+const co = Promise.coroutine;
 
 export default {
-  name: 'quiz',
-  data: function () {
+  name: "quiz",
+  data: function() {
     return {
       cloneUserCheck: []
-    }
+    };
   },
   computed: mapGetters({
-    quiz: 'quiz',
-    current: 'currentQuestion',
-    userQuestions: 'mapUserQuestions',
-    next: 'next',
-    previous: 'previous',
-    answereds: 'answereds',
-    user: 'user',
-    usersQuizsRow: 'usersQuizsRow'
+    quiz: "quiz",
+    current: "currentQuestion",
+    userQuestions: "mapUserQuestions",
+    next: "next",
+    previous: "previous",
+    answereds: "answereds",
+    user: "user",
+    usersQuizsRow: "usersQuizsRow"
   }),
   components: {},
-  mounted: function () {
-  },
+  mounted: function() {},
   methods: {
-    goToQuestion (id) {
-      this.$store.dispatch('goToQuestion', id)
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
+    goToQuestion(id) {
+      this.$store.dispatch("goToQuestion", id).then(() => {
+        this._cloneCurrentCheck();
+      });
     },
-    goNext () {
-      this.$store.dispatch('goNext')
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
+    goNext() {
+      this.$store.dispatch("goNext").then(() => {
+        this._cloneCurrentCheck();
+      });
     },
-    goPrevious () {
-      this.$store.dispatch('goPre')
-                .then(() => {
-                  this._cloneCurrentCheck()
-                })
+    goPrevious() {
+      this.$store.dispatch("goPre").then(() => {
+        this._cloneCurrentCheck();
+      });
     },
-    answer: co(function* () {
-      toastr.options.timeOut = 100
+    answer: co(function*() {
+      toastr.options.timeOut = 100;
       if (this.cloneUserCheck.length == 0) {
-        toastr.warning('Bạn chưa chọn đáp án')
-        return
+        toastr.warning("Bạn chưa chọn đáp án");
+        return;
       }
-      toastr.info('Bạn đã trả lời thành công')
-      yield this.$store.dispatch('answer', Object.assign({}, this.current, { userCheck: this.cloneUserCheck }))
-      $('#quiz-progress').progress({
+      toastr.info("Bạn đã trả lời thành công");
+      yield this.$store.dispatch(
+        "answer",
+        Object.assign({}, this.current, { userCheck: this.cloneUserCheck })
+      );
+      $("#quiz-progress").progress({
         value: this.answereds,
         total: this.userQuestions.length
-      })
+      });
     }),
-    endQuizTest: co(function* () {
-      swal({
-        title: 'Kết thúc bài kiểm tra',
-        text: 'Bạn có chắc chắn muốn kết thúc bài kiểm tra không?',
-        type: 'info',
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-        confirmButtonText: 'Kết thúc',
-        cancelButtonText: 'Tiếp tục làm bài'
-      },
-                co(function* () {
-                  yield this.$store.dispatch('end')
-                  $('#result')
-                        .modal('show')
-                  swal.close()
-                }).bind(this))
+    endQuizTest: co(function*() {
+      swal(
+        {
+          title: "Kết thúc bài kiểm tra",
+          text: "Bạn có chắc chắn muốn kết thúc bài kiểm tra không?",
+          type: "info",
+          showCancelButton: true,
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true,
+          confirmButtonText: "Kết thúc",
+          cancelButtonText: "Tiếp tục làm bài"
+        },
+        co(function*() {
+          yield this.$store.dispatch("end");
+          $("#result").modal("show");
+          swal.close();
+        }).bind(this)
+      );
     }),
 
-    _cloneCurrentCheck () {
-      this.cloneUserCheck = _.clone(this.current.userCheck)
+    _cloneCurrentCheck() {
+      this.cloneUserCheck = _.clone(this.current.userCheck);
     }
   },
-  created: co(function* () {
-    yield this.$store.dispatch('getQuiz', 1)
-    yield this.$store.dispatch('getQuestions', this.quiz.id)
-    
-    yield this.$store.dispatch('getUsersQuizsRow', { userId:  _authServices.getUserInfo().userId, quizId: this.quiz.id })
-    yield this.$store.dispatch('goToQuestion', this.userQuestions[0].id)
-        // load timer
-    var totalSecond = this.quiz.totalTime * 60,
-      display = document.querySelector('#basicUsage')
-    startTimer(totalSecond, display)
-    this._cloneCurrentCheck()
+  created: co(function*() {
+    yield this.$store.dispatch("getQuiz", 1);
+    yield this.$store.dispatch("getQuestions", this.quiz.id);
 
-    $('#quiz-progress').progress({
-      label: 'ratio',
+    yield this.$store.dispatch("getUsersQuizsRow", {
+      userId: _authServices.getUserInfo().userId,
+      quizId: this.quiz.id
+    });
+    yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
+    // load timer
+    var totalSecond = this.quiz.totalTime * 60,
+      display = document.querySelector("#basicUsage");
+    startTimer(totalSecond, display);
+    this._cloneCurrentCheck();
+
+    $("#quiz-progress").progress({
+      label: "ratio",
       value: this.answereds,
       total: this.userQuestions.length,
       text: {
-        ratio: '{value}/{total}'
+        ratio: "{value}/{total}"
       },
       showActivity: false
-    })
+    });
   })
-
-}
+};
 </script>
 <style scoped>
 #nav-buttons {
-    padding-top: 100px;
-    padding-bottom: 10px;
+  padding-top: 100px;
+  padding-bottom: 10px;
 }
 </style>
