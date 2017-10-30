@@ -57,7 +57,6 @@ const getters = {
         let userCheck = []
         if (getUserCheckQuestion) userCheck = getUserCheckQuestion.userCheck || []
         let userQuestion = Object.assign({}, x, { userCheck: userCheck, isAnswered: userCheck.length !== 0 }, { number: state.questions.map(x => x.id).indexOf(state.currentQuestionId) + 1 })
-        console.log(userQuestion)
         return userQuestion
     }).shift() || {},
     // previous :(state)=> true,
@@ -76,12 +75,18 @@ const actions = {
     }),
     getQuestions: co(function*({ commit }, quizId) {
         let recQuestions = yield quizSrv.getQuestionsBy(quizId)
+        $.map(recQuestions, function(questionItem, i) {
+            $.map(questionItem.listAnswers, function(answerItem, j) {
+                answerItem.title = String.fromCharCode(65 + j)
+            });
+        });
         commit(mutationTypes.RECEIVE_QUESTIONS, recQuestions)
     }),
     getUsersQuizsRow: co(function*({ commit }, { userId, quizId }) {
         let recUsersQuizsRow
         try {
             recUsersQuizsRow = yield usersQuizsSrv.getOne(userId, quizId)
+
         } catch (error) {
             yield usersQuizsSrv.save({
                 'answerDetail': [],

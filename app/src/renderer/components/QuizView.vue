@@ -73,7 +73,7 @@
 
                                         <tbody>
                                             <tr v-for="a in current.listAnswers">
-                                                <td style="width: 30px"><input type="checkbox" /></td>
+                                                <td style="width:30px">{{a.title}}</td>
                                                 <td>{{a.content}}</td>
                                             </tr>
 
@@ -99,10 +99,10 @@
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
                                             <div v-for="(a ,i) in current.listAnswers" class="field">
-                                                <div v-bind:class="[ 'ui','checkbox', current.questionType ]">
-                                                    <input v-if="current.questionType=='MANY'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck">
-                                                    <input v-if="current.questionType=='ONE'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]">
-                                                    <label>{{a.content}}</label>
+                                                <div v-bind:class="[ 'ui',current.questionType=='MANY'?'checkbox':'radio', current.questionType ]">
+                                                    <input v-if="current.questionType=='MANY'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck" />
+                                                    <input v-if="current.questionType=='ONE'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]" />
+                                                    <label> {{a.title}}</label>
                                                 </div>
                                             </div>
                                         </div>
