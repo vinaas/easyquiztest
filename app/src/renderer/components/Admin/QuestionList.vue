@@ -5,32 +5,29 @@
       <span data-tooltip="Tạo mới">
       <i class="add to circle icon green" v-on:click="add()"></i></span>
     </div>
-    <div class="question ui modal">
+    <div class="questionbank ui modal">
       <i class="close icon"></i>
       <div class="header">
-        {{checked==true?'Cập nhật':'Tạo mới'}}
+        Thêm câu hỏi từ ngân hàng câu hỏi
       </div>
       <div class="ui content">
 
         <form class="ui form">
-          <div class="field" style="display:none">
-            <label>Mã câu đố</label>
-            <input type="text" name="quizId" placeholder="Mã câu đố" v-model="current.quizId" Disabled>
-          </div> 
-          <div class="field">
-            <label>Mô tả</label>
-            <input type="text" name="description" placeholder="Mô tả" v-model="current.description">
-          </div>
-          <div class="field">
-            <label>Kiểu</label>
-            <select v-model="current.type" name="type">
-              <option value="">--Chọn kiểu--</option>
-              <option value="radio">Một kết quả đúng</option> 
-              <option value="checkbox">Nhiều kết quả đúng</option>
-            </select>
-          </div>
          
-          <div class="ui primary submit button">Submit</div>
+          <div class="field">
+            <table id="questionBank" class="ui celled table" cellspacing="0" width="100%">
+            <thead>
+              <tr>
+                <th>Chọn</th>
+                <th>Kiểu</th>
+                <th>Nội dung</th>
+              </tr>
+            </thead>
+          
+          </table>
+          </div>
+
+          <div class="ui primary submit button">Thêm câu hỏi</div>
         </form>
       </div>
 
@@ -46,200 +43,243 @@
         </tr>
       </thead>
     </table>
-
-    <modal name="answers" :width="900" :height="600" :clickToClose="false">
-      <div class="container-modal">
-        <div class="header">
-          <span>Danh sách câu trả lời cho câu hỏi</span>
-          <span v-on:click="closeAnswer()" style="font-size:20px;color:red;position: absolute;margin-left: 605px;margin-top: -43px;text-align: right;">
-        x
-         </span>
-        </div>
-        <div class="ui content">
-          <div class="btn-position-right" v-show="this.answers.length>=1">
-            <span data-tooltip='Lưu' data-position="top left" :disabled="disabledSaveAnswer == 1 ? true : false"><i class="save icon editor_edit blue" v-on:click="saveAnswers()"></i></span>
-          </div>
-          <table id="listAnswers" class="ui celled table" cellspacing="0" width="100%">
-            <thead>
-              <tr>
-                <th>Tên</th>
-                <th>Nội dung</th>
-                <th>kiểu</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="ans in answers">
-                <td>{{ans.name}}</td>
-                <td><textarea name="content" v-model="ans.content"></textarea></td>
-                <td><input type="checkbox" name="isCorrect" v-model="ans.isCorrect"></td>
-                <td><i class="delete icon editor_remove red" v-on:click="deleteAnswer(ans)"></i></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class='btn-position-right'><span data-tooltip="Tạo mới">
-             <i class="add to circle icon green" v-on:click="addAnswer()"></i></span>
-          </div>
-
-        </div>
-      </div>
-    </modal>
   </div>
 
 </template>
 
 <script>
- 
-  import {
-    mapState,
-    mapGetters
-  } from 'vuex'
-   import _ from 'lodash'
-   import Promise from 'Bluebird'
-   import toastr from 'toastr'
-   import vmodal from 'vue-js-modal'
-   import Logger from '../../../common/logger.js'
-   import Vue from 'vue'
-   import 'datatables.net-dt/css/jquery.datatables.css'
-   const logger = Logger('Admin Questions')
-   Vue.use(vmodal)
-   const co = Promise.coroutine
-   var $ = require('jquery')
-   require('datatables.net')(window, $)
-   const AnswersName = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
-   const configColumns = [{
-     'data': 'type'
-   },
-   {
-     'data': 'description'
-   },
-   {
-     'data': 'Action'
-   }
-   ]
-   const configColumnDefs = [{
-     'targets': -1,
-     'data': null,
-     'defaultContent': '<div style="text-align:center"><span data-tooltip="cậpp nhật câu hỏi" data-position="top left"><i class="edit icon edit_question blue" ></i></span>|<span data-tooltip="Link Câu trả lời" data-position="top left"><i class="linkify icon go_to_answers orange"></i></span>|<span data-tooltip="Xóa câu h?i" data-position="top left"><i class="delete icon editor_remove red"></i></span></div>'
-   }]
- 
-   export default {
+import { mapState, mapGetters } from "vuex";
 
-     data () {
-       return {
-         current: {},
-         checked: false,
-         question: {},
-         answers: [],
-         disabledSaveAnswer: 0
-       }
-     },
+import _ from "lodash";
+import Promise from "Bluebird";
+import toastr from "toastr";
+import vmodal from "vue-js-modal";
+import Logger from "../../../common/logger.js";
+import Vue from "vue";
+import "datatables.net-dt/css/jquery.datatables.css";
+import swal from "sweetalert";
+const logger = Logger("Admin Questions");
+Vue.use(vmodal);
+const co = Promise.coroutine;
+var $ = require("jquery");
+require("datatables.net")(window, $);
+const AnswersName = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+const configColumns = [
+  {
+    data: "questionType"
+  },
+  {
+    data: "description"
+  }
+];
+const configColumnDefs = [
+  {
+    targets: 2,
+    data: null,
+    width: "50px",
+    defaultContent:
+      '<div style="text-align:center"><span data-tooltip="Xóa câu hỏi" data-position="top left"><i class="delete icon editor_remove red"></i></span></div>'
+  }
+];
+const configQuestionBankColumns = [
+  {
+    data: "id"
+  },
+  {
+    data: "questionType"
+  },
+  {
+    data: "description"
+  }
+];
+const configQuestionBankColumnDefs = [
+  {
+    targets: 0,
+    orderable: false,
+    width: "30px",
+    render: function(data, type, row) {
+      return (
+        "<input type='checkbox' class='selectedquestion' data-id='" +
+        data +
+        "' />"
+      );
+    }
+  },
+  {
+    targets: 1,
+    width: "80px"
+  }
+];
+export default {
+  data() {
+    return {
+      //current: {},
+      checked: false,
+      question: {},
+      answers: [],
+      disabledSaveAnswer: 0
+    };
+  },
 
-     computed: {
-       ...mapState('adminQuestions', {
-         questions: state => state.questionsOfQuiz,
-         currentAnswers: state => state.currentAnswers
-       })
-     },
-     created: co(function* () {
-       yield this.viewDataTable()
-     }),
-     mounted: function () {
-       let me = this
- 
-       $('.ui.form')
-        .form({
-          fields: {
-            description: {
-              identifier: 'description',
-              rules: [{
-                type: 'empty',
-                prompt: 'Please enter your description'
-              }]
-            },
-            type: {
-              identifier: 'type',
-              rules: [{
-                type: 'empty',
-                prompt: 'Please enter your type'
-              }]
+  computed: {
+    ...mapState("adminQuestions", {
+      questionsBank: state => state.questionsBank,
+      questions: state => state.questionsOfQuiz,
+      currentAnswers: state => state.currentAnswers
+    }),
+    ...mapState("adminQuizs", {
+      current: state => state.currentQuiz
+    })
+  },
+  created: co(function*() {
+    yield this.$store.dispatch("adminQuizs/findOneQuiz", this.$route.params.id);
+    yield this.viewDataTable();
+    yield this.viewQuestionBankDataTable();
+  }),
+  mounted: function() {
+    let me = this;
+
+    $(".ui.form").form({
+      fields: {
+        description: {
+          identifier: "description",
+          rules: [
+            {
+              type: "empty",
+              prompt: "Please enter your description"
             }
-          },
-          onSuccess: function (event, fields) {
-            event.preventDefault()
-            return true
-          },
-          onFailure: function () {
-            toastr.error('Lưu không thành công')
-            return false
+          ]
+        },
+        type: {
+          identifier: "type",
+          rules: [
+            {
+              type: "empty",
+              prompt: "Please enter your type"
+            }
+          ]
+        }
+      },
+      onSuccess: function(event, fields) {
+        event.preventDefault();
+        return true;
+      },
+      onFailure: function() {
+        toastr.error("Lưu không thành công");
+        return false;
+      }
+    });
+
+    $(".ui.form").api({
+      mockResponseAsync: Promise.coroutine(function*(st, cb) {
+        if ($(".selectedquestion:checkbox:checked").length <= 0) {
+          toastr.error("Vui lòng chọn câu hỏi");
+          cb();
+        } else {
+          yield me.save();
+          cb();
+          $(".ui.modal").modal("hide");
+        }
+
+        //this.current = {};
+      }),
+      on: "submit"
+    });
+    $(".questionbank").modal({
+      closable: false,
+      onHidden: function() {
+        $(".ui.form").form("reset");
+        //this.current = {};
+      }
+    });
+    me.$forceUpdate();
+  },
+  methods: {
+    closeAnswer: co(function*() {
+      this.$modal.hide("answers");
+      yield this.viewDataTable();
+    }),
+    save: co(function*() {
+      let me = this;
+      if (!me.current.listQuestions) me.current.listQuestions = [];
+      var totalSelected = 0;
+      var totalSuccess = 0;
+      $(".selectedquestion:checkbox:checked").each(function(index) {
+        totalSelected++;
+        var questionId = $(this).data("id");
+        var result = $.grep(me.current.listQuestions, function(e) {
+          return e.id == questionId;
+        });
+        if (result.length == 0) {
+          var questionItem = $.grep(me.questionsBank, function(e) {
+            if (e.id == questionId) return e;
+          });
+          if (questionItem) {
+            me.current.listQuestions.push(questionItem[0]);
+            totalSuccess++;
           }
+        }
+      });
+      yield this.$store.dispatch("adminQuizs/saveQuiz", this.current);
+      yield this.$store.dispatch(
+        "adminQuizs/findOneQuiz",
+        this.$route.params.id
+      );
 
-        })
+      if (totalSuccess > 0) {
+        toastr.success(
+          "Thêm thành công " +
+            totalSuccess +
+            " câu, có " +
+            (totalSelected - totalSuccess) +
+            " câu bị trùng."
+        );
+      } else {
+        toastr.error("Các câu hỏi bạn chọn đã nằm trong danh sách");
+      }
+      yield this.viewDataTable();
+      //this.current.listQuestions.push()
 
-       $('.ui.form').api({
-         mockResponseAsync: Promise.coroutine(function* (st, cb) {
-           yield me.save()
-           cb()
-           $('.ui.modal').modal('hide')
-           toastr.success('Lưu thành công')
-           this.current = {}
-         }),
-         on: 'submit'
-       })
-       $('.question').modal({
-         closable: false,
-         onHidden: function () {
-           $('.ui.form').form('reset')
-           this.current = {}
-         }
-       })
-       me.$forceUpdate()
-     },
-     methods: {
- 
-       closeAnswer: co(function*() {
-         this.$modal.hide('answers')
-         yield this.viewDataTable()
-       }),
-       save: co(function* () {
-         console.log('@', JSON.stringify(this.current))
-         yield this.$store.dispatch('adminQuestions/saveQuestion', this.current)
-         yield this.viewDataTable()
-       }),
-       add: function () {
-         logger.debug('add', this.checked)
-         this.checked = false
-         this.current = {}
-         this.current.quizId = this.$route.params.id
-         $('.question').last().modal('show')
-       },
-       show: function () {
-         this.$modal.show('answers')
-       },
-       viewDataTable: co(function* () {
-         let me = this
-         yield this.$store.dispatch('adminQuestions/getQuestionsOfQuiz', this.$route.params.id)
-         $(document).ready(() => {
-           $('#questions').DataTable().destroy()
-
-           let table = $('#questions').DataTable({
-             data: _.clone(me.questions),
-
-             'columns': configColumns,
-             'columnDefs': configColumnDefs
-           })
-           $('#questions').off('click')
-           $('#questions').on('click', 'tr .edit_question', co(function* () {
-             let selected = table.row($(this).parents('tr')).data()
-             console.log('selected', JSON.stringify(selected))
-             me.current = _.clone(selected)
-             me.checked = true
-             $('.question').last().modal('show')
-           }))
-           $('#questions').on('click', 'tr .editor_remove', function () {
-             let selectedRow = table.row($(this).parents('tr')).data()
-             swal({
+      // console.log(this.current);
+      //yield this.$store.dispatch("adminQuestions/saveQuestion", this.current);
+      //yield this.viewDataTable();
+    }),
+    add: function() {
+      $(".questionbank")
+        .last()
+        .modal("show");
+    },
+    show: function() {
+      this.$modal.show("answers");
+    },
+    viewDataTable: co(function*() {
+      let me = this;
+      $(document).ready(() => {
+        $("#questions")
+          .DataTable()
+          .destroy();
+        let table = $("#questions").DataTable({
+          data: me.current.listQuestions,
+          columns: configColumns,
+          columnDefs: configColumnDefs
+        });
+        $("#questions").off("click");
+        $("#questions").on(
+          "click",
+          "tr .edit_question",
+          co(function*() {
+            let selected = table.row($(this).parents("tr")).data();
+            me.current = _.clone(selected);
+            me.checked = true;
+            $(".questionbank")
+              .last()
+              .modal("show");
+          })
+        );
+        $("#questions").on("click", "tr .editor_remove", function() {
+          let selectedRow = table.row($(this).parents("tr")).data();
+          swal(
+            {
                title: 'Bạn có chắc chắn',
                text: 'Xóa dữ liệu : ' + selectedRow.description,
                type: 'warning',
@@ -248,76 +288,84 @@
                confirmButtonText: 'Có, Xóa',
                closeOnConfirm: false,
                showLoaderOnConfirm: true
-             },
-              co(function* () {
-                try {
-                  yield me.$store.dispatch('adminQuestions/removeQuestion', {
-                    id: selectedRow.id
-                  })
-                  me.viewDataTable()
-                  swal('Ðã xóa!', 'Dữ liệu đã bị  xóa', 'success')
-                } catch (error) {
-                  swal('Thông báo!', 'Lỗi không thể xóa', 'error')
-                }
-              }))
-           })
-           $('#questions').on('click', 'tr .go_to_answers', function () {
-             let selectedAnswers = table.row($(this).parents('tr')).data()
-             let answers = _.isEmpty(selectedAnswers.answersForAQuestions) == true ? []
-             : selectedAnswers.answersForAQuestions.map(x => {
-               return _.clone(x)
-             })
-             me.answers = answers
-             delete selectedAnswers.answersForAQuestions
-             me.question = selectedAnswers
-             me.$modal.show('answers')
-           })
-         })
-       }),
-       deleteAnswer: function (ans) {
-         this.answers = _.reject(this.answers, ans)
-       },
-       saveAnswers: co(function* () {
-         try {
-           this.question.answersForAQuestions = this.answers
-           this.disabledSaveAnswer = 1
-           yield this.$store.dispatch('adminQuestions/updateAnswers', this.question)
- 
-           yield this.viewDataTable()
-           this.disabledSaveAnswer = 0
-           swal('Thông báo!', 'Lưu thành công', 'success')
-         } catch (error) {
-           swal('Thông báo!', 'Lưu thất bại', 'error')
-         }
-       }),
-       addAnswer: function () {
-         this.answers.push(this.configAnswer())
-       },
-       configAnswer: function () {
-         let answer = {}
-         answer.questionId = this.question.id
-         answer.name = AnswersName[this.answers.length]
-         return answer
-       }
-     }
-   }
-</script>
+            } 
+            ,
+            co(function*() {
+              try {
+                //debugger
+                me.current.listQuestions = me.current.listQuestions.filter(
+                  obj => obj.id != selectedRow.id
+                );
+                console.log(me.current)
+                yield me.$store.dispatch("adminQuizs/saveQuiz", me.current);
+                yield me.$store.dispatch("adminQuizs/findOneQuiz",me.$route.params.id);
+                me.viewDataTable();
+                swal({
+                  type: 'success',
+                  title: "Ðã xóa!",
+                  text: "Dữ liệu đã bị xóa",
+
+                });
+              } catch (error) {
+                swal({
+                  type: 'error',
+                  title: "Thông báo!",
+                  text: "Lỗi không thể xóa " + error
+                });
+              }
+            })
+          )
+        })
+        $("#questions").on("click", "tr .go_to_answers", function() {
+          let selectedAnswers = table.row($(this).parents("tr")).data();
+          let answers =
+            _.isEmpty(selectedAnswers.answersForAQuestions) == true
+              ? []
+              : selectedAnswers.answersForAQuestions.map(x => {
+                  return _.clone(x);
+                });
+          me.answers = answers;
+          delete selectedAnswers.answersForAQuestions;
+          me.question = selectedAnswers;
+          me.$modal.show("answers");
+        });
+      });
+    }),
+    viewQuestionBankDataTable: co(function*() {
+      let me = this;
+      yield this.$store.dispatch("adminQuestions/search", {
+        keyword: "",
+        page: 0,
+        pageSize: 20
+      });
+      $(document).ready(() => {
+        $("#questionBank")
+          .DataTable()
+          .destroy();
+        let table = $("#questionBank").DataTable({
+          ordering: false,
+          data: _.clone(me.questionsBank),
+          columns: configQuestionBankColumns,
+          columnDefs: configQuestionBankColumnDefs
+        });
+      });
+    })
+  }
+};
 </script>
 <style scoped>
-
-  .container-modal{
-    height: 100%;
+.container-modal {
+  height: 100%;
   overflow-x: scroll;
   margin: 0 auto;
   padding: 3em;
   font: 100%/1.4 serif;
-  border: 1px solid rgba(0,0,0,0.25)
-
-     }
-  .btn-position-right {
-    text-align: right;
-  }
-  .ui.text.container {
-       max-width: 2000px !important;
-  }
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+.btn-position-right {
+  text-align: right;
+}
+.ui.text.container {
+  max-width: 2000px !important;
+}
 </style>

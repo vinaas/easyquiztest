@@ -22,9 +22,23 @@
             <label>Tên</label>
             <input type="text" name="name" placeholder="Tên đề thi" :value="current.name" @input="updateCurrent">
           </div>
-          <div class="field">
-            <label>Thời gian làm bài</label>
-            <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="current.totalTime" @input="updateCurrent">
+          <div class="four fields">
+            <div class="field">
+              <label>Thời gian làm bài</label>
+              <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="current.totalTime" @input="updateCurrent">
+            </div>
+                <div class="field">
+              <label>Số câu hỏi cho 1 thí sinh</label>
+              <input type="number" name="numberOfQuestions" placeholder="Số câu hỏi cho 1 thí sinh" :value="current.numberOfQuestions" @input="updateCurrent">
+            </div>
+            <div class="field">
+              <label>Thời gian bắt đầu kỳ thi</label>
+              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="current.startTime" @input="updateCurrent">
+            </div>
+            <div class="field">
+              <label>Thời gian kết thúc kỳ thi</label>
+              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="current.endTime" @input="updateCurrent">
+            </div>
           </div>
           <div class="ui primary submit button">Submit</div>
         </form>
@@ -35,12 +49,12 @@
     <table id="example" class="ui celled striped table teal">
       <thead>
         <tr>
-          <th>Số thứ tự</th>
+          <th style="width: 50px;">Số thứ tự</th>
           <th> Tên </th>
           <th> Số câu hỏi </th>
           <th> Thời gian </th>
           <th> Kỳ thi</th>
-          <th> Hành động</th>
+          <th style="width: 80px;"> Hành động</th>
         </tr>
       </thead>
       <tbody>
@@ -181,7 +195,7 @@ export default {
       let cloneQuiz = Object.assign({}, this.current, {
         [e.target.name]: e.target.value
       })
-      this.$store.dispatch('adminQuizs/updateCurrent', cloneQuiz)
+      this.$store.dispatch('x`/updateCurrent', cloneQuiz)
     },
     toRemove: Promise.coroutine(function* (item) {
       let me = this
