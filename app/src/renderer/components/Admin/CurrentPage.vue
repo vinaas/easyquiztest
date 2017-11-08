@@ -195,7 +195,7 @@ export default {
       let cloneQuiz = Object.assign({}, this.current, {
         [e.target.name]: e.target.value
       })
-      this.$store.dispatch('x`/updateCurrent', cloneQuiz)
+      this.$store.dispatch('adminQuizs/updateCurrent', cloneQuiz)
     },
     toRemove: Promise.coroutine(function* (item) {
       let me = this

@@ -138,54 +138,7 @@ export default {
   }),
   mounted: function() {
     let me = this;
-
-    $(".ui.form").form({
-      fields: {
-        description: {
-          identifier: "description",
-          rules: [
-            {
-              type: "empty",
-              prompt: "Please enter your description"
-            }
-          ]
-        },
-        type: {
-          identifier: "type",
-          rules: [
-            {
-              type: "empty",
-              prompt: "Please enter your type"
-            }
-          ]
-        }
-      },
-      onSuccess: function(event, fields) {
-        event.preventDefault();
-        return true;
-      },
-      onFailure: function() {
-        toastr.error("Lưu không thành công");
-        return false;
-      }
-    });
-
-    $(".ui.form").api({
-      mockResponseAsync: Promise.coroutine(function*(st, cb) {
-        if ($(".selectedquestion:checkbox:checked").length <= 0) {
-          toastr.error("Vui lòng chọn câu hỏi");
-          cb();
-        } else {
-          yield me.save();
-          cb();
-          $(".ui.modal").modal("hide");
-        }
-
-        //this.current = {};
-      }),
-      on: "submit"
-    });
-    $(".questionbank").modal({
+  $(".questionbank").modal({
       closable: false,
       onHidden: function() {
         $(".ui.form").form("reset");

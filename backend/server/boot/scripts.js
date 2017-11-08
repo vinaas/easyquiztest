@@ -61,6 +61,7 @@ module.exports = function(app) {
         }
     ], function(err, quiz) {
         Question.create([{
+                id: 1,
                 description: 'Nội dung câu hỏi 1, kì thi 1',
                 quizId: quiz[0].id,
                 difficultLevel: 5,
@@ -73,6 +74,7 @@ module.exports = function(app) {
                 ]
             },
             {
+                id: 2,
                 description: 'Nội dung câu hỏi 2, kì thi 1',
                 quizId: quiz[0].id,
                 difficultLevel: 5,
