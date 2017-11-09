@@ -25,6 +25,14 @@
             </thead>
           
           </table>
+          <paginate
+            :page-count="Math.ceil(totalRows/pageSize)"
+            :prev-text="'Prev'"
+            :next-text="'Next'"
+            :clickHandler="changePage"
+            :containerClass="'pagination'"
+            ref="paginate">
+          </paginate>
           </div>
 
           <div class="ui primary submit button">Thêm câu hỏi</div>
@@ -58,6 +66,8 @@ import Logger from "../../../common/logger.js";
 import Vue from "vue";
 import "datatables.net-dt/css/jquery.datatables.css";
 import swal from "sweetalert";
+import Paginate from "vuejs-paginate";
+Vue.component("paginate", Paginate);
 const logger = Logger("Admin Questions");
 Vue.use(vmodal);
 const co = Promise.coroutine;
@@ -117,7 +127,8 @@ export default {
       checked: false,
       question: {},
       answers: [],
-      disabledSaveAnswer: 0
+      disabledSaveAnswer: 0,
+      pageSize: 20
     };
   },
 
@@ -125,7 +136,8 @@ export default {
     ...mapState("adminQuestions", {
       questionsBank: state => state.questionsBank,
       questions: state => state.questionsOfQuiz,
-      currentAnswers: state => state.currentAnswers
+      currentAnswers: state => state.currentAnswers,
+      totalRows: state => state.totalRows
     }),
     ...mapState("adminQuizs", {
       current: state => state.currentQuiz
@@ -134,11 +146,35 @@ export default {
   created: co(function*() {
     yield this.$store.dispatch("adminQuizs/findOneQuiz", this.$route.params.id);
     yield this.viewDataTable();
-    yield this.viewQuestionBankDataTable();
+    yield this.viewQuestionBankDataTable(0);
   }),
   mounted: function() {
     let me = this;
-  $(".questionbank").modal({
+    $(".ui.form").form({
+      fields: {},
+      onSuccess: function(event, fields) {
+        event.preventDefault();
+        return true;
+      },
+      onFailure: function() {
+        toastr.error("Lưu không thành công");
+        return false;
+      }
+    });
+    $(".ui.form").api({
+      mockResponseAsync: Promise.coroutine(function*(st, cb) {
+        if ($(".selectedquestion:checkbox:checked").length <= 0) {
+          toastr.error("Vui lòng chọn câu hỏi");
+          cb();
+        } else {
+          yield me.save();
+          cb();
+          $(".ui.modal").modal("hide");
+        }
+      }),
+      on: "submit"
+    });
+    $(".questionbank").modal({
       closable: false,
       onHidden: function() {
         $(".ui.form").form("reset");
@@ -148,6 +184,9 @@ export default {
     me.$forceUpdate();
   },
   methods: {
+    changePage: function(pageNum) {
+      this.viewQuestionBankDataTable(pageNum - 1);
+    },
     closeAnswer: co(function*() {
       this.$modal.hide("answers");
       yield this.viewDataTable();
@@ -233,42 +272,43 @@ export default {
           let selectedRow = table.row($(this).parents("tr")).data();
           swal(
             {
-               title: 'Bạn có chắc chắn',
-               text: 'Xóa dữ liệu : ' + selectedRow.description,
-               type: 'warning',
-               showCancelButton: true,
-               confirmButtonColor: '#DD6B55',
-               confirmButtonText: 'Có, Xóa',
-               closeOnConfirm: false,
-               showLoaderOnConfirm: true
-            } 
-            ,
+              title: "Bạn có chắc chắn",
+              text: "Xóa dữ liệu : " + selectedRow.description,
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Có, Xóa",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
             co(function*() {
               try {
                 //debugger
                 me.current.listQuestions = me.current.listQuestions.filter(
                   obj => obj.id != selectedRow.id
                 );
-                console.log(me.current)
+                console.log(me.current);
                 yield me.$store.dispatch("adminQuizs/saveQuiz", me.current);
-                yield me.$store.dispatch("adminQuizs/findOneQuiz",me.$route.params.id);
+                yield me.$store.dispatch(
+                  "adminQuizs/findOneQuiz",
+                  me.$route.params.id
+                );
                 me.viewDataTable();
                 swal({
-                  type: 'success',
+                  type: "success",
                   title: "Ðã xóa!",
-                  text: "Dữ liệu đã bị xóa",
-
+                  text: "Dữ liệu đã bị xóa"
                 });
               } catch (error) {
                 swal({
-                  type: 'error',
+                  type: "error",
                   title: "Thông báo!",
                   text: "Lỗi không thể xóa " + error
                 });
               }
             })
-          )
-        })
+          );
+        });
         $("#questions").on("click", "tr .go_to_answers", function() {
           let selectedAnswers = table.row($(this).parents("tr")).data();
           let answers =
@@ -284,12 +324,16 @@ export default {
         });
       });
     }),
-    viewQuestionBankDataTable: co(function*() {
+    viewQuestionBankDataTable: co(function*(pageNum) {
       let me = this;
+      yield this.$store.dispatch("adminQuestions/count", null);
       yield this.$store.dispatch("adminQuestions/search", {
         keyword: "",
-        page: 0,
-        pageSize: 20
+        page: pageNum,
+        pageLength: me.pageSize,
+        columns: configQuestionBankColumns,
+        columnDefs: configQuestionBankColumnDefs,
+        paging: false
       });
       $(document).ready(() => {
         $("#questionBank")

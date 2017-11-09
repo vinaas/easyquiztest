@@ -16,6 +16,7 @@ const answerService = new AnswersForAQuestionService()
 const quizService = new QuizService()
 const mutationTypes = {
     RECEIVE_QUESTIONS: 'RECEIVE_QUESTIONS',
+    COUNT_QUESTIONS: 'COUNT_QUESTIONS',
     RECEIVE_SEARCH_QUESTIONS: 'RECEIVE_SEARCH_QUESTIONS',
     SAVE_QUESTION: 'SAVE_QUESTION',
     REMOVE_QUESTION: 'REMOVE_QUESTION',
@@ -34,6 +35,7 @@ const state = {
     questionsBank: [],
     questionsOfQuiz: [],
     currentAnswers: {},
+    totalRows: 0,
     lst: { data: ['A'] }
 }
 
@@ -50,6 +52,11 @@ const mutations = {
         questionList
     }) {
         state.all = questionList
+    },
+    [mutationTypes.COUNT_QUESTIONS](state,
+        count
+    ) {
+        state.totalRows = count
     },
     [mutationTypes.RECEIVE_SEARCH_QUESTIONS](state, {
         questionList
@@ -77,8 +84,12 @@ const actions = {
         })
     }),
     search: Promise.coroutine(function*({ commit }, filter) {
-        let questionList = yield questionService.search(filter.keyword, filter.page, filter.pageSize)
+        let questionList = yield questionService.search({ skip: filter.page * filter.pageSize, limit: filter.pageSize })
         commit(mutationTypes.RECEIVE_SEARCH_QUESTIONS, { questionList })
+    }),
+    count: Promise.coroutine(function*({ commit }, filter) {
+        let result = yield questionService.count(filter)
+        commit(mutationTypes.COUNT_QUESTIONS, result.count)
     }),
     selectAnswers: function({
         commit

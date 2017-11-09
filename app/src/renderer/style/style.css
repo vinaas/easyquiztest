@@ -1,22 +1,59 @@
   body {
-    background-color: #FFFFFF;
+      background-color: #FFFFFF;
   }
   
   .ui.menu .item img.logo {
-    margin-right: 1.5em;
+      margin-right: 1.5em;
   }
   
   .main.container {
-    margin-top: 7em;
+      margin-top: 7em;
   }
   
   .wireframe {
-    margin-top: 2em;
+      margin-top: 2em;
   }
   
   .ui.footer.segment {
-    margin: 5em 0em 0em;
-    padding: 5em 0em;
+      margin: 5em 0em 0em;
+      padding: 5em 0em;
   }
   /*login*/
   
+  ul.pagination {
+      list-style-type: none;
+  }
+  
+  .pagination {
+      display: inline-block;
+  }
+  
+  .pagination li {
+      color: black;
+      float: left;
+      text-decoration: none;
+      transition: background-color .3s;
+  }
+  
+  .pagination li a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      transition: background-color .3s;
+      border: 1px solid #ddd;
+      margin: 0 4px;
+  }
+  
+  .pagination li.active a {
+      background-color: #4CAF50;
+      color: white;
+      border: 1px solid #4CAF50;
+  }
+  
+  .pagination li.active a {
+      color: white;
+  }
+  
+  .pagination li a:hover:not(.active) {
+      background-color: #ddd;
+  }

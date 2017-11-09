@@ -21,14 +21,41 @@
             <label>Mô tả</label>
             <input type="text" name="description" placeholder="Mô tả" v-model="current.description">
           </div>
-          <div class="field">
-            <label>Kiểu</label>
-            <select v-model="current.questionType" name="type">
-              <option value="">--Chọn kiểu--</option>
-              <option value="ONE">Một kết quả đúng</option> 
-              <option value="MANY">Nhiều kết quả đúng</option>
-            </select>
+          <div class="two fields">
+            <div class="field">
+              <label>Kiểu</label>
+              <select v-model="current.questionType" name="questionType">
+                <option>--Chọn kiểu--</option>
+                <option value="ONE">Một kết quả đúng</option> 
+                <option value="MANY">Nhiều kết quả đúng</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Độ khó</label>
+              <select v-model="current.difficultLevel" name="difficultLevel">
+                <option>--Chọn độ khó--</option>
+                <option value="1">1</option> 
+                <option value="2">2</option>
+                <option value="3">3</option> 
+                <option value="4">4</option>
+                <option value="5">5</option> 
+                <option value="6">6</option>
+                <option value="7">7</option> 
+                <option value="8">8</option>
+                <option value="9">9</option> 
+                <option value="10">10</option>
+              </select>
+            </div>
+            
           </div>
+           <div class="field">
+               
+              <div class="ui checkbox">
+                <input type="checkbox" v-model="current.isRandom" name="isRandom" />
+               <label>Xáo trộn</label>
+              </div>
+            </div>
+        
           <div class="field">
              <table style="width: 100%;">
                 <thead>
@@ -40,7 +67,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="row in current.listAnswers">
-                    <td><input type="text" v-model="row.content"></td>
+                    <td><input name="answercontent" type="text" v-model="row.content"></td>
                     <td><input type="checkbox" v-model="row.isCorrect"></td>
                     <td><a @click="removeRow(row)">Xóa</a></td>
                   </tr>
@@ -67,6 +94,14 @@
         </tr>
       </thead>
     </table>
+    <paginate
+      :page-count="Math.ceil(totalRows/pageSize)"
+      :prev-text="'Prev'"
+      :next-text="'Next'"
+      :clickHandler="changePage"
+      :containerClass="'pagination'"
+      ref="paginate">
+    </paginate>
   </div>
 
 </template>
@@ -82,6 +117,8 @@ import Logger from "../../../common/logger.js";
 import Vue from "vue";
 import "datatables.net-dt/css/jquery.datatables.css";
 import swal from "sweetalert";
+import Paginate from "vuejs-paginate";
+Vue.component("paginate", Paginate);
 const logger = Logger("Admin Questions");
 Vue.use(vmodal);
 const co = Promise.coroutine;
@@ -119,7 +156,8 @@ export default {
       checked: false,
       question: {},
       answers: [],
-      disabledSaveAnswer: 0
+      disabledSaveAnswer: 0,
+      pageSize: 20
     };
   },
 
@@ -127,16 +165,12 @@ export default {
     ...mapState("adminQuestions", {
       questionsBank: state => state.questionsBank,
       questions: state => state.questionsOfQuiz,
-      currentAnswers: state => state.currentAnswers
+      currentAnswers: state => state.currentAnswers,
+      totalRows: state => state.totalRows
     })
   },
   created: co(function*() {
-    yield this.$store.dispatch("adminQuestions/search", {
-      keyword: "",
-      page: 0,
-      pageSize: 20
-    });
-    yield this.viewQuestionBankDataTable();
+    yield this.viewQuestionBankDataTable(0);
   }),
   mounted: function() {
     let me = this;
@@ -152,12 +186,21 @@ export default {
             }
           ]
         },
-        type: {
+        questionType: {
           identifier: "questionType",
           rules: [
             {
               type: "empty",
-              prompt: "Please enter your type"
+              prompt: "Please enter your question type"
+            }
+          ]
+        },
+        difficultLevel: {
+          identifier: "difficultLevel",
+          rules: [
+            {
+              type: "empty",
+              prompt: "Please enter your difficult level"
             }
           ]
         }
@@ -174,9 +217,11 @@ export default {
 
     $(".ui.form").api({
       mockResponseAsync: Promise.coroutine(function*(st, cb) {
-        yield me.save();
+        if (me.validateCurrentQuestion()) {
+          yield me.save();
+          $(".ui.modal").modal("hide");
+        }
         cb();
-        $(".ui.modal").modal("hide");
       }),
       on: "submit"
     });
@@ -191,6 +236,30 @@ export default {
     me.$forceUpdate();
   },
   methods: {
+    validateCurrentQuestion: function() {
+      if (!this.current.listAnswers || this.current.listAnswers.length <= 0) {
+        toastr.error("Phải có ít nhất 1 câu trả lời");
+        return false;
+      }
+      var result = true;
+      var isCorrectCount = 0;
+      $.each(this.current.listAnswers, function(index, value) {
+        if ($.trim(value.content) == "") {
+          toastr.error("Câu trả lời không được để trống");
+          result = false;
+          return false;
+        }
+        if (value.isCorrect) isCorrectCount++;
+      });
+      if (isCorrectCount <= 0 && result) {
+        toastr.error("Phải có ít nhất một câu trả lời đúng");
+        result = false;
+      }
+      return result;
+    },
+    changePage: function(pageNum) {
+      this.viewQuestionBankDataTable(pageNum - 1);
+    },
     addRow: function() {
       if (!this.current.listAnswers) this.current.listAnswers = [];
       this.current.listAnswers.push({ content: "", isCorrect: false });
@@ -208,10 +277,10 @@ export default {
     save: co(function*() {
       let me = this;
       yield this.$store.dispatch("adminQuestions/saveQuestion", this.current);
-      yield this.viewQuestionBankDataTable();
+      yield this.viewQuestionBankDataTable(0);
     }),
     add: function() {
-      this.current = {}
+      this.current = {};
       this.$forceUpdate();
       $(".question")
         .last()
@@ -220,12 +289,13 @@ export default {
     show: function() {
       this.$modal.show("answers");
     },
-    viewQuestionBankDataTable: co(function*() {
+    viewQuestionBankDataTable: co(function*(pageIndex) {
       let me = this;
+      yield this.$store.dispatch("adminQuestions/count", null);
       yield this.$store.dispatch("adminQuestions/search", {
         keyword: "",
-        page: 0,
-        pageSize: 20
+        page: pageIndex,
+        pageSize: this.pageSize
       });
       $(document).ready(() => {
         $("#questionsBankList")
@@ -234,8 +304,10 @@ export default {
         let table = $("#questionsBankList").DataTable({
           ordering: false,
           data: _.clone(me.questionsBank),
+          pageLength: me.pageSize,
           columns: configQuestionBankColumns,
-          columnDefs: configQuestionBankColumnDefs
+          columnDefs: configQuestionBankColumnDefs,
+          paging: false
         });
         $("#questionsBankList").on(
           "click",
@@ -266,7 +338,7 @@ export default {
                 yield me.$store.dispatch("adminQuestions/removeQuestion", {
                   id: selectedRow.id
                 });
-                me.viewQuestionBankDataTable();
+                me.viewQuestionBankDataTable(0);
                 swal({
                   type: "success",
                   title: "Ðã xóa!",
@@ -301,5 +373,8 @@ export default {
 }
 .ui.text.container {
   max-width: 2000px !important;
+}
+.center {
+  text-align: center;
 }
 </style>

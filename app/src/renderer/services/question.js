@@ -12,9 +12,13 @@ export class QuestionService {
             return x
         })
     })
-    search = co(function*(keyword, page, pageSize) {
-        let ret = yield axios.get(`${pathEntity}?filter['limit']=${pageSize}&filter['skip']=${page * pageSize}`)
+    search = co(function*(filter) {
+        let ret = yield axios.get(`${pathEntity}?filter=${JSON.stringify(filter)}`)
 
+        return ret.data
+    })
+    count = co(function*(filter) {
+        let ret = yield axios.get(`${pathEntity}/count?where=${JSON.stringify(filter)}`)
         return ret.data
     })
     getBy = co(function*(id) {
