@@ -342,8 +342,11 @@ export default {
         let table = $("#questionBank").DataTable({
           ordering: false,
           data: _.clone(me.questionsBank),
+          pageLength: me.pageSize,
           columns: configQuestionBankColumns,
-          columnDefs: configQuestionBankColumnDefs
+          columnDefs: configQuestionBankColumnDefs,
+          paging: false,
+          info: false
         });
       });
     })

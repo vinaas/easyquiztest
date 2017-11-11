@@ -307,7 +307,8 @@ export default {
           pageLength: me.pageSize,
           columns: configQuestionBankColumns,
           columnDefs: configQuestionBankColumnDefs,
-          paging: false
+          paging: false,
+          info: false
         });
         $("#questionsBankList").on(
           "click",
