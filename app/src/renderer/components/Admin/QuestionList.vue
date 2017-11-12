@@ -1,6 +1,6 @@
 <template>
   <div class="ui main text container">
-    <h1>Danh sách câu hỏi</h1>
+    <h1>Danh sách câu hỏi [{{current.name}}]</h1>
     <div>
       <span data-tooltip="Tạo mới">
       <i class="add to circle icon green" v-on:click="add()"></i></span>
