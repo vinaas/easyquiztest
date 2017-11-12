@@ -67,9 +67,12 @@
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)">
               <i class="edit icon edit_question blue"></i>
-            </span>|
-            <a :href="'/#/admin/questionList/' + item.id" class="item" data-tooltip="Link Quản lý câu hỏi" data-position="top left">
+            </span> | 
+            <a :href="'/#/admin/questionList/' + item.id" class="item" data-tooltip="Quản lý câu hỏi" data-position="top left">
               <i class="linkify icon go_to_answers orange"></i>
+            </a> | 
+            <a :href="'/#/admin/userQuizList/' + item.id" class="item" data-tooltip="Danh sách user" data-position="top left">
+              <i class="linkify icon add user"></i>
             </a>
           </td>
         </tr>

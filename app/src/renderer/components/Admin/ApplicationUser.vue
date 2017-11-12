@@ -139,9 +139,7 @@
                 <tr>
                     <th>Tài khoản</th>
                     <th>Email</th>
-
                     <th>Số báo danh</th>
-
                     <th>Hoạt động</th>
                 </tr>
             </thead>
@@ -149,244 +147,259 @@
     </div>
 </template>
 <script>
-    import Logger from '../../../common/logger.js'
-    import Promise from 'bluebird'
-    import toastr from 'toastr'
-    import swal from 'sweetalert'
-    import _ from 'lodash'
-    const logger = Logger('Admin AppicationUsers List')
-    const co = Promise.coroutine
-    import {mapState, mapGetters} from 'vuex'
-    import 'datatables.net-dt/css/jquery.datatables.css'
-var $ = require('jquery')
-require('datatables.net')(window, $)
-const configColumns = [{
-      'data': 'username'
-    },
-    {
-      'data': 'email'
-    }, {
-      'data': 'identification'
-    },
+import Logger from "../../../common/logger.js";
+import Promise from "bluebird";
+import toastr from "toastr";
+import swal from "sweetalert";
+import _ from "lodash";
+const logger = Logger("Admin AppicationUsers List");
+const co = Promise.coroutine;
+import { mapState, mapGetters } from "vuex";
+import "datatables.net-dt/css/jquery.datatables.css";
+var $ = require("jquery");
+require("datatables.net")(window, $);
+const configColumns = [
+  {
+    data: "username"
+  },
+  {
+    data: "email"
+  },
+  {
+    data: "identification"
+  },
 
-    {
-      'data': 'Action'
-    }
-    ]
-    const configColumnDefs = [{
-      'targets': -1,
-      'data': null,
-      'defaultContent': '<div style="text-align:center"><span data-tooltip="cập nhật" data-position="top left"><i class="edit icon blue edit_app_user" ></i></span>|<span data-tooltip="Xóa" data-position="top left"><i class="delete icon remove_app_user red"></i></span></div>'
-    }]
-    export default {
-      data () {
-        return {
-          current: {},
-          checked: false
-    
+  {
+    data: "Action"
+  }
+];
+const configColumnDefs = [
+  {
+    targets: -1,
+    data: null,
+    defaultContent:
+      '<div style="text-align:center"><span data-tooltip="cập nhật" data-position="top left"><i class="edit icon blue edit_app_user" ></i></span>|<span data-tooltip="Xóa" data-position="top left"><i class="delete icon remove_app_user red"></i></span></div>'
+  }
+];
+export default {
+  data() {
+    return {
+      current: {},
+      checked: false
+    };
+  },
+  computed: {
+    ...mapState("adminApplicationUsers", {
+      all: state => state.all,
+      selected: state => state.current
+    }),
+    ...mapGetters("adminApplicationUsers", {
+      title: "title"
+    })
+  },
+  created: co(function*() {
+    yield this.viewDataTable();
+  }),
+  mounted: function() {
+    let me = this;
+
+    $(".ui.form.create").form({
+      fields: {
+        password: {
+          identifier: "password",
+          rules: [
+            {
+              type: "empty",
+              prompt: "Vui lòng nhập password"
+            }
+          ]
+        },
+        email: {
+          identifier: "email",
+          rules: [
+            {
+              type: "email",
+              prompt: "Vui lòng họ email"
+            }
+          ]
+        },
+        username: {
+          identifier: "username",
+          rules: [
+            {
+              type: "empty",
+              prompt: "Vui lòng họ email"
+            }
+          ]
         }
       },
-      computed: {
-        ...mapState('adminApplicationUsers', {
-          all: state => state.all,
-          selected: state => state.current
 
-        }),
-        ...mapGetters('adminApplicationUsers', {
-          title: 'title'
-        })
+      onSuccess: function(event, fields) {
+        event.preventDefault();
+        return true;
       },
-      created: co(function* () {
-        yield this.viewDataTable()
-  }),
-      mounted: function () {
-        let me = this
-    
-        $('.ui.form.create')
-                .form({
-                  fields: {
-                    password: {
-                      identifier: 'password',
-                      rules: [{
-                        type: 'empty',
-                        prompt: 'Vui lòng nhập password'
-                      }]
-                    },
-                    email: {
-                      identifier: 'email', 
-                      rules: [{
-                        type: 'email',
-                        prompt: 'Vui lòng họ email'
-                      }]
-                    },
-                    username: {
-                      identifier: 'username',
-                      rules: [{
-                        type: 'empty',
-                        prompt: 'Vui lòng họ email'
-                      }]
-                    }
-
-                  },
-    
-                  onSuccess: function (event, fields) {
-                    event.preventDefault()
-                    return true
-                  },
-                  onFailure: function () {
-                    toastr.error('Lưu không thành công')
-                    return false
-                  }
-
-                })
-
-        $('.ui.form.create').api({
-          mockResponseAsync: co(function* (st, cb) {
-            yield me.save()
-            cb()
-            $('.ui.modal').modal('hide')
-            toastr.success('Lưu thành công')
-            this.current = {}
-          }),
-          on: 'submit'
-        })
-        $('.ui.form.update')
-                .form({
-                  fields: {
-    
-                    email: {
-                      identifier: 'email',
-                      rules: [{
-                        type: 'email',
-                        prompt: 'Vui lòng họ email'
-                      }]
-                    },
-                    username: {
-                      identifier: 'username',
-                      rules: [{
-                        type: 'empty',
-                        prompt: 'Vui lòng họ email'
-                      }]
-                    }
-
-                  },
-    
-                  onSuccess: function (event, fields) {
-                    event.preventDefault()
-                    return true
-                  },
-                  onFailure: function () {
-                    toastr.error('Lưu không thành công')
-                    return false
-                  }
-
-                })
-
-        $('.ui.form.update').api({
-          mockResponseAsync: co(function* (st, cb) {
-            yield me.save()
-            cb()
-            $('.ui.modal').modal('hide')
-            toastr.success('Lưu thành công')
-            this.current = {}
-          }),
-          on: 'submit'
-        })
-    
-        $('.createApp').modal({
-          closable: false,
-          onHidden: co(function* () {
-            $('.ui.form.create').form('reset')
-            this.current = {}
-          })
-        })
-        $('.updateApp').modal({
-          closable: false,
-          onHidden: co(function* () {
-            $('.ui.form.update').form('reset')
-            this.current = {}
-          })
-        })
-        me.$forceUpdate()
-      },
-      methods: {
-        save: co(function* () {
-          console.log('@', JSON.stringify(this.current))
-          yield this.$store.dispatch('adminApplicationUsers/patch', this.current)
-          yield this.viewDataTable()
-        }),
-        add: function () {
-          logger.debug('add', this.checked)
-          this.current = {}
-          this.checked = false
-    
-          $('.createApp').last()
-                    .modal('show')
-        },
-        viewDataTable: co(function* () {
-          let me = this
-          yield this.$store.dispatch('adminApplicationUsers/getAll')
-          $(document).ready(() => {
-            $('#application').DataTable().destroy()
-
-            let table = $('#application').DataTable({
-              data: _.clone(me.all),
-
-              'columns': configColumns,
-              'columnDefs': configColumnDefs
-            })
-            $('#application').off('click')
-            $('#application').on('click', 'tr .edit_app_user', co(function* () {
-              let selected = table.row($(this).parents('tr')).data()
-              me.current = _.clone(selected)
-              me.checked = true
-    
-              logger.debug('edit', me.checked)
-              $('.updateApp').last().modal('show')
-            }))
-
-            $('#application').on('click', 'tr .remove_app_user', function () {
-              let selectedRow = table.row($(this).parents('tr')).data()
-
-              swal({
-                title: 'Bạn có chắc chắn?',
-                text: 'Xóa dữ liệu : ' + selectedRow.username,
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#DD6B55',
-                confirmButtonText: 'Có, Xóa',
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true
-              },
-                            co(function* () {
-                              try {
-                                yield me.$store.dispatch(
-                                        'adminApplicationUsers/remove', {
-                                          id: selectedRow.id
-                                        })
-                                me.viewDataTable()
-                                swal('Đã xóa!', 'Dữ liệu đã bị xóa', 'success')
-                              } catch (error) {
-                                swal('Thông báo!', 'Lỗi không thể xóa', 'error')
-                              }
-                            }))
-            })
-          })
-        })
-
+      onFailure: function() {
+        toastr.error("Lưu không thành công");
+        return false;
       }
-    }
+    });
+
+    $(".ui.form.create").api({
+      mockResponseAsync: co(function*(st, cb) {
+        yield me.save();
+        cb();
+        $(".ui.modal").modal("hide");
+        toastr.success("Lưu thành công");
+        this.current = {};
+      }),
+      on: "submit"
+    });
+    $(".ui.form.update").form({
+      fields: {
+        email: {
+          identifier: "email",
+          rules: [
+            {
+              type: "email",
+              prompt: "Vui lòng họ email"
+            }
+          ]
+        },
+        username: {
+          identifier: "username",
+          rules: [
+            {
+              type: "empty",
+              prompt: "Vui lòng họ email"
+            }
+          ]
+        }
+      },
+
+      onSuccess: function(event, fields) {
+        event.preventDefault();
+        return true;
+      },
+      onFailure: function() {
+        toastr.error("Lưu không thành công");
+        return false;
+      }
+    });
+
+    $(".ui.form.update").api({
+      mockResponseAsync: co(function*(st, cb) {
+        yield me.save();
+        cb();
+        $(".ui.modal").modal("hide");
+        toastr.success("Lưu thành công");
+        this.current = {};
+      }),
+      on: "submit"
+    });
+
+    $(".createApp").modal({
+      closable: false,
+      onHidden: co(function*() {
+        $(".ui.form.create").form("reset");
+        this.current = {};
+      })
+    });
+    $(".updateApp").modal({
+      closable: false,
+      onHidden: co(function*() {
+        $(".ui.form.update").form("reset");
+        this.current = {};
+      })
+    });
+    me.$forceUpdate();
+  },
+  methods: {
+    save: co(function*() {
+      console.log("@", JSON.stringify(this.current));
+      yield this.$store.dispatch("adminApplicationUsers/patch", this.current);
+      yield this.viewDataTable();
+    }),
+    add: function() {
+      logger.debug("add", this.checked);
+      this.current = {};
+      this.checked = false;
+
+      $(".createApp")
+        .last()
+        .modal("show");
+    },
+    viewDataTable: co(function*() {
+      let me = this;
+      yield this.$store.dispatch("adminApplicationUsers/getAll");
+      $(document).ready(() => {
+        $("#application")
+          .DataTable()
+          .destroy();
+
+        let table = $("#application").DataTable({
+          data: _.clone(me.all),
+
+          columns: configColumns,
+          columnDefs: configColumnDefs
+        });
+        $("#application").off("click");
+        $("#application").on(
+          "click",
+          "tr .edit_app_user",
+          co(function*() {
+            let selected = table.row($(this).parents("tr")).data();
+            me.current = _.clone(selected);
+            me.checked = true;
+
+            logger.debug("edit", me.checked);
+            $(".updateApp")
+              .last()
+              .modal("show");
+          })
+        );
+
+        $("#application").on("click", "tr .remove_app_user", function() {
+          let selectedRow = table.row($(this).parents("tr")).data();
+
+          swal(
+            {
+              title: "Bạn có chắc chắn?",
+              text: "Xóa dữ liệu : " + selectedRow.username,
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Có, Xóa",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
+            co(function*() {
+              try {
+                yield me.$store.dispatch("adminApplicationUsers/remove", {
+                  id: selectedRow.id
+                });
+                me.viewDataTable();
+                swal("Đã xóa!", "Dữ liệu đã bị xóa", "success");
+              } catch (error) {
+                swal("Thông báo!", "Lỗi không thể xóa", "error");
+              }
+            })
+          );
+        });
+      });
+    })
+  }
+};
 </script>
 <style scoped>
-    .showClass {
-        display: block;
-    }
+.showClass {
+  display: block;
+}
 
-    .hideClass {
-        display: none;
-    }
+.hideClass {
+  display: none;
+}
 
-    .btn-position-right {
-        text-align: right;
-    }
+.btn-position-right {
+  text-align: right;
+}
 </style>

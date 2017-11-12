@@ -89,10 +89,10 @@ module.exports = function(app) {
             }
         ]);
 
-        UserQuiz.create([
-            { quizId: quiz[0].id, applicationUserId: 2 },
-            { quizId: quiz[1].id, applicationUserId: 3 }
-        ])
+        // UserQuiz.create([
+        //     { quizId: quiz[0].id, applicationUserId: 2 },
+        //     { quizId: quiz[1].id, applicationUserId: 3 }
+        // ])
     });
 
 };

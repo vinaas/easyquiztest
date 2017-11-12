@@ -60,6 +60,11 @@ export default [{
                 name: 'questionsBank',
                 path: 'questionsBank',
                 component: require('components/Admin/questionsBank')
+            },
+            {
+                name: 'userQuizList',
+                path: 'userQuizList/:id',
+                component: require('components/Admin/UserQuizList')
             }
         ]
     },

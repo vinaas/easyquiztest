@@ -330,10 +330,7 @@ export default {
       yield this.$store.dispatch("adminQuestions/search", {
         keyword: "",
         page: pageNum,
-        pageLength: me.pageSize,
-        columns: configQuestionBankColumns,
-        columnDefs: configQuestionBankColumnDefs,
-        paging: false
+        pageSize: me.pageSize
       });
       $(document).ready(() => {
         $("#questionBank")
