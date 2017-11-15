@@ -1,15 +1,10 @@
 <template>
   <div class="ui main container">
-    <!--<h1 class="ui header">Bảng quản lý</h1>-->
-    <h1>Danh sách các đề thi</h1>
-    <!-- Exchange button Tạo mới -->
-    <div v-on:click="addQuiz()" class="ui vertical animated button" style="background-color:transparent;border: 1px solid green;margin-bottom:50px">
-      <div class=" hidden content">
-        <i class="plus icon green"></i>
-      </div>
-      <div class="visible content" style="color:green; ">Tạo mới</div>
-    </div>
-
+    <h1>Danh sách các đề thi</h1> 
+    <button class="ui right labeled icon button vk" v-on:click="addQuiz()">
+      <i class="level down icon"></i> Tạo mới
+    </button>
+    <br><br>
     <div id="saveQuiz" class="ui modal saveQuiz">
       <i class="close icon"></i>
       <div class="header">
@@ -57,33 +52,39 @@
 
     </div>
 
-    <table id="example" class="ui celled striped table teal">
+    <table id="example" class="ui selectable celled table">
       <thead>
         <tr>
-          <th style="width: 50px;">Số thứ tự</th>
-          <th> Tên </th>
-          <th> Số câu hỏi </th>
-          <th> Thời gian </th>
+          <th class="left aligned a1">STT</th>
+          <th class="a2"> Tên </th>
+          <th class="center aligned a3"> Số câu hỏi </th>
+          <th class="a4"> Thời gian </th>
           <th> Kỳ thi</th>
-          <th style="width: 80px;"> Hành động</th>
+          <th> Hành động</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in all">
           <td>{{index+1}}</td>
           <td class="collapsing">{{item.name}}</td>
-          <td>{{item.numberOfQuestions}} </td>
+          <td class="center aligned">{{item.numberOfQuestions}} </td>
           <td>{{item.totalTime}} phút</td>
           <td>{{item.quizTime| moment}}</td>
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)">
-              <i class="edit icon edit_question blue"></i>
-            </span> | 
+              <button class="ui icon button teal">
+                <i class="edit icon edit_question"></i>
+              </button>
+            </span>
             <a :href="'/#/admin/questionList/' + item.id" class="item" data-tooltip="Quản lý câu hỏi" data-position="top left">
-              <i class="linkify icon go_to_answers orange"></i>
-            </a> | 
+              <button class="ui icon button orange">
+                <i class="linkify icon go_to_answers"></i>
+              </button>
+            </a> 
             <a :href="'/#/admin/userQuizList/' + item.id" class="item" data-tooltip="Danh sách user" data-position="top left">
-              <i class="linkify icon add user"></i>
+              <button class="ui icon button blue">
+                <i class="linkify icon add user go_to_answers"></i>
+              </button>
             </a>
           </td>
         </tr>

@@ -2,8 +2,9 @@
   <div class="ui main text container">
     <h1>Ngân hàng đề thi</h1>
     <div>
-      <span data-tooltip="Tạo mới">
-      <i class="add to circle icon green" v-on:click="add()"></i></span>
+      <button class="ui right labeled icon button vk" v-on:click="add()">
+        <i class="level down icon"></i> Tạo mới
+      </button>
     </div>
     <div class="question ui modal">
       <i class="close icon"></i>
@@ -19,7 +20,8 @@
           </div> 
           <div class="field">
             <label>Mô tả</label>
-            <input type="text" name="description" placeholder="Mô tả" v-model="current.description">
+            <textarea rows="4" cols="50" type="text" name="description" placeholder="Mô tả" v-model="current.description">
+            </textarea>
           </div>
           <div class="two fields">
             <div class="field">
@@ -85,12 +87,12 @@
     </div>
  
     <br>
-    <table id="questionsBankList" class="cell-border" cellspacing="0" width="100%">
+    <table id="questionsBankList"  class="ui selectable celled table">
       <thead>
         <tr>
-          <th>Kiểu</th>
-          <th>Mô tả</th>
-          <th>Hoạt động</th>
+          <th class="a3">Kiểu</th>
+          <th class="a2">Mô tả</th>
+          <th class="a5">Hoạt động</th>
         </tr>
       </thead>
     </table>
@@ -146,7 +148,7 @@ const configQuestionBankColumnDefs = [
     targets: 2,
     width: "80px",
     defaultContent:
-      '<div style="text-align:center"><span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)"><i class="edit icon edit_question blue"></i></span> | <span data-tooltip="Xóa câu hỏi" data-position="top left"><i class="delete icon editor_remove red"></i></span></div>'
+      '<div style="text-align:center"><span data-tooltip="cập nhật" data-position="top left"><button class="ui icon button teal"><i class="edit icon edit_app_user" ></i></button></span><span data-tooltip="Xóa" data-position="top left"><button class="ui icon button red"><i class="delete icon remove_app_user"></i></button></span></div>'
   }
 ];
 export default {
@@ -171,10 +173,10 @@ export default {
   },
   created: co(function*() {
     yield this.viewQuestionBankDataTable(0);
+    yield this.viewDataTable();
   }),
   mounted: function() {
     let me = this;
-
     $(".ui.form").form({
       fields: {
         description: {

@@ -1,6 +1,6 @@
 <template>
     <div class="ui main container">
-        <h1>Danh sách user</h1>
+        <h1>Danh sách User</h1>
         <div class="createApp ui modal">
             <i class="close icon"></i>
             <div class="header">
@@ -130,17 +130,17 @@
         </div>
 
         <div>
-            <span data-tooltip="Tạo mới">
-      <i class="add to circle icon green" v-on:click="add()"></i></span>
-        </div>
-        <br>
-        <table id="application" class="cell-border" cellspacing="0" width="100%">
+          <button class="ui right labeled icon button vk" v-on:click="add()">
+            <i class="add user icon"></i> Tạo mới
+          </button>
+        </div><br><br>
+        <table id="application" class="ui selectable celled table" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Tài khoản</th>
-                    <th>Email</th>
-                    <th>Số báo danh</th>
-                    <th>Hoạt động</th>
+                    <th class="left aligned a3">Tài khoản</th>
+                    <th class="a2">Email</th>
+                    <th class="a4">Số báo danh</th>
+                    <th class="a5">Hoạt động</th>
                 </tr>
             </thead>
         </table>
@@ -178,7 +178,7 @@ const configColumnDefs = [
     targets: -1,
     data: null,
     defaultContent:
-      '<div style="text-align:center"><span data-tooltip="cập nhật" data-position="top left"><i class="edit icon blue edit_app_user" ></i></span>|<span data-tooltip="Xóa" data-position="top left"><i class="delete icon remove_app_user red"></i></span></div>'
+      '<div style="text-align:center"><span data-tooltip="cập nhật" data-position="top left"><button class="ui icon button teal"><i class="edit icon edit_app_user" ></i></button></span><span data-tooltip="Xóa" data-position="top left"><button class="ui icon button red"><i class="delete icon remove_app_user"></i></button></span></div>'
   }
 ];
 export default {
