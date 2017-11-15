@@ -1,5 +1,6 @@
   body {
       background-color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;      
   }
   
   .ui.menu .item img.logo {
@@ -57,4 +58,21 @@
   
   .pagination li a:hover:not(.active) {
       background-color: #ddd;
+  }
+
+  /*CSS cho CurrentPage.vue*/
+  .a1{
+      width: 70px;
+  }
+  .a2{
+      width:300px;
+  }
+  .a3{
+      width: 100px;
+  }
+  .a4{
+      width: 100px;
+  }
+  .a5{
+    width: 200px;
   }
