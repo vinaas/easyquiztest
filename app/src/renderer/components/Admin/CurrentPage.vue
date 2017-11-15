@@ -20,7 +20,7 @@
         <form class="ui form">
           <div class="field">
             <label>Tên</label>
-            <input type="text" name="name" placeholder="Tên đề thi" :value="current.name" @input="updateCurrent">
+            <input type="text" name="name" placeholder="Tên đề thi" :value="current.quizInfo.quizName" @input="updateCurrent">
           </div>
           <div class="four fields">
             <div class="field">
@@ -33,11 +33,11 @@
             </div>
             <div class="field">
               <label>Thời gian bắt đầu kỳ thi</label>
-              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="current.startTime" @input="updateCurrent">
+              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="current.startTime | moment" @input="updateCurrent">
             </div>
             <div class="field">
               <label>Thời gian kết thúc kỳ thi</label>
-              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="current.endTime" @input="updateCurrent">
+              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="current.endTime | moment" @input="updateCurrent">
             </div>
           </div>
           <div class="four fields">
@@ -47,7 +47,7 @@
             </div>
             <div class="field">
               <label>Ký thi</label>
-              <input type="date" name="quizTime" placeholder="Số câu hỏi cho 1 thí sinh" :value="current.quizTime" @input="updateCurrent">
+              <input type="date" name="quizTime" placeholder="Số câu hỏi cho 1 thí sinh" :value="current.quizInfo.quizTime | moment" @input="updateCurrent">
             </div>
           
           </div>
@@ -71,10 +71,10 @@
       <tbody>
         <tr v-for="(item, index) in all">
           <td>{{index+1}}</td>
-          <td class="collapsing">{{item.name}}</td>
+          <td class="collapsing">{{item.quizInfo.quizName}}</td>
           <td>{{item.numberOfQuestions}} </td>
           <td>{{item.totalTime}} phút</td>
-          <td>{{item.quizTime| moment}}</td>
+          <td>{{item.quizInfo.quizTime| moment}}</td>
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)">
               <i class="edit icon edit_question blue"></i>
@@ -105,7 +105,7 @@ export default {
   // Format ngày tháng năm/////////////////////////////
   filters: {
     moment: function(date) {
-      return moment(date).format("DD-MM-YYYY");
+      return moment(date).format("YYYY-MM-DD");
     }
   },
   computed: {

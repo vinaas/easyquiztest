@@ -7,17 +7,17 @@
     },
     "forceId": false,
     "properties": {
-        "name": {
-            "type": "string"
-        },
         "startTime": {
             "type": "date"
         },
         "endTime": {
             "type": "date"
         },
-        "quizTime": {
-            "type": "date"
+        "quizInfo": {
+            "type": {
+                "quizTime": "date",
+                "quizName": "string"
+            }
         },
         "quizStatus": {
             "type": "string"

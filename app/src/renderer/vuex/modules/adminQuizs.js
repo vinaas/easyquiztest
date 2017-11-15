@@ -15,7 +15,9 @@ const mutationTypes = {
 }
 const state = {
     all: [],
-    currentQuiz: {},
+    currentQuiz: {
+        quizInfo: {}
+    },
     lst: []
 }
 

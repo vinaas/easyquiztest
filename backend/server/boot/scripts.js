@@ -44,20 +44,24 @@ module.exports = function(app) {
     //     });
     // });
     Quiz.create([{
-            name: "kì thi thứ 1",
             startDate: "2017/10/10",
-            quizTime: "2017/10/10",
             quizStatus: "ACTIVE",
             totalTime: 30,
-            numberOfQuestions: 20
+            numberOfQuestions: 20,
+            quizInfo: {
+                quizTime: "2017/10/10",
+                quizName: "kì thi thứ 1"
+            }
         },
         {
-            name: "kì thi thứ 2",
             startDate: "2017/09/10",
-            quizTime: "2017/10/10",
             quizStatus: "ACTIVE",
             totalTime: 30,
-            numberOfQuestions: 20
+            numberOfQuestions: 20,
+            quizInfo: {
+                quizTime: "2017/10/10",
+                quizName: "kì thi thứ 2"
+            }
         }
     ], function(err, quiz) {
         Question.create([{

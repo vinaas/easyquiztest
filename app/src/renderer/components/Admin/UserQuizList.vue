@@ -243,6 +243,9 @@ export default {
         toastr.error("User bạn chọn đã nằm trong danh sách");
       }
     }),
+    findNextSbd: function(){
+      
+    },
     add: function() {
       this.viewUsersDataTable(0);
       $(".userlist")
