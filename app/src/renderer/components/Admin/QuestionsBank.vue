@@ -87,12 +87,12 @@
     </div>
  
     <br>
-    <table id="questionsBankList"  class="ui selectable celled table">
+    <table id="questionsBankList"  class="ui selectable celled table center aligned">
       <thead>
         <tr>
           <th class="a3">Kiểu</th>
-          <th class="a2">Mô tả</th>
-          <th class="a5">Hoạt động</th>
+          <th class="a5">Mô tả</th>
+          <th class="a4">Hoạt động</th>
         </tr>
       </thead>
     </table>
@@ -368,7 +368,6 @@ export default {
   overflow-x: scroll;
   margin: 0 auto;
   padding: 3em;
-  font: 100%/1.4 serif;
   border: 1px solid rgba(0, 0, 0, 0.25);
 }
 .btn-position-right {
@@ -379,5 +378,8 @@ export default {
 }
 .center {
   text-align: center;
+}
+table, th, td{
+  font-family: 'Roboto', sans-serif; 
 }
 </style>

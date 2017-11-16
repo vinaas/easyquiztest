@@ -52,22 +52,22 @@
 
     </div>
 
-    <table id="example" class="ui selectable celled table">
+    <table id="example" class="ui selectable celled table center aligned">
       <thead>
         <tr>
-          <th class="left aligned a1">STT</th>
-          <th class="a2"> Tên </th>
-          <th class="center aligned a3"> Số câu hỏi </th>
-          <th class="a4"> Thời gian </th>
-          <th> Kỳ thi</th>
-          <th> Hành động</th>
+          <th class="a1">STT</th>
+          <th class="left aligned a5"> Tên </th>
+          <th class="a3"> Số câu hỏi </th>
+          <th class="a3"> Thời gian </th>
+          <th class="a3"> Kỳ thi</th>
+          <th class="a4"> Hành động</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in all">
+        <tr v-for="(item, index) in all" class="center aligned">
           <td>{{index+1}}</td>
-          <td class="collapsing">{{item.name}}</td>
-          <td class="center aligned">{{item.numberOfQuestions}} </td>
+          <td class="left aligned collapsing">{{item.name}}</td>
+          <td>{{item.numberOfQuestions}} </td>
           <td>{{item.totalTime}} phút</td>
           <td>{{item.quizTime| moment}}</td>
           <td>
@@ -243,5 +243,7 @@ export default {
 };
 </script>
 <style scoped>
-
+.dimmable {
+    font-family: 'Slabo 27px', serif;
+}
 </style>

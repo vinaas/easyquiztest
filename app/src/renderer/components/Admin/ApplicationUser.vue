@@ -134,13 +134,13 @@
             <i class="add user icon"></i> Tạo mới
           </button>
         </div><br><br>
-        <table id="application" class="ui selectable celled table" cellspacing="0" width="100%">
+        <table id="application" class="ui selectable celled table center aligned">
             <thead>
                 <tr>
-                    <th class="left aligned a3">Tài khoản</th>
-                    <th class="a2">Email</th>
+                    <th class="a3">Tài khoản</th>
+                    <th class="a5">Email</th>
                     <th class="a4">Số báo danh</th>
-                    <th class="a5">Hoạt động</th>
+                    <th class="a4">Hoạt động</th>
                 </tr>
             </thead>
         </table>
