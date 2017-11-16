@@ -78,3 +78,7 @@ ul.pagination {
 .a5{
     width: 450px;
   }
+
+div.submit{
+    float: right;
+}

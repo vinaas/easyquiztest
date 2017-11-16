@@ -2,8 +2,8 @@
   <div class="ui main text container">
     <h1>Ngân hàng đề thi</h1>
     <div>
-      <button class="ui right labeled icon button vk" v-on:click="add()">
-        <i class="level down icon"></i> Tạo mới
+      <button class="ui labeled icon button vk" v-on:click="add()">
+        <i class="openid icon"></i> Tạo mới
       </button>
     </div>
     <div class="question ui modal">
@@ -79,7 +79,7 @@
                <a @click="addRow" href="#">Thêm câu trả lời</a>
             </div>
           </div>
-         
+          <div class="ui google plus close button">Cancel</div>
           <div class="ui primary submit button">Submit</div>
         </form>
       </div>

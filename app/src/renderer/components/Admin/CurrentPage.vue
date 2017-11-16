@@ -1,10 +1,10 @@
 <template>
   <div class="ui main container">
     <h1>Danh sách các đề thi</h1> 
-    <button class="ui right labeled icon button vk" v-on:click="addQuiz()">
-      <i class="level down icon"></i> Tạo mới
+    <button class="ui labeled icon button vk" v-on:click="addQuiz()">
+      <i class="openid icon"></i> Tạo mới
     </button>
-    <br><br>
+    <br><br> <br>
     <div id="saveQuiz" class="ui modal saveQuiz">
       <i class="close icon"></i>
       <div class="header">
@@ -46,6 +46,7 @@
             </div>
           
           </div>
+          <div class="ui google plus close button">Cancel</div>
           <div class="ui primary submit button">Submit</div>
         </form>
       </div>
@@ -243,7 +244,5 @@ export default {
 };
 </script>
 <style scoped>
-.dimmable {
-    font-family: 'Slabo 27px', serif;
-}
+
 </style>

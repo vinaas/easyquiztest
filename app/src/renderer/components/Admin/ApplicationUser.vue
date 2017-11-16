@@ -61,7 +61,7 @@
 
                         </div>
                     </div>
-
+                    <div class="ui google plus close button">Cancel</div>
                     <div class="ui primary submit button">Submit</div>
                 </form>
             </div>
@@ -130,7 +130,7 @@
         </div>
 
         <div>
-          <button class="ui right labeled icon button vk" v-on:click="add()">
+          <button class="ui labeled icon button vk" v-on:click="add()">
             <i class="add user icon"></i> Tạo mới
           </button>
         </div><br><br>
