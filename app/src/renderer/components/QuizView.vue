@@ -2,9 +2,9 @@
     <div class="ui fluid-container">
         <div class="ui menu">
             <div class="ui container">
-                <div class="item header item">
-                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>
-
+                <router-link class="item header item" to="/">
+                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
+                </router-link>    
             </div>
         </div>
         <div class="ui container">
@@ -52,7 +52,7 @@
                                             <li>
                                                 <b>Kì thi :</b> {{quiz.name}}</li>
                                             <li>
-                                                <b>Khóa ngày:</b> {{quiz.quizTime}} </li>
+                                                <b>Khóa ngày:</b> {{quiz.quizTime | moment}} </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -184,6 +184,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import toastr from "toastr";
 import startTimer from "../../common/coundown.js";
@@ -202,6 +203,11 @@ export default {
     return {
       cloneUserCheck: []
     };
+  },
+  filters: {
+    moment: function(date) {
+      return moment(date).format("DD-MM-YYYY");
+    }
   },
   computed: mapGetters({
     quiz: "quiz",
