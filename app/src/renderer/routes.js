@@ -23,10 +23,18 @@ export default [{
         ]
     },
     {
+        path: '/UserQuiz',
+        component: require('components/UserQuizView'),
+        beforeEnter: (to, from, next) => {
+            // alert('ok');
+            next()
+        }
+    },
+    {
         path: '/Quiz',
         component: require('components/QuizView'),
         beforeEnter: (to, from, next) => {
-            // alert('ok');
+            alert('ok');
             next()
         }
     },
