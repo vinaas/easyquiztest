@@ -14,7 +14,8 @@
   },
   "mypostgres": {
     "name": "db",
-    "connector": "memory"
+    "connector": "memory",
+    "file": "memorydata.json"
   },
   "file_storage": {
     "name": "file_storage",

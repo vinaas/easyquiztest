@@ -1,0 +1,54 @@
+{
+  "ids": {
+    "User": 1,
+    "AccessToken": 8,
+    "ACL": 1,
+    "RoleMapping": 1,
+    "Role": 3,
+    "Quiz": 8,
+    "Question": 12,
+    "ApplicationUser": 4,
+    "UsersQuizs": 1,
+    "AnswersForAQuestion": 1
+  },
+  "models": {
+    "User": {},
+    "AccessToken": {
+      "qISzzy9UBS2AmTRHBIC2SwcA2u28DyGq4APDfHmRs9gKpcd5CoHSAZRe9RT1yrAn": "{\"id\":\"qISzzy9UBS2AmTRHBIC2SwcA2u28DyGq4APDfHmRs9gKpcd5CoHSAZRe9RT1yrAn\",\"ttl\":1209600,\"created\":\"2017-11-29T03:51:08.053Z\",\"userId\":1}",
+      "dDuYtZAcJjf7jY9vWf4AOBLFuoJEuCsOmkGxIVxrIO1Lpgv0vnl2gGveE8ZfgQPX": "{\"id\":\"dDuYtZAcJjf7jY9vWf4AOBLFuoJEuCsOmkGxIVxrIO1Lpgv0vnl2gGveE8ZfgQPX\",\"ttl\":1209600,\"created\":\"2017-11-29T04:12:24.692Z\",\"userId\":1}",
+      "FyQ6nGnnZJO9v5lVyB7TpjsNsenh0OawF35NkT8CJFBNxxTfFXEWqRk039kidtrG": "{\"id\":\"FyQ6nGnnZJO9v5lVyB7TpjsNsenh0OawF35NkT8CJFBNxxTfFXEWqRk039kidtrG\",\"ttl\":1209600,\"created\":\"2017-11-29T04:27:15.242Z\",\"userId\":1}",
+      "liDpv78xCzIF7f8N9sZVmFqHiswkAaJxEpunkzrGmerFCx6TGfSd98Qpm3YEDBXl": "{\"id\":\"liDpv78xCzIF7f8N9sZVmFqHiswkAaJxEpunkzrGmerFCx6TGfSd98Qpm3YEDBXl\",\"ttl\":1209600,\"created\":\"2017-11-29T04:29:02.244Z\",\"userId\":1}",
+      "jV4weYgKCRQ5Yul9VYFU2d02ZoBBQ7InAs0vR9mrzh0AeBYhNIxVYsfVnbtUYeVi": "{\"id\":\"jV4weYgKCRQ5Yul9VYFU2d02ZoBBQ7InAs0vR9mrzh0AeBYhNIxVYsfVnbtUYeVi\",\"ttl\":1209600,\"created\":\"2017-11-29T04:36:21.941Z\",\"userId\":1}",
+      "Os4HSCSti8izjcP3CerkxkMvd9wkQmE4A3aAq4VRO92AyyH2WNrnn9zYhzVmpiOy": "{\"id\":\"Os4HSCSti8izjcP3CerkxkMvd9wkQmE4A3aAq4VRO92AyyH2WNrnn9zYhzVmpiOy\",\"ttl\":1209600,\"created\":\"2017-11-29T04:39:15.248Z\",\"userId\":1}",
+      "dqzx9jTrWGMVAwfKFop8nB9dbsX6kwto9gFcbVOtDxrCUOsrxE52CMzKypzVR5jA": "{\"id\":\"dqzx9jTrWGMVAwfKFop8nB9dbsX6kwto9gFcbVOtDxrCUOsrxE52CMzKypzVR5jA\",\"ttl\":1209600,\"created\":\"2017-11-29T04:41:23.481Z\",\"userId\":1}"
+    },
+    "ACL": {},
+    "RoleMapping": {},
+    "Role": {
+      "1": "{\"name\":\"admin\",\"description\":\"Quản trị Viên\",\"created\":\"2017-11-29T03:35:07.611Z\",\"modified\":\"2017-11-29T03:35:07.611Z\",\"id\":1}",
+      "2": "{\"name\":\"user\",\"description\":\"Thí Sinh\",\"created\":\"2017-11-29T03:35:07.614Z\",\"modified\":\"2017-11-29T03:35:07.614Z\",\"id\":2}"
+    },
+    "Quiz": {
+      "6": "{\"startTime\":\"2017-11-29T04:19:50.002Z\",\"endTime\":\"2017-12-29T04:19:50.002Z\",\"quizInfo\":{\"quizTime\":\"2017-11-29T04:19:50.002Z\",\"quizName\":\"Kì Thi Kiểm Tra Toán\"},\"quizStatus\":\"ACTIVE\",\"totalTime\":1800,\"numberOfQuestions\":5,\"totalQuestions\":10,\"listQuestionIds\":[{}],\"created\":\"2017-11-29T04:19:50.002Z\",\"createdUserId\":0,\"lastModified\":\"2017-11-29T04:19:50.002Z\",\"lastModifiedUserId\":0,\"id\":6}",
+      "7": "{\"startTime\":\"2017-11-29T04:19:50.002Z\",\"endTime\":\"2017-12-19T04:19:50.002Z\",\"quizInfo\":{\"quizTime\":\"2017-11-29T04:19:50.002Z\",\"quizName\":\"Kì Thi Kiểm Tra Tiếng Anh\"},\"quizStatus\":\"ACTIVE\",\"totalTime\":1200,\"numberOfQuestions\":5,\"totalQuestions\":10,\"listQuestionIds\":[{}],\"created\":\"2017-11-29T04:19:50.002Z\",\"createdUserId\":0,\"lastModified\":\"2017-11-29T04:19:50.002Z\",\"lastModifiedUserId\":0,\"id\":7}"
+    },
+    "Question": {
+      "1": "{\"description\":\"Nội dung câu hỏi 1, kì thi 1\",\"difficultLevel\":5,\"isRandom\":true,\"questionType\":\"ONE\",\"listAnswers\":[{\"id\":1,\"content\":\"đáp án A\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":2,\"content\":\"đáp án B\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":1,\"quizId\":1,\"category\":[]}",
+      "2": "{\"description\":\"Nội dung câu hỏi 2, kì thi 1\",\"difficultLevel\":5,\"isRandom\":true,\"questionType\":\"MANY\",\"listAnswers\":[{\"id\":1,\"content\":\"đáp án A\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":2,\"content\":\"đáp án B\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":3,\"content\":\"đáp án C\",\"isCorrect\":true,\"answerByUser\":false}],\"id\":2,\"quizId\":1,\"category\":[]}",
+      "3": "{\"description\":\"Câu hỏi số 3 \",\"difficultLevel\":5,\"isRandom\":true,\"questionType\":\"MANY\",\"listAnswers\":[{\"id\":1,\"content\":\"đáp án A\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":2,\"content\":\"đáp án B\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":3,\"content\":\"đáp án C\",\"isCorrect\":true,\"answerByUser\":false}],\"category\":[],\"id\":3}",
+      "4": "{\"description\":\"Câu 1 Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?\",\"difficultLevel\":6,\"categories\":[{\"title\":\"Chính trị\",\"code\":\"Chính trị\"}],\"isRandom\":false,\"ref\":\"quiztest-format - Copy.doc\",\"questionType\":\"ONE\",\"listAnswers\":[{\"id\":1,\"content\":\"Cho vay càng ít càng tốt\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":2,\"content\":\"Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":3,\"content\":\"Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":4,\"content\":\"Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":4}",
+      "5": "{\"description\":\"Câu 2 Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?\",\"difficultLevel\":6,\"categories\":[{\"title\":\"Chính trị\",\"code\":\"Chính trị\"}],\"isRandom\":false,\"ref\":\"quiztest-format - Copy.docx\",\"questionType\":\"ONE\",\"listAnswers\":[{\"id\":1,\"content\":\"Cho vay càng ít càng tốt\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":2,\"content\":\"Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":3,\"content\":\"Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":4,\"content\":\"Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":5}",
+      "6": "{\"description\":\"Câu 3 Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?\",\"difficultLevel\":6,\"categories\":[{\"title\":\"Chính trị\",\"code\":\"Chính trị\"}],\"isRandom\":false,\"ref\":\"quiztest-format.doc\",\"questionType\":\"ONE\",\"listAnswers\":[{\"id\":1,\"content\":\"Cho vay càng ít càng tốt\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":2,\"content\":\"Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":3,\"content\":\"Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":4,\"content\":\"Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":6}",
+      "7": "{\"description\":\"Câu 4 Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?\",\"difficultLevel\":6,\"categories\":[{\"title\":\"Chính trị\",\"code\":\"Chính trị\"}],\"isRandom\":false,\"ref\":\"quiztest-format.docx\",\"questionType\":\"ONE\",\"listAnswers\":[{\"id\":1,\"content\":\"Cho vay càng ít càng tốt\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":2,\"content\":\"Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":3,\"content\":\"Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":4,\"content\":\"Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":7}",
+      "8": "{\"description\":\"Câu 5 Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?\",\"difficultLevel\":6,\"categories\":[{\"title\":\"Chính trị\",\"code\":\"Chính trị\"}],\"isRandom\":false,\"ref\":\"quiztest-format - Copy.doc\",\"questionType\":\"MANY\",\"listAnswers\":[{\"id\":1,\"content\":\"Cho vay càng ít càng tốt\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":2,\"content\":\"Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":3,\"content\":\"Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":4,\"content\":\"Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":8}",
+      "9": "{\"description\":\"Câu 6 Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?\",\"difficultLevel\":6,\"categories\":[{\"title\":\"Chính trị\",\"code\":\"Chính trị\"}],\"isRandom\":false,\"ref\":\"quiztest-format.doc\",\"questionType\":\"ONE\",\"listAnswers\":[{\"id\":1,\"content\":\"Cho vay càng ít càng tốt\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":2,\"content\":\"Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":3,\"content\":\"Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp\",\"isCorrect\":false,\"answerByUser\":false},{\"id\":4,\"content\":\"Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":9}"
+    },
+    "ApplicationUser": {
+      "1": "{\"roleId\":1,\"username\":\"admin\",\"password\":\"$2a$10$etYGcg2dCaHPJlDuBJHadOkMyZpjt6FpgGXQR4hJTtyUVVlXfG3pm\",\"email\":\"admin@vinaas.com\",\"id\":1}",
+      "2": "{\"roleId\":2,\"username\":\"user01\",\"password\":\"$2a$10$ap0cpAr.nDV6AF8dbDZd/uf0BDmA3kNHNsOhF8EIb1kGEnG69RtDS\",\"email\":\"user@vinaas.com\",\"id\":2}",
+      "3": "{\"roleId\":2,\"username\":\"user02\",\"password\":\"$2a$10$J/R4uXpXR2J5BSD8tO1m2OfriWREQIxprD2mPb.eJj5yfHOVuYfS2\",\"email\":\"user02@vinaas.com\",\"id\":3}"
+    },
+    "UsersQuizs": {},
+    "AnswersForAQuestion": {}
+  }
+}
