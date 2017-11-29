@@ -60,7 +60,7 @@
     <table id="example" class="ui celled striped table teal">
       <thead>
         <tr>
-          <th style="width: 50px;">Số thứ tự</th>
+          <th style="width: 50px;">STT</th>
           <th> Tên </th>
           <th> Số câu hỏi </th>
           <th> Thời gian </th>
@@ -69,7 +69,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in all">
+        <tr v-for="(item, index) in listQuiz">
           <td>{{index+1}}</td>
           <td class="collapsing">{{item.quizInfo.quizName}}</td>
           <td>{{item.numberOfQuestions}} </td>
@@ -102,6 +102,12 @@ import _ from "lodash";
 const logger = Logger("Admin Quiz List");
 const co = Promise.coroutine;
 export default {
+  data() {
+    return {
+    quizTitle : 'quocbao',
+    listQuiz : []
+    }
+  },
   // Format ngày tháng năm/////////////////////////////
   filters: {
     moment: function(date) {
@@ -119,6 +125,7 @@ export default {
   },
   mounted: function() {
     let me = this;
+    this.$log.debug('Admin/CurrentPage mounted()')
     $(document).ready(function() {
       $("#example").DataTable();
     });
@@ -207,6 +214,9 @@ export default {
       yield this.$store.dispatch("adminQuizs/saveQuiz", this.current);
       yield this.$store.dispatch("adminQuizs/getAll");
     }),
+    getAll: Promise.coroutine(function*() {
+      this.listQuiz = yield this.$store.dispatch("adminQuizs/getAll");
+    }),
     updateCurrent: function(e) {
       let cloneQuiz = Object.assign({}, this.current, {
         [e.target.name]: e.target.value
@@ -236,8 +246,10 @@ export default {
   },
   created() {
     var me = this;
-    logger.debug("quan ly bo de");
-    this.$store.dispatch("adminQuizs/getAll").then(() => {});
+    this.$log.debug("Danh Sách Kì Thi");
+    this.getAll().then( () => {
+      this.$log.debug("this.listQuiz",  this.listQuiz);
+    })
   }
 };
 </script>

@@ -1,5 +1,5 @@
-<template>
-    <div>
+<template class="">
+    <div class="ui container" >
         <h1>Chào mừng Thí Sinh  </h1>
         <table class="ui celled striped table">
             <thead>
@@ -51,8 +51,34 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
+import moment from "moment";
+import Logger from "../../common/logger.js";
+import Promise from "bluebird";
+import toastr from "toastr";
+import swal from "sweetalert";
+import _ from "lodash";
+const logger = Logger("UserQuizView");
+const co = Promise.coroutine;
 export default {
-
-}
-
+  // Format ngày tháng năm/////////////////////////////
+  filters: {
+    moment: function(date) {
+      return moment(date).format("YYYY-MM-DD");
+    }
+  },
+  computed: {
+    
+  },
+  mounted: function() {
+        
+  },
+  methods: {      
+      
+  },
+  created() {
+    var me = this;
+    logger.debug("Danh sach Bai Thi");
+    this.$store.dispatch("adminQuizs/getAll").then(() => {});
+  }
+};
 </script>

@@ -72,11 +72,12 @@ export default {
                     yield this.$store.dispatch('login', ret.userId)
                     try {
                         let roles = yield _authServices.getUserRoles()
+                        this.$log.debug('getUserRoles()', roles)
                         if (roles.roleId == 1) {
                             this.$router.push({ path: 'admin' })
                        
                         } else if (roles.roleId == 2) {
-                            this.$router.push({ path: 'quiz' })
+                            this.$router.push({ path: 'userQuiz' })
                         }else{
 
                         }
