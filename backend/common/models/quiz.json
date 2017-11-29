@@ -28,6 +28,9 @@
         "numberOfQuestions": {
             "type": "number"
         },
+        "totalQuestions": {
+            "type": "number"
+        },
         "listQuestionIds": {
             "type": [{
                 "questionId": "number"

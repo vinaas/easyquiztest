@@ -29,7 +29,7 @@ export class AuthServices {
         var user = JSON.parse(sessionStorage.getItem('userinfo'))
 
         let ret = yield axios.get('api/ApplicationUsers/' + user.userId)
-        console.log('user info', ret.data)
+     
         return ret.data
     })
     logout = Promise.coroutine(function*() {
