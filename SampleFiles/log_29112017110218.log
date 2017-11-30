@@ -1,0 +1,172 @@
+2017-11-29 11:02:18.5023 INFO --- START ---
+2017-11-29 11:02:18.5383 INFO There are 4 file(s) found
+2017-11-29 11:02:18.5423 INFO Extracting file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format - Copy.doc
+2017-11-29 11:02:23.0981 INFO Call api/Questions with param: {
+  "id": 0,
+  "ref": "quiztest-format - Copy.doc",
+  "description": "Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?",
+  "listAnswers": [
+    {
+      "id": 1,
+      "content": "Cho vay càng ít càng tốt",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 2,
+      "content": "Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro",
+      "isCorrect": true,
+      "answerByUser": false
+    },
+    {
+      "id": 3,
+      "content": "Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 4,
+      "content": "Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.",
+      "isCorrect": false,
+      "answerByUser": false
+    }
+  ],
+  "difficultLevel": 6,
+  "categories": [
+    {
+      "code": "Chính trị",
+      "title": "Chính trị"
+    }
+  ],
+  "isRandom": false,
+  "questionType": "ONE"
+} 
+2017-11-29 11:02:24.2071 INFO Extracted file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format - Copy.doc
+2017-11-29 11:02:24.2071 INFO Extracting file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format - Copy.docx
+2017-11-29 11:02:24.8846 INFO Call api/Questions with param: {
+  "id": 0,
+  "ref": "quiztest-format - Copy.docx",
+  "description": "Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?",
+  "listAnswers": [
+    {
+      "id": 1,
+      "content": "Cho vay càng ít càng tốt",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 2,
+      "content": "Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro",
+      "isCorrect": true,
+      "answerByUser": false
+    },
+    {
+      "id": 3,
+      "content": "Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 4,
+      "content": "Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.",
+      "isCorrect": false,
+      "answerByUser": false
+    }
+  ],
+  "difficultLevel": 6,
+  "categories": [
+    {
+      "code": "Chính trị",
+      "title": "Chính trị"
+    }
+  ],
+  "isRandom": false,
+  "questionType": "ONE"
+} 
+2017-11-29 11:02:24.8996 INFO Extracted file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format - Copy.docx
+2017-11-29 11:02:24.9036 INFO Extracting file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format.doc
+2017-11-29 11:02:24.9266 INFO Call api/Questions with param: {
+  "id": 0,
+  "ref": "quiztest-format.doc",
+  "description": "Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?",
+  "listAnswers": [
+    {
+      "id": 1,
+      "content": "Cho vay càng ít càng tốt",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 2,
+      "content": "Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro",
+      "isCorrect": true,
+      "answerByUser": false
+    },
+    {
+      "id": 3,
+      "content": "Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 4,
+      "content": "Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.",
+      "isCorrect": false,
+      "answerByUser": false
+    }
+  ],
+  "difficultLevel": 6,
+  "categories": [
+    {
+      "code": "Chính trị",
+      "title": "Chính trị"
+    }
+  ],
+  "isRandom": false,
+  "questionType": "ONE"
+} 
+2017-11-29 11:02:24.9396 INFO Extracted file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format.doc
+2017-11-29 11:02:24.9396 INFO Extracting file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format.docx
+2017-11-29 11:02:24.9746 INFO Call api/Questions with param: {
+  "id": 0,
+  "ref": "quiztest-format.docx",
+  "description": "Để khắc phục tình trạng nợ xấu, yếu tố nào sau đây các ngân hàng thương mại hiện đại cần phải hướng tới ?",
+  "listAnswers": [
+    {
+      "id": 1,
+      "content": "Cho vay càng ít càng tốt",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 2,
+      "content": "Cho vay càng nhiều càng tốt vì sẽ đa dạng hoá các khoản vay để giảm thiểu rủi ro",
+      "isCorrect": true,
+      "answerByUser": false
+    },
+    {
+      "id": 3,
+      "content": "Tuân thủ các nguyên tắc và quy trình tín dụng, ngoài ra phải đặc biệt chú trọng vào tài sản thế chấp",
+      "isCorrect": false,
+      "answerByUser": false
+    },
+    {
+      "id": 4,
+      "content": "Không ngừng đổi mới công nghệ và đa dạng hóa sản phẩm dịch vụ nhằm tăng cường khả năng tiếp cận, gần gũi và hỗ trợ khách hàng.",
+      "isCorrect": false,
+      "answerByUser": false
+    }
+  ],
+  "difficultLevel": 6,
+  "categories": [
+    {
+      "code": "Chính trị",
+      "title": "Chính trị"
+    }
+  ],
+  "isRandom": false,
+  "questionType": "ONE"
+} 
+2017-11-29 11:02:24.9876 INFO Extracted file: D:\VinaAS\Projects\GIT\vinaas\easyquiztest\SampleFiles\quiztest-format.docx
+2017-11-29 11:02:24.9876 INFO 4 file(s) were successfully converted
+2017-11-29 11:02:24.9876 INFO --- END ---

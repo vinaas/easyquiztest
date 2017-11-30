@@ -47,6 +47,7 @@
                 </tr>
             </tbody>
         </table>
+        <router-link class="item header item" to="/quiz"> EasyQuizTest</router-link>
     </div>
 </template>
 <script>
@@ -66,6 +67,7 @@ export default {
       return moment(date).format("YYYY-MM-DD");
     }
   },
+  
   computed: {
     
   },

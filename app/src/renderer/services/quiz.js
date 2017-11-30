@@ -2,8 +2,8 @@ import Promise from 'bluebird'
 const pathEntity = '/api/Quizzes'
 export class QuizService {
     getAll = Promise.coroutine(function*(filter) {
-        let ret = yield axios.get(pathEntity)
-        console.log('getALL', rec.data)
+        let ret = yield axios.get(pathEntity, { crossdomain: true })
+
         return ret.data
     })
     getBy = Promise.coroutine(function*(id) {

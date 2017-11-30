@@ -20,34 +20,34 @@
         <form class="ui form">
           <div class="field">
             <label>Tên</label>
-            <input type="text" name="name" placeholder="Tên đề thi" :value="current.quizInfo.quizName" @input="updateCurrent">
+            <input type="text" name="name" placeholder="Tên đề thi" :value="currentQuiz.quizInfo.quizName" @input="updateCurrent">
           </div>
           <div class="four fields">
             <div class="field">
               <label>Thời gian làm bài</label>
-              <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="current.totalTime" @input="updateCurrent">
+              <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="currentQuiz.totalTime" @input="updateCurrent">
             </div>
                 <div class="field">
               <label>Số câu hỏi cho 1 thí sinh</label>
-              <input type="number" name="numberOfQuestions" placeholder="Số câu hỏi cho 1 thí sinh" :value="current.numberOfQuestions" @input="updateCurrent">
+              <input type="number" name="numberOfQuestions" placeholder="Số câu hỏi cho 1 thí sinh" :value="currentQuiz.numberOfQuestions" @input="updateCurrent">
             </div>
             <div class="field">
               <label>Thời gian bắt đầu kỳ thi</label>
-              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="current.startTime | moment" @input="updateCurrent">
+              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="currentQuiz.startTime" @input="updateCurrent">
             </div>
             <div class="field">
               <label>Thời gian kết thúc kỳ thi</label>
-              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="current.endTime | moment" @input="updateCurrent">
+              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="currentQuiz.endTime" @input="updateCurrent">
             </div>
           </div>
           <div class="four fields">
             <div class="field">
               <label>Tổng số câu hỏi</label>
-              <input type="number" name="totalQuestions" placeholder="Tổng số câu hỏi" :value="current.totalQuestions" @input="updateCurrent">
+              <input type="number" name="totalQuestions" placeholder="Tổng số câu hỏi" :value="currentQuiz.totalQuestions" @input="updateCurrent">
             </div>
             <div class="field">
-              <label>Ký thi</label>
-              <input type="date" name="quizTime" placeholder="Số câu hỏi cho 1 thí sinh" :value="current.quizInfo.quizTime | moment" @input="updateCurrent">
+              <label>Kì thi</label>
+              <input type="date" name="quizTime" placeholder="Số câu hỏi cho 1 thí sinh" :value="currentQuiz.quizInfo.quizTime" @input="updateCurrent">
             </div>
           
           </div>
@@ -104,14 +104,28 @@ const co = Promise.coroutine;
 export default {
   data() {
     return {
-    quizTitle : 'quocbao',
-    listQuiz : []
-    }
+      quizTitle: "quocbao",
+      listQuiz: [],
+      currentQuiz: {
+        startTime: new Date(),
+        endTime: new Date(),
+
+        quizInfo: {
+          quizName: "",
+          quizTime: new Date()
+        },
+        quizStatus: "",
+        totalTime : 0,
+        numberOfQuestions: 0,
+        totalQuestions: 0,
+        listQuestionIds: []
+      }
+    };
   },
   // Format ngày tháng năm/////////////////////////////
   filters: {
     moment: function(date) {
-      return moment(date).format("YYYY-MM-DD");
+      return moment(date);
     }
   },
   computed: {
@@ -121,11 +135,15 @@ export default {
     }),
     ...mapGetters("adminQuizs", {
       title: "title"
-    })
+    }),
+
+    mapCurrentQuiz(){
+       //set 
+    }
   },
   mounted: function() {
     let me = this;
-    this.$log.debug('Admin/CurrentPage mounted()')
+    this.$log.debug("Admin/CurrentPage mounted()");
     $(document).ready(function() {
       $("#example").DataTable();
     });
@@ -247,9 +265,9 @@ export default {
   created() {
     var me = this;
     this.$log.debug("Danh Sách Kì Thi");
-    this.getAll().then( () => {
-      this.$log.debug("this.listQuiz",  this.listQuiz);
-    })
+    this.getAll().then(() => {
+      this.$log.debug("this.listQuiz", this.listQuiz);
+    });
   }
 };
 </script>

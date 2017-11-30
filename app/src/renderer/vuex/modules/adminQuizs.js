@@ -16,7 +16,10 @@ const mutationTypes = {
 const state = {
     all: [],
     currentQuiz: {
-        quizInfo: {}
+        quizInfo: {
+            quizName : '',
+            quizTime : Date 
+        }
     },
     lst: []
 }
@@ -53,6 +56,7 @@ const actions = {
         commit(mutationTypes.RECEIVE_QUIZS, {
             quizList
         })
+        return quizList;
     }),
     findOneQuiz: Promise.coroutine(function*({ commit }, quizId) {
         let selectedQuiz = yield quizService.getBy(quizId)
