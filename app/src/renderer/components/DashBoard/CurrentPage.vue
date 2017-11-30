@@ -67,6 +67,7 @@ export default {
                     'username': this.username,
                     'password': this.password
                 })
+                console.log('ussername Hiệp', this.username)
                 if (ret){
                     toastr.info('Đăng nhập thành công')
                     yield this.$store.dispatch('login', ret.userId)
