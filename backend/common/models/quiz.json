@@ -1,63 +1,65 @@
 {
-  "name": "Quiz",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "forceId": false,
-  "properties": {
-    "name": {
-      "type": "string"
+    "name": "Quiz",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "startDate": {
-      "type": "date"
+    "forceId": false,
+    "properties": {
+        "startTime": {
+            "type": "date"
+        },
+        "endTime": {
+            "type": "date"
+        },
+        "quizInfo": {
+            "type": {
+                "quizTime": "date",
+                "quizName": "string"
+            }
+        },
+        "quizStatus": {
+            "type": "string"
+        },
+        "totalTime": {
+            "type": "number"
+        },
+        "numberOfQuestions": {
+            "type": "number"
+        },
+        "totalQuestions": {
+            "type": "number"
+        },
+        "listQuestionIds": {
+            "type": [{
+                "questionId": "number"
+            }]
+        },
+        "created": "date",
+        "createdUserId": "number",
+        "lastModified": "date",
+        "lastModifiedUserId": "number"
     },
-    "quizTime": {
-      "type": "date"
-    },
-    "quizStatus": {
-      "type": "string"
-    },
-    "totalTime": {
-      "type": "number"
-    },
-    "numberOfQuestions": {
-      "type": "number"
-    },
-    "listQuestionIds" : {
-      "type" : [
-        {
-          "questionId" : "number"
+    "validations": [],
+    "relations": {
+        "questions": {
+            "type": "hasMany",
+            "model": "Question",
+            "foreignKey": ""
+        },
+        "applicationUsers": {
+            "type": "hasMany",
+            "model": "ApplicationUser",
+            "foreignKey": "",
+            "through": "UsersQuizs"
         }
-      ]
     },
-    "created" : "date",
-    "createdUserId" : "number",
-    "lastModified" : "date",
-    "lastModifiedUserId" : "number"
-  },
-  "validations": [],
-  "relations": {
-    "questions": {
-      "type": "hasMany",
-      "model": "Question",
-      "foreignKey": ""
-    },
-    "applicationUsers": {
-      "type": "hasMany",
-      "model": "ApplicationUser",
-      "foreignKey": "",
-      "through": "UsersQuizs"
-    }
-  },
-  "acls": [
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "admin",
-      "permission": "ALLOW"
-    }
-  ],
-  "methods": {}
+    "acls": [{
+        "accessType": "WRITE",
+        "principalType": "ROLE",
+        "principalId": "admin",
+        "permission": "ALLOW"
+    }],
+    "methods": {}
 }

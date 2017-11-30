@@ -20,34 +20,34 @@
         <form class="ui form">
           <div class="field">
             <label>Tên</label>
-            <input type="text" name="name" placeholder="Tên đề thi" :value="current.name" @input="updateCurrent">
+            <input type="text" name="name" placeholder="Tên đề thi" :value="currentQuiz.quizInfo.quizName" @input="updateCurrent">
           </div>
           <div class="four fields">
             <div class="field">
               <label>Thời gian làm bài</label>
-              <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="current.totalTime" @input="updateCurrent">
+              <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="currentQuiz.totalTime" @input="updateCurrent">
             </div>
                 <div class="field">
               <label>Số câu hỏi cho 1 thí sinh</label>
-              <input type="number" name="numberOfQuestions" placeholder="Số câu hỏi cho 1 thí sinh" :value="current.numberOfQuestions" @input="updateCurrent">
+              <input type="number" name="numberOfQuestions" placeholder="Số câu hỏi cho 1 thí sinh" :value="currentQuiz.numberOfQuestions" @input="updateCurrent">
             </div>
             <div class="field">
               <label>Thời gian bắt đầu kỳ thi</label>
-              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="current.startTime" @input="updateCurrent">
+              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="currentQuiz.startTime" @input="updateCurrent">
             </div>
             <div class="field">
               <label>Thời gian kết thúc kỳ thi</label>
-              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="current.endTime" @input="updateCurrent">
+              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="currentQuiz.endTime" @input="updateCurrent">
             </div>
           </div>
           <div class="four fields">
             <div class="field">
               <label>Tổng số câu hỏi</label>
-              <input type="number" name="totalQuestions" placeholder="Tổng số câu hỏi" :value="current.totalQuestions" @input="updateCurrent">
+              <input type="number" name="totalQuestions" placeholder="Tổng số câu hỏi" :value="currentQuiz.totalQuestions" @input="updateCurrent">
             </div>
             <div class="field">
-              <label>Ký thi</label>
-              <input type="date" name="quizTime" placeholder="Số câu hỏi cho 1 thí sinh" :value="current.quizTime" @input="updateCurrent">
+              <label>Kì thi</label>
+              <input type="date" name="quizTime" placeholder="Số câu hỏi cho 1 thí sinh" :value="currentQuiz.quizInfo.quizTime" @input="updateCurrent">
             </div>
           
           </div>
@@ -60,7 +60,7 @@
     <table id="example" class="ui celled striped table teal">
       <thead>
         <tr>
-          <th style="width: 50px;">Số thứ tự</th>
+          <th style="width: 50px;">STT</th>
           <th> Tên </th>
           <th> Số câu hỏi </th>
           <th> Thời gian </th>
@@ -69,12 +69,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in all">
+        <tr v-for="(item, index) in listQuiz">
           <td>{{index+1}}</td>
-          <td class="collapsing">{{item.name}}</td>
+          <td class="collapsing">{{item.quizInfo.quizName}}</td>
           <td>{{item.numberOfQuestions}} </td>
           <td>{{item.totalTime}} phút</td>
-          <td>{{item.quizTime| moment}}</td>
+          <td>{{item.quizInfo.quizTime| moment}}</td>
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)">
               <i class="edit icon edit_question blue"></i>
@@ -102,10 +102,30 @@ import _ from "lodash";
 const logger = Logger("Admin Quiz List");
 const co = Promise.coroutine;
 export default {
+  data() {
+    return {
+      quizTitle: "quocbao",
+      listQuiz: [],
+      currentQuiz: {
+        startTime: new Date(),
+        endTime: new Date(),
+
+        quizInfo: {
+          quizName: "",
+          quizTime: new Date()
+        },
+        quizStatus: "",
+        totalTime : 0,
+        numberOfQuestions: 0,
+        totalQuestions: 0,
+        listQuestionIds: []
+      }
+    };
+  },
   // Format ngày tháng năm/////////////////////////////
   filters: {
     moment: function(date) {
-      return moment(date).format("DD-MM-YYYY");
+      return moment(date);
     }
   },
   computed: {
@@ -115,10 +135,15 @@ export default {
     }),
     ...mapGetters("adminQuizs", {
       title: "title"
-    })
+    }),
+
+    mapCurrentQuiz(){
+       //set 
+    }
   },
   mounted: function() {
     let me = this;
+    this.$log.debug("Admin/CurrentPage mounted()");
     $(document).ready(function() {
       $("#example").DataTable();
     });
@@ -207,6 +232,9 @@ export default {
       yield this.$store.dispatch("adminQuizs/saveQuiz", this.current);
       yield this.$store.dispatch("adminQuizs/getAll");
     }),
+    getAll: Promise.coroutine(function*() {
+      this.listQuiz = yield this.$store.dispatch("adminQuizs/getAll");
+    }),
     updateCurrent: function(e) {
       let cloneQuiz = Object.assign({}, this.current, {
         [e.target.name]: e.target.value
@@ -236,8 +264,10 @@ export default {
   },
   created() {
     var me = this;
-    logger.debug("quan ly bo de");
-    this.$store.dispatch("adminQuizs/getAll").then(() => {});
+    this.$log.debug("Danh Sách Kì Thi");
+    this.getAll().then(() => {
+      this.$log.debug("this.listQuiz", this.listQuiz);
+    });
   }
 };
 </script>
