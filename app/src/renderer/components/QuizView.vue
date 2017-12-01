@@ -124,11 +124,9 @@
                                             <i class="right chevron icon"></i>
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -443,27 +441,42 @@ export default {
     },
     goToQuestion(order) {
         console.log('question order', order)
-        this.currentQuestion = this.listQuestions[order]
-        // this.listQuestions.forEach(element => {
-        //     if (element.id === id){
-        //         console.log('selected id', element)
-        //         console.log(element.description)
-        //         this.currentQuestion = element;
-        //     }
-        // });
+        this.currentQuestion = this.listQuestions[order];
+        this.checkboxSelected = this.listQuestions[order].checkboxSelected;
+        if( this.listQuestions[order].radioSeletected === undefined){
+            this.radioSeletected = "";
+        }
+        else{
+            this.radioSeletected = this.listQuestions[order].radioSeletected;
+        }
+        if( this.listQuestions[order].checkboxSelected === undefined){
+            this.checkboxSelected = [];
+        }
+        else{
+            this.checkboxSelected = this.listQuestions[order].checkboxSelected;
+        }
+        console.log("this.currentQuestion",this.currentQuestion);
+        console.log("radioSelected", this.radioSeletected);
+        console.log("checkboxSelected", this.checkboxSelected);
+        
     },
 
     updateQuestion() {
         var questionId = this.currentQuestion.id;
         for(var i in this.listQuestions){
             if (this.listQuestions[i].id == questionId){
-                console.log('question')
+                console.log('question update', )
                 this.listQuestions[i] = this.currentQuestion;
+                this.listQuestions[i]["radioSeletected"] = this.radioSeletected;
+                this.listQuestions[i]["checkboxSelected"] = this.checkboxSelected;
+                console.log("radio", this.listQuestions[i]);
             }
         }
     },
 
-    saveCurrentQuestion() {},
+    saveCurrentQuestion() {
+        console.log('save Question AA');
+    },
     getCurrentOrder() {
         return 0;
     },
@@ -489,7 +502,7 @@ export default {
                 }
             });
         }else {
-            rs = this.answerCheckboxQuestion() 
+            rs = this.answerCheckboxQuestion();
             console.log('answerCheckboxQuestion()', rs)
         }
         this.currentQuestion.correctAnswers = rs;
