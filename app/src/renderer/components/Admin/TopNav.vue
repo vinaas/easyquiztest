@@ -27,46 +27,46 @@
 import toastr from 'toastr'
 import appConfig from '../../../../application.json'
 export default {
-  
-  mounted: function() {
-    $(document).ready(function() {
-      $(".ui.dropdown").dropdown({
-        on: "hover"
-      });
-      $("#mnuSync").click(function() {
-        const { dialog } = require("electron").remote;
-        dialog.showOpenDialog({ properties: ["openDirectory"] }, function(
+
+  mounted: function () {
+    $(document).ready(function () {
+      $('.ui.dropdown').dropdown({
+        on: 'hover'
+      })
+      $('#mnuSync').click(function () {
+        const { dialog } = require('electron').remote
+        dialog.showOpenDialog({ properties: ['openDirectory'] }, function (
           filePaths
         ) {
           if (filePaths && filePaths.length > 0) {
-            var path = require("path");
+            var path = require('path')
 
-            var fileExe = path.join(__dirname, '..', 'ParseTools/WordParser.exe');
+            var fileExe = path.join(__dirname, '..', 'ParseTools/WordParser.exe')
             toastr.info('Đang import câu hỏi')
-            var child = require("child_process").execFile;
-            console.log('path', appConfig.WordParsePath);
-            var executablePath = appConfig.WordParsePath;
-               
-            var parameters = [filePaths[0]];
+            var child = require('child_process').execFile
+            console.log('path', appConfig.WordParsePath)
+            var executablePath = appConfig.WordParsePath
+
+            var parameters = [filePaths[0]]
             child(executablePath, parameters, (error, stdout, stderr) => {
               if (error) {
                 toastr.info('Import lỗi')
-                throw error;
+                throw error
               }
               toastr.info(stdout)
-            });
+            })
           }
-        });
-      });
-      $(".ui.menu a.item").on("click", function() {
+        })
+      })
+      $('.ui.menu a.item').on('click', function () {
         $(this)
-          .addClass("active")
+          .addClass('active')
           .siblings()
-          .removeClass("active");
-      });
-    });
+          .removeClass('active')
+      })
+    })
   }
-};
+}
 </script>
 
 <style scoped>

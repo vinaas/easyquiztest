@@ -2,9 +2,9 @@
     <div class="ui fluid-container">
         <div class="ui menu">
             <div class="ui container">
-                <div class="item header item">
-                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest</div>
-
+                <router-link class="item header item" to="/">
+                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
+                </router-link>
             </div>
         </div>
         <div class="ui container">
@@ -39,20 +39,20 @@
                                         <div class="header">Thông tin thí sinh</div>
                                         <ul class="list">
                                             <li>
-                                                <b>SBD :</b> {{user.identification}}</li>
+                                                <b>SBD :</b> {{userInfo.sbd}}</li>
                                             <li>
-                                                <b>Họ tên:</b> {{user.lastName}} {{user.firstName}} </li>
+                                                <b>Họ tên:</b> {{userInfo.userName}}</li>
                                             <li>
-                                                <b>Ngày sinh:</b>{{user.birthday}} </li>
+                                                <b>Ngày sinh:</b> {{userInfo.birthday}} </li>
                                         </ul>
                                     </div>
                                     <div class="ui info message">
                                         <div class="header">Thông tin kỳ thi</div>
                                         <ul class="list">
                                             <li>
-                                                <b>Kì thi :</b> {{quiz.name}}</li>
+                                                <b>Kì thi :</b> {{quizInfo.quizName}}</li>
                                             <li>
-                                                <b>Khóa ngày:</b> {{quiz.quizTime}} </li>
+                                                <b>Khóa ngày:</b> {{quizInfo.quizTime}} </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -65,18 +65,16 @@
                         <div class="row">
                             <div class="ui card fluid">
                                 <div class="content">
-                                    <div class="header">Câu {{ current.number}}</div>
+                                    <div class="header">Câu {{ currentQuestion.number}}</div>
                                 </div>
                                 <div class="content">
-                                    <h4 class="ui sub header ">{{current.description}}</h4>
+                                    <h4 class="ui sub header ">{{currentQuestion.description}}</h4>
                                     <table class="ui table celled">
-
                                         <tbody>
-                                            <tr v-for="a in current.listAnswers">
+                                            <tr v-for="a in currentQuestion.listAnswers">
                                                 <td style="width:30px">{{a.title}}</td>
                                                 <td>{{a.content}}</td>
                                             </tr>
-
                                         </tbody>
                                     </table>
 
@@ -98,10 +96,10 @@
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
-                                            <div v-for="(a ,i) in current.listAnswers" class="field">
-                                                <div v-bind:class="[ 'ui',current.questionType=='MANY'?'checkbox':'radio', current.questionType ]">
-                                                    <input v-if="current.questionType=='MANY'" type="checkbox" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck" />
-                                                    <input v-if="current.questionType=='ONE'" type="radio" v-bind:name="current.id" :value="a.id" v-model="cloneUserCheck[0]" />
+                                            <div v-for="(a ,i) in currentQuestion.listAnswers" class="field">
+                                                <div v-bind:class="[ 'ui',currentQuestion.questionType=='ratio'?'checkbox':'radio', currentQuestion.questionType ]">
+                                                    <input v-if="currentQuestion.questionType=='ratio' && answerByUser==='true' " type="checkbox" v-bind:name="currentQuestion.id" :value="a.id" v-model="cloneUserCheck"/>
+                                                    <input v-if="currentQuestion.questionType=='ratio'" type="radio" v-bind:name="currentQuestion.id" :value="a.id" />
                                                     <label> {{a.title}}</label>
                                                 </div>
                                             </div>
@@ -215,7 +213,49 @@ export default {
 
       totalTime: 1800, //thời gian thi, countdown về 0, tính theo giây, 1800s = 30 phút
       numberOfQuestions: 20, //tổng số câu hỏi
-      listQuestions: [
+      currentQuestion:
+      {
+          id: "001", // mã câu hỏi: duy nhất trong ngân hàng câu hỏi
+          questionType: "ratio", // | checkbox", //để hiển thị loại đáp án
+          description: "nội dung câu hỏi 1", //nội dung câu hỏi,
+          difficultLevel: 6, // 1 => 10
+          categories: [], //chuyên mục của câu hỏi
+          isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
+          listAnswers: [
+            //danh sách câu trả lời để users lựa chọn,
+            //cho phép hoán đổi vị trí hiển thị, nhưng vẫn giữ id như cũ
+            {
+              id: 1,
+              title: "A",
+              content: "Nội dung đáp án A",
+              isCorrect: true,
+              answerByUser: false //khi users chọn câu trả lời, lưu lựa chọn ở đây | Mặc định false
+            },
+            {
+              id: 2,
+              title: "B",
+              content: "Nội dung đáp án B",
+              isCorrect: false,
+              answerByUser: false //cập nhật khi user trả lời
+            },
+            {
+              id: 3,
+              title: "C",
+              content: "Nội dung đáp án C",
+              isCorrect: true,
+              answerByUser: true //cập nhật khi user trả lời
+            },
+            {
+              id: 4,
+              title: "D",
+              content: "Nội dung đáp án D",
+              isCorrect: false,
+              answerByUser: false //cập nhật khi user trả lời
+            }
+          ],
+          correctAnswers: true // | false // answers.forEach(x => { if (x.isCorrect !== x.answerByUser) return false});
+        },
+        listQuestions: [
         //danh sách câu hỏi == numberOfQuestions,
         //thiết lập khi Gán Thí Sinh Tham gia kì thi
         // => lựa chọn từ ngẫu nhiên từ danh sách câu hỏi thiết lập cho kì thi
@@ -331,16 +371,25 @@ export default {
     previous: "previous",
     answereds: "answereds",
     user: "user",
-    usersQuizsRow: "usersQuizsRow"
+    usersQuizsRow: "usersQuizsRow",
   }),
   components: {},
   mounted: function() {},
   methods: {
+      
     goToQuestion(id) {
-      this.$store.dispatch("goToQuestion", id).then(() => {
+        if(currentQuestion != null)
+        {
+            currentQuestion = listQuestions[0];
+            saveCurrentQuestion();
+        }
+        this.$store.dispatch("goToQuestion", id).then(() => {
         this._cloneCurrentCheck();
       });
     },
+
+    saveCurrentQuestion(){},
+    
     goNext() {
       this.$store.dispatch("goNext").then(() => {
         this._cloneCurrentCheck();
@@ -352,21 +401,28 @@ export default {
       });
     },
     answer: co(function*() {
-      toastr.options.timeOut = 100;
-      if (this.cloneUserCheck.length == 0) {
+    if(this.cloneUserCheck == 0){
         toastr.warning("Bạn chưa chọn đáp án");
         return;
-      }
-      toastr.info("Bạn đã trả lời thành công");
-      yield this.$store.dispatch(
-        "answer",
-        Object.assign({}, this.current, { userCheck: this.cloneUserCheck })
-      );
-      $("#quiz-progress").progress({
-        value: this.answereds,
-        total: this.userQuestions.length
-      });
+    }
+       toastr.info("Bạn đã chọn đáp án thành công");
+       this.currentQuestion.listAnswers.forEach(x => { if (x.isCorrect !== x.answerByUser) return false}); 
+        console.log("Kết quả:....", this.currentQuestion.listAnswers);
     }),
+
+    //   if (this.cloneUserCheck.length == 0) {
+    //     toastr.warning("Bạn chưa chọn đáp án");
+    //     return;
+    //   }
+    //   toastr.info("Bạn đã trả lời thành công");
+    //   yield this.$store.dispatch(
+    //     "answer",
+    //     Object.assign({}, this.current, { userCheck: this.cloneUserCheck })
+    //   );
+    //   $("#quiz-progress").progress({
+    //     value: this.answereds,
+    //     total: this.userQuestions.length
+    //   });
     endQuizTest: co(function*() {
       swal(
         {

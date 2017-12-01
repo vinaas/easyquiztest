@@ -65,158 +65,158 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters } from 'vuex'
 
-import _ from "lodash";
-import Promise from "Bluebird";
-import toastr from "toastr";
-import vmodal from "vue-js-modal";
-import Logger from "../../../common/logger.js";
-import Vue from "vue";
-import "datatables.net-dt/css/jquery.datatables.css";
-import swal from "sweetalert";
-import Paginate from "vuejs-paginate";
-Vue.component("paginate", Paginate);
-const logger = Logger("Admin Questions");
-Vue.use(vmodal);
-const co = Promise.coroutine;
-var $ = require("jquery");
-require("datatables.net")(window, $);
-const AnswersName = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+import _ from 'lodash'
+import Promise from 'Bluebird'
+import toastr from 'toastr'
+import vmodal from 'vue-js-modal'
+import Logger from '../../../common/logger.js'
+import Vue from 'vue'
+import 'datatables.net-dt/css/jquery.datatables.css'
+import swal from 'sweetalert'
+import Paginate from 'vuejs-paginate'
+Vue.component('paginate', Paginate)
+const logger = Logger('Admin Questions')
+Vue.use(vmodal)
+const co = Promise.coroutine
+var $ = require('jquery')
+require('datatables.net')(window, $)
+const AnswersName = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
 const configUserQuizsColumns = [
   {
-    data: "userInfo.username"
+    data: 'userInfo.username'
   },
   {
-    data: "userInfo.email"
+    data: 'userInfo.email'
   },
   {
-    data: "userInfo.userId"
+    data: 'userInfo.userId'
   },
 
   {
-    data: "Action"
+    data: 'Action'
   }
-];
+]
 const configUserQuizsColumnDefs = [
   {
     targets: -1,
     data: null,
-    width: "60px",
+    width: '60px',
     defaultContent:
       '<div style="text-align:center"><span data-tooltip="Xóa" data-position="top left"><i class="delete icon remove_app_user red"></i></span></div>'
   }
-];
+]
 const configUsersColumns = [
   {
-    data: "id"
+    data: 'id'
   },
   {
-    data: "username"
+    data: 'username'
   },
   {
-    data: "email"
+    data: 'email'
   },
   {
-    data: "id"
+    data: 'id'
   }
-];
+]
 const configUsersColumnDefs = [
   {
     targets: 0,
     orderable: false,
-    width: "30px",
-    render: function(data, type, row) {
+    width: '30px',
+    render: function (data, type, row) {
       return (
         "<input type='checkbox' class='selecteduser' data-id='" + data + "' />"
-      );
+      )
     }
   }
-];
+]
 export default {
-  data() {
+  data () {
     return {
-      //current: {},
+      // current: {},
       checked: false,
       question: {},
       answers: [],
       disabledSaveAnswer: 0,
       pageSize: 20
-    };
+    }
   },
 
   computed: {
-    ...mapState("adminUserQuizs", {
+    ...mapState('adminUserQuizs', {
       allByQuizId: state => state.allByQuizId
     }),
-    ...mapState("adminApplicationUsers", {
+    ...mapState('adminApplicationUsers', {
       searchUsers: state => state.searchUsers,
       totalRows: state => state.totalRows
     }),
-    ...mapState("adminQuizs", {
+    ...mapState('adminQuizs', {
       current: state => state.currentQuiz
     })
   },
   created: co(function*() {
-    yield this.$store.dispatch("adminQuizs/findOneQuiz", this.$route.params.id);
-    yield this.viewUserQuizsDataTable();
+    yield this.$store.dispatch('adminQuizs/findOneQuiz', this.$route.params.id)
+    yield this.viewUserQuizsDataTable()
   }),
-  mounted: function() {
-    let me = this;
-    $(".ui.form").form({
+  mounted: function () {
+    let me = this
+    $('.ui.form').form({
       fields: {},
-      onSuccess: function(event, fields) {
-        event.preventDefault();
-        return true;
+      onSuccess: function (event, fields) {
+        event.preventDefault()
+        return true
       },
-      onFailure: function() {
-        toastr.error("Lưu không thành công");
-        return false;
+      onFailure: function () {
+        toastr.error('Lưu không thành công')
+        return false
       }
-    });
-    $(".ui.form").api({
+    })
+    $('.ui.form').api({
       mockResponseAsync: Promise.coroutine(function*(st, cb) {
-        if ($(".selecteduser:checkbox:checked").length <= 0) {
-          toastr.error("Vui lòng chọn user");
-          cb();
+        if ($('.selecteduser:checkbox:checked').length <= 0) {
+          toastr.error('Vui lòng chọn user')
+          cb()
         } else {
-          me.save();
-          cb();
-          $(".ui.modal").modal("hide");
+          me.save()
+          cb()
+          $('.ui.modal').modal('hide')
         }
       }),
-      on: "submit"
-    });
-    $(".userlist").modal({
+      on: 'submit'
+    })
+    $('.userlist').modal({
       closable: false,
-      onHidden: function() {
-        $(".ui.form").form("reset");
-        //this.current = {};
+      onHidden: function () {
+        $('.ui.form').form('reset')
+        // this.current = {};
       }
-    });
-    me.$forceUpdate();
+    })
+    me.$forceUpdate()
   },
   methods: {
-    changePage: function(pageNum) {
-      this.viewUsersDataTable(pageNum - 1);
+    changePage: function (pageNum) {
+      this.viewUsersDataTable(pageNum - 1)
     },
 
     save: co(function*() {
-      let me = this;
-      var totalSelected = 0;
-      var totalSuccess = 0;
-      var userQuizsList = [];
-      $(".selecteduser:checkbox:checked").each(function(index) {
-        totalSelected++;
-        var userId = $(this).data("id");
-        var result = $.grep(me.allByQuizId, function(e) {
-          return e.userInfo.userId == userId;
-        });
+      let me = this
+      var totalSelected = 0
+      var totalSuccess = 0
+      var userQuizsList = []
+      $('.selecteduser:checkbox:checked').each(function (index) {
+        totalSelected++
+        var userId = $(this).data('id')
+        var result = $.grep(me.allByQuizId, function (e) {
+          return e.userInfo.userId == userId
+        })
 
         // nếu không kiếm thấy user trong danh sách có sẵn
         if (result.length == 0) {
-          var table = $("#userlist").DataTable();
-          var rowData = table.row("#" + userId).data();
+          var table = $('#userlist').DataTable()
+          var rowData = table.row('#' + userId).data()
           userQuizsList.push({
             quizId: me.$route.params.id,
             userInfo: {
@@ -224,112 +224,112 @@ export default {
               username: rowData.username,
               email: rowData.email
             }
-          });
+          })
 
-          totalSuccess++;
+          totalSuccess++
         }
-      });
+      })
 
       if (totalSuccess > 0) {
         for (var i = 0; i < userQuizsList.length; i++) {
           yield me.$store.dispatch(
-            "adminUserQuizs/saveUserQuiz",
+            'adminUserQuizs/saveUserQuiz',
             userQuizsList[i]
-          );
+          )
         }
-        yield me.viewUserQuizsDataTable();
+        yield me.viewUserQuizsDataTable()
         toastr.success(
-          "Thêm thành công " +
+          'Thêm thành công ' +
             totalSuccess +
-            " câu, có " +
+            ' câu, có ' +
             (totalSelected - totalSuccess) +
-            " user bị trùng."
-        );
+            ' user bị trùng.'
+        )
       } else {
-        toastr.error("User bạn chọn đã nằm trong danh sách");
+        toastr.error('User bạn chọn đã nằm trong danh sách')
       }
     }),
-    findNextSbd: function(){
-      
+    findNextSbd: function () {
+
     },
-    add: function() {
-      this.viewUsersDataTable(0);
-      $(".userlist")
+    add: function () {
+      this.viewUsersDataTable(0)
+      $('.userlist')
         .last()
-        .modal("show");
+        .modal('show')
     },
-    show: function() {
-      this.$modal.show("answers");
+    show: function () {
+      this.$modal.show('answers')
     },
     viewUserQuizsDataTable: co(function*() {
-      let me = this;
+      let me = this
       yield this.$store.dispatch(
-        "adminUserQuizs/getAllByQuizId",
+        'adminUserQuizs/getAllByQuizId',
         this.$route.params.id
-      );
+      )
       $(document).ready(() => {
-        $("#userQuizs")
+        $('#userQuizs')
           .DataTable()
-          .destroy();
-        let table = $("#userQuizs").DataTable({
+          .destroy()
+        let table = $('#userQuizs').DataTable({
           data: _.clone(me.allByQuizId),
           columns: configUserQuizsColumns,
           columnDefs: configUserQuizsColumnDefs
-        });
-        $("#userQuizs").off("click");
-        $("#userQuizs").on("click", "tr .remove_app_user", function() {
-          let selectedRow = table.row($(this).parents("tr")).data();
+        })
+        $('#userQuizs').off('click')
+        $('#userQuizs').on('click', 'tr .remove_app_user', function () {
+          let selectedRow = table.row($(this).parents('tr')).data()
           swal(
             {
-              title: "Bạn có chắc chắn",
+              title: 'Bạn có chắc chắn',
               text:
-                "Xóa user : " +
+                'Xóa user : ' +
                 selectedRow.userInfo.username +
-                " ra khỏi cuộc thi",
-              type: "warning",
+                ' ra khỏi cuộc thi',
+              type: 'warning',
               showCancelButton: true,
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "Có, Xóa",
+              confirmButtonColor: '#DD6B55',
+              confirmButtonText: 'Có, Xóa',
               closeOnConfirm: false,
               showLoaderOnConfirm: true
             },
             co(function*() {
               try {
                 yield me.$store.dispatch(
-                  "adminUserQuizs/remove",
+                  'adminUserQuizs/remove',
                   selectedRow.id
-                );
-                yield me.viewUserQuizsDataTable();
+                )
+                yield me.viewUserQuizsDataTable()
                 swal({
-                  type: "success",
-                  title: "Ðã xóa!",
-                  text: "Dữ liệu đã bị xóa"
-                });
+                  type: 'success',
+                  title: 'Ðã xóa!',
+                  text: 'Dữ liệu đã bị xóa'
+                })
               } catch (error) {
                 swal({
-                  type: "error",
-                  title: "Thông báo!",
-                  text: "Lỗi không thể xóa " + error
-                });
+                  type: 'error',
+                  title: 'Thông báo!',
+                  text: 'Lỗi không thể xóa ' + error
+                })
               }
             })
-          );
-        });
-      });
+          )
+        })
+      })
     }),
     viewUsersDataTable: co(function*(pageNum) {
-      let me = this;
-      yield this.$store.dispatch("adminApplicationUsers/count", null);
-      yield this.$store.dispatch("adminApplicationUsers/search", {
-        keyword: "",
+      let me = this
+      yield this.$store.dispatch('adminApplicationUsers/count', null)
+      yield this.$store.dispatch('adminApplicationUsers/search', {
+        keyword: '',
         page: pageNum,
         pageSize: me.pageSize
-      });
+      })
       $(document).ready(() => {
-        $("#userlist")
+        $('#userlist')
           .DataTable()
-          .destroy();
-        let table = $("#userlist").DataTable({
+          .destroy()
+        let table = $('#userlist').DataTable({
           ordering: false,
           data: _.clone(me.searchUsers),
           pageLength: me.pageSize,
@@ -337,12 +337,12 @@ export default {
           columnDefs: configUsersColumnDefs,
           paging: false,
           info: false,
-          rowId: "id"
-        });
-      });
+          rowId: 'id'
+        })
+      })
     })
   }
-};
+}
 </script>
 <style scoped>
 .container-modal {

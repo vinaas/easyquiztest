@@ -1,32 +1,32 @@
 import Promise from 'bluebird'
 const pathEntity = '/api/Quizzes'
 export class QuizService {
-    getAll = Promise.coroutine(function*(filter) {
-        let ret = yield axios.get(pathEntity, { crossdomain: true })
+  getAll = Promise.coroutine(function*(filter) {
+    let ret = yield axios.get(pathEntity, { crossdomain: true })
 
-        return ret.data
+    return ret.data
+  })
+  getBy = Promise.coroutine(function*(id) {
+    let ret = yield axios.get(`${pathEntity}/${id}`)
+    return ret.data
+  })
+  save = Promise.coroutine(function*(bindingEntity) {
+    let ret = yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity)
+    return ret.data
+  })
+  remove = Promise.coroutine(function*(id) {
+    let ret = yield axios.delete(`${pathEntity}/${id}`)
+    return ret.data
+  })
+  getQuestionsBy = Promise.coroutine(function*(id) {
+    let ret = yield axios.get(`${pathEntity}/${id}/questions`)
+    let questions = ret.data.map(x => {
+      x.content = x.content || ''
+      x.description = x.description || ''
+      return x
     })
-    getBy = Promise.coroutine(function*(id) {
-        let ret = yield axios.get(`${pathEntity}/${id}`)
-        return ret.data
-    })
-    save = Promise.coroutine(function*(bindingEntity) {
-        let ret = yield axios.post(`${pathEntity}/replaceOrCreate`, bindingEntity)
-        return ret.data
-    })
-    remove = Promise.coroutine(function*(id) {
-        let ret = yield axios.delete(`${pathEntity}/${id}`)
-        return ret.data
-    })
-    getQuestionsBy = Promise.coroutine(function*(id) {
-        let ret = yield axios.get(`${pathEntity}/${id}/questions`)
-        let questions = ret.data.map(x => {
-                x.content = x.content || ''
-                x.description = x.description || ''
-                return x
-            })
-            //console.log('Questions: ', questions)
-        return questions;
-    })
+            // console.log('Questions: ', questions)
+    return questions
+  })
 
 }
