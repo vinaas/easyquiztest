@@ -49,50 +49,49 @@ import Promise from 'bluebird'
 const _authServices = new AuthServices()
 
 export default {
-    mounted: function() {
-        var me = this
-        $('#login').api({
-            mockResponseAsync: Promise.coroutine(function* (st, cb) {
-                yield me.login()
-                cb(true)
-            }),
-            on: 'click'
+  mounted: function () {
+    var me = this
+    $('#login').api({
+      mockResponseAsync: Promise.coroutine(function* (st, cb) {
+        yield me.login()
+        cb(true)
+      }),
+      on: 'click'
+    })
+  },
+  data: function () { return { username: '', password: '' } },
+  methods: {
+    login: Promise.coroutine(function* () {
+      try {
+        let ret = yield _authServices.login({
+          'username': this.username,
+          'password': this.password
         })
-    },
-    data: function() { return { username: '', password: '' } },
-    methods: {
-        login: Promise.coroutine(function* () {
-            try {
-                let ret = yield _authServices.login({
-                    'username': this.username,
-                    'password': this.password
-                })
-                console.log('ussername Hiệp', this.username)
-                if (ret){
-                    toastr.info('Đăng nhập thành công')
-                    yield this.$store.dispatch('login', ret.userId)
-                    try {
-                        let roles = yield _authServices.getUserRoles()
-                        this.$log.debug('getUserRoles()', roles)
-                        if (roles.roleId == 1) {
-                            this.$router.push({ path: 'admin' })
-                       
-                        } else if (roles.roleId == 2) {
-                            this.$router.push({ path: 'userQuiz' })
-                        }else{
+        console.log('ussername Hiệp', this.username)
+        if (ret) {
+          toastr.info('Đăng nhập thành công')
+          yield this.$store.dispatch('login', ret.userId)
+          try {
+            let roles = yield _authServices.getUserRoles()
+            this.$log.debug('getUserRoles()', roles)
+            if (roles.roleId == 1) {
+              this.$router.push({ path: 'admin' })
+            } else if (roles.roleId == 2) {
+              this.$router.push({ path: 'userQuiz' })
+            } else {
 
-                        }
-                    } catch (error) {
-                        toastr.error('Không có quyền truy cập.')
-                    }
-                }else{
-                    toastr.error('Đăng nhập không thành công')
-                }
-            } catch (error) {
-                toastr.error('Không kết nối với server')
             }
-        })
-    }
+          } catch (error) {
+            toastr.error('Không có quyền truy cập.')
+          }
+        } else {
+          toastr.error('Đăng nhập không thành công')
+        }
+      } catch (error) {
+        toastr.error('Không kết nối với server')
+      }
+    })
+  }
 
 }
 </script>

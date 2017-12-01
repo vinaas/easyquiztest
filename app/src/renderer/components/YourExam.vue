@@ -87,24 +87,24 @@ import swal from 'sweetalert'
 const co = Promise.coroutine
 
 export default {
-    name: 'exams',
-    computed: mapGetters({
-        quizs: 'exams/quizs',
-        usersQuizsRow: 'usersQuizsRow'
-    }),
-    components: {},
-    mounted: function() {
-    },
-    methods: {
-        showResults: co(function* () {
-            yield this.$store.dispatch('end')
-            $('#result_2')
+  name: 'exams',
+  computed: mapGetters({
+    quizs: 'exams/quizs',
+    usersQuizsRow: 'usersQuizsRow'
+  }),
+  components: {},
+  mounted: function () {
+  },
+  methods: {
+    showResults: co(function* () {
+      yield this.$store.dispatch('end')
+      $('#result_2')
             .modal('show')
-        }),
-    },
-    created: co(function* () {
-        yield this.$store.dispatch('exams/getQuizs')
     })
+  },
+  created: co(function* () {
+    yield this.$store.dispatch('exams/getQuizs')
+  })
 
 }
 </script>

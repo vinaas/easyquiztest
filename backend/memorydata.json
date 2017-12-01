@@ -1,14 +1,14 @@
 {
   "ids": {
     "User": 1,
-    "AccessToken": 59,
+    "AccessToken": 73,
     "ACL": 1,
     "RoleMapping": 1,
     "Role": 3,
     "Quiz": 8,
     "Question": 12,
     "ApplicationUser": 4,
-    "UsersQuizs": 1,
+    "UsersQuizs": 3,
     "AnswersForAQuestion": 1
   },
   "models": {
@@ -71,7 +71,21 @@
       "DKngtst3fHQ3D4lSTzbpffxwnrsLBAGF5ZfsJFAbJPtVLCwS9XiiDSpczhKN789K": "{\"id\":\"DKngtst3fHQ3D4lSTzbpffxwnrsLBAGF5ZfsJFAbJPtVLCwS9XiiDSpczhKN789K\",\"ttl\":1209600,\"created\":\"2017-11-30T02:00:16.571Z\",\"userId\":1}",
       "BYBu9VakEmQHhKofFq39uC3JEGVfXPCLVF2yHpI2ydDGhGd5jOu01G6JDgw61cX3": "{\"id\":\"BYBu9VakEmQHhKofFq39uC3JEGVfXPCLVF2yHpI2ydDGhGd5jOu01G6JDgw61cX3\",\"ttl\":1209600,\"created\":\"2017-11-30T02:03:43.559Z\",\"userId\":2}",
       "QY75vgk6lMiGCvoIrPlxBcqw6K3t8JjVOjV6JJwP9Bh4z3b9VSumYOK4HHLkX5Lj": "{\"id\":\"QY75vgk6lMiGCvoIrPlxBcqw6K3t8JjVOjV6JJwP9Bh4z3b9VSumYOK4HHLkX5Lj\",\"ttl\":1209600,\"created\":\"2017-11-30T02:08:37.436Z\",\"userId\":2}",
-      "vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr": "{\"id\":\"vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr\",\"ttl\":1209600,\"created\":\"2017-11-30T02:25:43.139Z\",\"userId\":2}"
+      "vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr": "{\"id\":\"vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr\",\"ttl\":1209600,\"created\":\"2017-11-30T02:25:43.139Z\",\"userId\":2}",
+      "xogl9zJWSUkCGHFLWzl5MdNjTazJH20tFAoF3Br24KoiEeFkJmMmHxtT3ebzkWRN": "{\"id\":\"xogl9zJWSUkCGHFLWzl5MdNjTazJH20tFAoF3Br24KoiEeFkJmMmHxtT3ebzkWRN\",\"ttl\":1209600,\"created\":\"2017-11-30T02:47:47.196Z\",\"userId\":2}",
+      "6LAOQv9wJs3Grz70oyerj4Vbx902eXvci6p4OqFOOaNzY5OxgXiX2uzW3K0l8ahQ": "{\"id\":\"6LAOQv9wJs3Grz70oyerj4Vbx902eXvci6p4OqFOOaNzY5OxgXiX2uzW3K0l8ahQ\",\"ttl\":1209600,\"created\":\"2017-11-30T02:48:00.579Z\",\"userId\":1}",
+      "bl8AGnBbKUCpfNXdOlpO98gBSHHFegOkRKpeewaHqU3We23CoU157atVtvMYeRYh": "{\"id\":\"bl8AGnBbKUCpfNXdOlpO98gBSHHFegOkRKpeewaHqU3We23CoU157atVtvMYeRYh\",\"ttl\":1209600,\"created\":\"2017-11-30T02:48:09.909Z\",\"userId\":1}",
+      "BbNEzn35SF2kem2UlJHmC3CyJTOVJoD14B5D3TUV2Pn033PQucp7oHNJyE0IqWnL": "{\"id\":\"BbNEzn35SF2kem2UlJHmC3CyJTOVJoD14B5D3TUV2Pn033PQucp7oHNJyE0IqWnL\",\"ttl\":1209600,\"created\":\"2017-11-30T02:48:31.025Z\",\"userId\":2}",
+      "h6qIVjnGtiKZuB1m00XXK3pdjv0jem5mdn12rfcetHMK1Jo1pKf3OVQl9IbDPlyj": "{\"id\":\"h6qIVjnGtiKZuB1m00XXK3pdjv0jem5mdn12rfcetHMK1Jo1pKf3OVQl9IbDPlyj\",\"ttl\":1209600,\"created\":\"2017-11-30T03:41:30.422Z\",\"userId\":2}",
+      "4EMIqZzSilzpia77Yur9vCsUEA64ZCi6IsxElxP0Tonjo8NlRfCAmCPX7ktahXCI": "{\"id\":\"4EMIqZzSilzpia77Yur9vCsUEA64ZCi6IsxElxP0Tonjo8NlRfCAmCPX7ktahXCI\",\"ttl\":1209600,\"created\":\"2017-11-30T04:05:29.691Z\",\"userId\":2}",
+      "HoTwxDkRRHEsp3mgoFaWYTxrgDyFu0wqJwJ5cknJy0W0SqN2Ul2TFNTW57FE6xme": "{\"id\":\"HoTwxDkRRHEsp3mgoFaWYTxrgDyFu0wqJwJ5cknJy0W0SqN2Ul2TFNTW57FE6xme\",\"ttl\":1209600,\"created\":\"2017-11-30T04:14:57.374Z\",\"userId\":1}",
+      "ef2Wjb17uwB3pEQqvpduya6TgwQcffuerAkH2YQ8ZgzFerdc4MUD6Rdg7vWFvEBB": "{\"id\":\"ef2Wjb17uwB3pEQqvpduya6TgwQcffuerAkH2YQ8ZgzFerdc4MUD6Rdg7vWFvEBB\",\"ttl\":1209600,\"created\":\"2017-11-30T04:23:35.620Z\",\"userId\":2}",
+      "JBqLeWyWtgzPSFipT6dTPR5WUWcOqa8rtFeLGRVhtDHLAel9ygJXxMMsECCJRFb5": "{\"id\":\"JBqLeWyWtgzPSFipT6dTPR5WUWcOqa8rtFeLGRVhtDHLAel9ygJXxMMsECCJRFb5\",\"ttl\":1209600,\"created\":\"2017-11-30T04:23:56.519Z\",\"userId\":2}",
+      "FB8IigmyRrelCIqjdmMfEyhB4ISPsB4gdoWlRYTliIe5yfqsOzJsyls8oA2hwKIa": "{\"id\":\"FB8IigmyRrelCIqjdmMfEyhB4ISPsB4gdoWlRYTliIe5yfqsOzJsyls8oA2hwKIa\",\"ttl\":1209600,\"created\":\"2017-11-30T05:11:59.977Z\",\"userId\":2}",
+      "ujhaEb7NQFGjB3sh7HOkVSNOI2eD533Gkxh3ygk5Zuv5AaSQmWD2fRVXHPynYU6N": "{\"id\":\"ujhaEb7NQFGjB3sh7HOkVSNOI2eD533Gkxh3ygk5Zuv5AaSQmWD2fRVXHPynYU6N\",\"ttl\":1209600,\"created\":\"2017-11-30T07:41:40.678Z\",\"userId\":2}",
+      "4NALnQV2aWiUpHT8yE4vWqrJuyV01u4tgbKcWzpcJWDGxMS7Nl82ScNPfrB4mNos": "{\"id\":\"4NALnQV2aWiUpHT8yE4vWqrJuyV01u4tgbKcWzpcJWDGxMS7Nl82ScNPfrB4mNos\",\"ttl\":1209600,\"created\":\"2017-11-30T10:02:43.135Z\",\"userId\":2}",
+      "q2pbw8Rpx4EjJYq3zUVhwNCTSCDQ7vmC0tPaFrh3jNkCCwiYtbggcAjL2DS3WWpj": "{\"id\":\"q2pbw8Rpx4EjJYq3zUVhwNCTSCDQ7vmC0tPaFrh3jNkCCwiYtbggcAjL2DS3WWpj\",\"ttl\":1209600,\"created\":\"2017-12-01T01:49:59.695Z\",\"userId\":1}",
+      "rB8t7WAIp4RsBGTN8N3fmVzorodB0EBU7VGpsMnhasH6BvyD0Ks8fTb8y5KwkQCE": "{\"id\":\"rB8t7WAIp4RsBGTN8N3fmVzorodB0EBU7VGpsMnhasH6BvyD0Ks8fTb8y5KwkQCE\",\"ttl\":1209600,\"created\":\"2017-12-01T02:02:12.482Z\",\"userId\":2}"
     },
     "ACL": {},
     "RoleMapping": {},
@@ -99,7 +113,10 @@
       "2": "{\"roleId\":2,\"username\":\"user01\",\"password\":\"$2a$10$ap0cpAr.nDV6AF8dbDZd/uf0BDmA3kNHNsOhF8EIb1kGEnG69RtDS\",\"email\":\"user@vinaas.com\",\"id\":2}",
       "3": "{\"roleId\":2,\"username\":\"user02\",\"password\":\"$2a$10$J/R4uXpXR2J5BSD8tO1m2OfriWREQIxprD2mPb.eJj5yfHOVuYfS2\",\"email\":\"user02@vinaas.com\",\"id\":3}"
     },
-    "UsersQuizs": {},
+    "UsersQuizs": {
+      "1": "{\"answerDetail\":[],\"scopes\":null,\"scopesPraction\":\"0/0\",\"id\":1}",
+      "2": "{\"answerDetail\":[],\"scopes\":null,\"scopesPraction\":\"0/0\",\"id\":2}"
+    },
     "AnswersForAQuestion": {}
   }
 }

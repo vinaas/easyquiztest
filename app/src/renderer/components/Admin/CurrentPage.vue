@@ -92,184 +92,184 @@
   </div>
 </template>
 <script>
-import moment from "moment";
-import { mapState, mapGetters } from "vuex";
-import Logger from "../../../common/logger.js";
-import Promise from "bluebird";
-import toastr from "toastr";
-import swal from "sweetalert";
-import _ from "lodash";
-const logger = Logger("Admin Quiz List");
-const co = Promise.coroutine;
+import moment from 'moment'
+import { mapState, mapGetters } from 'vuex'
+import Logger from '../../../common/logger.js'
+import Promise from 'bluebird'
+import toastr from 'toastr'
+import swal from 'sweetalert'
+import _ from 'lodash'
+const logger = Logger('Admin Quiz List')
+const co = Promise.coroutine
 export default {
-  data() {
+  data () {
     return {
-      quizTitle: "quocbao",
+      quizTitle: 'quocbao',
       listQuiz: [],
       currentQuiz: {
         startTime: new Date(),
         endTime: new Date(),
 
         quizInfo: {
-          quizName: "",
+          quizName: '',
           quizTime: new Date()
         },
-        quizStatus: "",
-        totalTime : 0,
+        quizStatus: '',
+        totalTime: 0,
         numberOfQuestions: 0,
         totalQuestions: 0,
         listQuestionIds: []
       }
-    };
+    }
   },
   // Format ngày tháng năm/////////////////////////////
   filters: {
-    moment: function(date) {
-      return moment(date);
+    moment: function (date) {
+      return moment(date)
     }
   },
   computed: {
-    ...mapState("adminQuizs", {
+    ...mapState('adminQuizs', {
       all: state => state.all,
       current: state => state.currentQuiz
     }),
-    ...mapGetters("adminQuizs", {
-      title: "title"
+    ...mapGetters('adminQuizs', {
+      title: 'title'
     }),
 
-    mapCurrentQuiz(){
-       //set 
+    mapCurrentQuiz () {
+       // set
     }
   },
-  mounted: function() {
-    let me = this;
-    this.$log.debug("Admin/CurrentPage mounted()");
-    $(document).ready(function() {
-      $("#example").DataTable();
-    });
-    $(".ui.form").form({
+  mounted: function () {
+    let me = this
+    this.$log.debug('Admin/CurrentPage mounted()')
+    $(document).ready(function () {
+      $('#example').DataTable()
+    })
+    $('.ui.form').form({
       fields: {
         name: {
-          identifier: "name",
+          identifier: 'name',
           rules: [
             {
-              type: "empty",
-              prompt: "Please enter your name"
+              type: 'empty',
+              prompt: 'Please enter your name'
             }
           ]
         },
         totalTime: {
-          identifier: "totalTime",
+          identifier: 'totalTime',
           rules: [
             {
-              type: "empty",
-              prompt: "Please enter totalTime"
+              type: 'empty',
+              prompt: 'Please enter totalTime'
             }
           ]
         }
       },
-      onSuccess: function(event, fields) {
-        event.preventDefault();
-        return true;
+      onSuccess: function (event, fields) {
+        event.preventDefault()
+        return true
       },
-      onFailure: function() {
-        toastr.error("Lưu không thành công");
-        return false;
+      onFailure: function () {
+        toastr.error('Lưu không thành công')
+        return false
       }
-    });
+    })
 
-    $(".ui.form").api({
+    $('.ui.form').api({
       mockResponseAsync: Promise.coroutine(function*(st, cb) {
-        yield me.save();
-        cb();
-        $(".ui.modal").modal("hide");
-        toastr.success("Lưu thành công");
+        yield me.save()
+        cb()
+        $('.ui.modal').modal('hide')
+        toastr.success('Lưu thành công')
       }),
-      on: "submit"
-    });
-    $(".saveQuiz").modal({
+      on: 'submit'
+    })
+    $('.saveQuiz').modal({
       closable: false,
-      onHidden: function() {
-        $(".ui.form").form("reset");
-        me.$store.dispatch("adminQuizs/updateCurrent", {});
+      onHidden: function () {
+        $('.ui.form').form('reset')
+        me.$store.dispatch('adminQuizs/updateCurrent', {})
       }
-    });
-    me.$forceUpdate();
+    })
+    me.$forceUpdate()
   },
   methods: {
-    goNext() {
-      this.$store.dispatch("goNext").then(() => {
-        this._cloneCurrentCheck();
-      });
+    goNext () {
+      this.$store.dispatch('goNext').then(() => {
+        this._cloneCurrentCheck()
+      })
     },
-    goPrevious() {
-      this.$store.dispatch("goPre").then(() => {
-        this._cloneCurrentCheck();
-      });
+    goPrevious () {
+      this.$store.dispatch('goPre').then(() => {
+        this._cloneCurrentCheck()
+      })
     },
-    toQuestion: function(item) {
-      logger.debug("link to Question", JSON.stringify(item));
+    toQuestion: function (item) {
+      logger.debug('link to Question', JSON.stringify(item))
       // this.$router.push({ path: 'questionList'+item.id })
     },
-    addQuiz: function() {
-      logger.debug("add");
-      this.$store.dispatch("adminQuizs/selectQuiz", {});
+    addQuiz: function () {
+      logger.debug('add')
+      this.$store.dispatch('adminQuizs/selectQuiz', {})
 
-      $(".saveQuiz")
+      $('.saveQuiz')
         .last()
-        .modal("show");
+        .modal('show')
     },
     toSave: co(function*(item) {
-      logger.debug(item);
+      logger.debug(item)
       // $('.saveQuiz').remove()
-      yield this.$store.dispatch("adminQuizs/selectQuiz", item);
+      yield this.$store.dispatch('adminQuizs/selectQuiz', item)
 
-      $(".saveQuiz")
+      $('.saveQuiz')
         .last()
-        .modal("show");
+        .modal('show')
     }),
     save: Promise.coroutine(function*() {
-      yield this.$store.dispatch("adminQuizs/saveQuiz", this.current);
-      yield this.$store.dispatch("adminQuizs/getAll");
+      yield this.$store.dispatch('adminQuizs/saveQuiz', this.current)
+      yield this.$store.dispatch('adminQuizs/getAll')
     }),
     getAll: Promise.coroutine(function*() {
-      this.listQuiz = yield this.$store.dispatch("adminQuizs/getAll");
+      this.listQuiz = yield this.$store.dispatch('adminQuizs/getAll')
     }),
-    updateCurrent: function(e) {
+    updateCurrent: function (e) {
       let cloneQuiz = Object.assign({}, this.current, {
         [e.target.name]: e.target.value
-      });
-      this.$store.dispatch("adminQuizs/updateCurrent", cloneQuiz);
+      })
+      this.$store.dispatch('adminQuizs/updateCurrent', cloneQuiz)
     },
     toRemove: Promise.coroutine(function*(item) {
-      let me = this;
+      let me = this
       swal(
         {
-          title: "Bạn có chắc chắn?",
-          text: "Xóa dữ liệu : " + item.name,
-          type: "warning",
+          title: 'Bạn có chắc chắn?',
+          text: 'Xóa dữ liệu : ' + item.name,
+          type: 'warning',
           showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Có, Xóa",
+          confirmButtonColor: '#DD6B55',
+          confirmButtonText: 'Có, Xóa',
           closeOnConfirm: false,
           showLoaderOnConfirm: true
         },
         Promise.coroutine(function*() {
-          yield me.$store.dispatch("adminQuizs/removeQuiz", item);
-          yield me.$store.dispatch("adminQuizs/getAll");
-          swal("Đã xóa!", "Dữ liệu đã bị xóa", "success");
+          yield me.$store.dispatch('adminQuizs/removeQuiz', item)
+          yield me.$store.dispatch('adminQuizs/getAll')
+          swal('Đã xóa!', 'Dữ liệu đã bị xóa', 'success')
         })
-      );
+      )
     })
   },
-  created() {
-    var me = this;
-    this.$log.debug("Danh Sách Kì Thi");
+  created () {
+    var me = this
+    this.$log.debug('Danh Sách Kì Thi')
     this.getAll().then(() => {
-      this.$log.debug("this.listQuiz", this.listQuiz);
-    });
+      this.$log.debug('this.listQuiz', this.listQuiz)
+    })
   }
-};
+}
 </script>
 <style scoped>
 

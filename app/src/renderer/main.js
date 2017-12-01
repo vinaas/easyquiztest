@@ -13,17 +13,17 @@ Vue.use(Router)
 
 const options = {
     // required ['debug', 'info', 'warn', 'error', 'fatal']
-    logLevel : 'debug', 
+  logLevel: 'debug',
     // optional : defaults to false if not specified
-    stringifyArguments : false,
+  stringifyArguments: false,
     // optional : defaults to false if not specified
-    showLogLevel : true,
+  showLogLevel: true,
     // optional : defaults to false if not specified
-    showMethodName : false,
+  showMethodName: false,
     // optional : defaults to '|' if not specified
-    separator: '|',
+  separator: '|',
     // optional : defaults to false if not specified
-    showConsoleColors: true
+  showConsoleColors: true
 }
 
 Vue.use(VueLogger, options)

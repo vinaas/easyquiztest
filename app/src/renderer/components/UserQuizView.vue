@@ -52,35 +52,35 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
-import moment from "moment";
-import Logger from "../../common/logger.js";
-import Promise from "bluebird";
-import toastr from "toastr";
-import swal from "sweetalert";
-import _ from "lodash";
-const logger = Logger("UserQuizView");
-const co = Promise.coroutine;
+import moment from 'moment'
+import Logger from '../../common/logger.js'
+import Promise from 'bluebird'
+import toastr from 'toastr'
+import swal from 'sweetalert'
+import _ from 'lodash'
+const logger = Logger('UserQuizView')
+const co = Promise.coroutine
 export default {
   // Format ngày tháng năm/////////////////////////////
   filters: {
-    moment: function(date) {
-      return moment(date).format("YYYY-MM-DD");
+    moment: function (date) {
+      return moment(date).format('YYYY-MM-DD')
     }
   },
-  
+
   computed: {
-    
+
   },
-  mounted: function() {
-        
+  mounted: function () {
+
   },
-  methods: {      
-      
+  methods: {
+
   },
-  created() {
-    var me = this;
-    logger.debug("Danh sach Bai Thi");
-    this.$store.dispatch("adminQuizs/getAll").then(() => {});
+  created () {
+    var me = this
+    logger.debug('Danh sach Bai Thi')
+    this.$store.dispatch('adminQuizs/getAll').then(() => {})
   }
-};
+}
 </script>

@@ -15,128 +15,128 @@ const questionService = new QuestionService()
 const answerService = new AnswersForAQuestionService()
 const quizService = new QuizService()
 const mutationTypes = {
-    RECEIVE_QUESTIONS: 'RECEIVE_QUESTIONS',
-    COUNT_QUESTIONS: 'COUNT_QUESTIONS',
-    RECEIVE_SEARCH_QUESTIONS: 'RECEIVE_SEARCH_QUESTIONS',
-    SAVE_QUESTION: 'SAVE_QUESTION',
-    REMOVE_QUESTION: 'REMOVE_QUESTION',
-    CURRENT_QUESTION: 'CURRENT_QUESTION',
-    UPDATE_CURRENT_QUESTION: 'UPDATE_CURRENT_QUESTION',
-    RESET_CURRENT: 'RESET_CURRENT',
-    UPDATE_CURRENT: 'UPDATE_CURRENT',
-    UPDATE_ANSWERS: 'UPDATE_ANSWERS',
-    QUESTIONS_OF_QUIZ: 'QUESTIONS_OF_QUIZ',
-    SELECT_ANSWERS: 'SELECT_ANSWERS',
-    UPDATE_ANSWERS_CURRENT: 'UPDATE_ANSWERS_CURRENT',
-    ADD_TO_LIST: 'ADD_TO_LIST'
+  RECEIVE_QUESTIONS: 'RECEIVE_QUESTIONS',
+  COUNT_QUESTIONS: 'COUNT_QUESTIONS',
+  RECEIVE_SEARCH_QUESTIONS: 'RECEIVE_SEARCH_QUESTIONS',
+  SAVE_QUESTION: 'SAVE_QUESTION',
+  REMOVE_QUESTION: 'REMOVE_QUESTION',
+  CURRENT_QUESTION: 'CURRENT_QUESTION',
+  UPDATE_CURRENT_QUESTION: 'UPDATE_CURRENT_QUESTION',
+  RESET_CURRENT: 'RESET_CURRENT',
+  UPDATE_CURRENT: 'UPDATE_CURRENT',
+  UPDATE_ANSWERS: 'UPDATE_ANSWERS',
+  QUESTIONS_OF_QUIZ: 'QUESTIONS_OF_QUIZ',
+  SELECT_ANSWERS: 'SELECT_ANSWERS',
+  UPDATE_ANSWERS_CURRENT: 'UPDATE_ANSWERS_CURRENT',
+  ADD_TO_LIST: 'ADD_TO_LIST'
 }
 const state = {
-    all: [],
-    questionsBank: [],
-    questionsOfQuiz: [],
-    currentAnswers: {},
-    totalRows: 0,
-    lst: { data: ['A'] }
+  all: [],
+  questionsBank: [],
+  questionsOfQuiz: [],
+  currentAnswers: {},
+  totalRows: 0,
+  lst: { data: ['A'] }
 }
 
 const mutations = {
-    [mutationTypes.UPDATE_ANSWERS_CURRENT](state, selectedAnswers) {
-        state.currentAnswers = selectedAnswers
-    },
-    [mutationTypes.SELECT_ANSWERS](state, selectedAnswers) {
-        state.currentAnswers = selectedAnswers
-    },
-    [mutationTypes.SAVE_QUESTION](state) {},
-    [mutationTypes.REMOVE_QUESTION](state) {},
-    [mutationTypes.RECEIVE_QUESTIONS](state, {
+  [mutationTypes.UPDATE_ANSWERS_CURRENT] (state, selectedAnswers) {
+    state.currentAnswers = selectedAnswers
+  },
+  [mutationTypes.SELECT_ANSWERS] (state, selectedAnswers) {
+    state.currentAnswers = selectedAnswers
+  },
+  [mutationTypes.SAVE_QUESTION] (state) {},
+  [mutationTypes.REMOVE_QUESTION] (state) {},
+  [mutationTypes.RECEIVE_QUESTIONS] (state, {
         questionList
     }) {
-        state.all = questionList
-    },
-    [mutationTypes.COUNT_QUESTIONS](state,
+    state.all = questionList
+  },
+  [mutationTypes.COUNT_QUESTIONS] (state,
         count
     ) {
-        state.totalRows = count
-    },
-    [mutationTypes.RECEIVE_SEARCH_QUESTIONS](state, {
+    state.totalRows = count
+  },
+  [mutationTypes.RECEIVE_SEARCH_QUESTIONS] (state, {
         questionList
     }) {
-        state.questionsBank = questionList
-    },
-    [mutationTypes.UPDATE_ANSWERS](state) {
+    state.questionsBank = questionList
+  },
+  [mutationTypes.UPDATE_ANSWERS] (state) {
 
-    },
-    [mutationTypes.QUESTIONS_OF_QUIZ](state, { questionsOfQuiz }) {
-        state.questionsOfQuiz = questionsOfQuiz
-    }
+  },
+  [mutationTypes.QUESTIONS_OF_QUIZ] (state, { questionsOfQuiz }) {
+    state.questionsOfQuiz = questionsOfQuiz
+  }
 }
 
 const actions = {
-    add: function({ commit }) {
-        commit(mutationTypes.ADD_TO_LIST)
-    },
-    getAll: Promise.coroutine(function*({
+  add: function ({ commit }) {
+    commit(mutationTypes.ADD_TO_LIST)
+  },
+  getAll: Promise.coroutine(function*({
         commit
     }) {
-        let questionList = yield questionService.getAll()
-        commit(mutationTypes.RECEIVE_QUESTIONS, {
-            questionList
-        })
-    }),
-    search: Promise.coroutine(function*({ commit }, filter) {
-        let questionList = yield questionService.search({ skip: filter.page * filter.pageSize, limit: filter.pageSize })
-        commit(mutationTypes.RECEIVE_SEARCH_QUESTIONS, { questionList })
-    }),
-    count: Promise.coroutine(function*({ commit }, filter) {
-        let result = yield questionService.count(filter)
-        commit(mutationTypes.COUNT_QUESTIONS, result.count)
-    }),
-    selectAnswers: function({
+    let questionList = yield questionService.getAll()
+    commit(mutationTypes.RECEIVE_QUESTIONS, {
+      questionList
+    })
+  }),
+  search: Promise.coroutine(function*({ commit }, filter) {
+    let questionList = yield questionService.search({ skip: filter.page * filter.pageSize, limit: filter.pageSize })
+    commit(mutationTypes.RECEIVE_SEARCH_QUESTIONS, { questionList })
+  }),
+  count: Promise.coroutine(function*({ commit }, filter) {
+    let result = yield questionService.count(filter)
+    commit(mutationTypes.COUNT_QUESTIONS, result.count)
+  }),
+  selectAnswers: function ({
         commit
     }, selectedAnswers) {
-        commit(mutationTypes.SELECT_ANSWERS, selectedAnswers)
-    },
-    saveQuestion: Promise.coroutine(function*({
+    commit(mutationTypes.SELECT_ANSWERS, selectedAnswers)
+  },
+  saveQuestion: Promise.coroutine(function*({
         commit
     }, selectedQuestion) {
-        var ret = yield questionService.save(selectedQuestion)
-        commit(mutationTypes.SAVE_QUESTION)
-    }),
+    var ret = yield questionService.save(selectedQuestion)
+    commit(mutationTypes.SAVE_QUESTION)
+  }),
 
-    removeQuestion: Promise.coroutine(function*({
+  removeQuestion: Promise.coroutine(function*({
         commit
     }, question) {
-        var ret = yield questionService.remove(question.id)
-    }),
+    var ret = yield questionService.remove(question.id)
+  }),
 
-    updateAnswers: Promise.coroutine(function*({ commit }, question) {
-        yield answerService.updateAnswers(question)
-        commit(mutationTypes.UPDATE_ANSWERS)
-    }),
-    getQuestionsOfQuiz: Promise.coroutine(function*({ commit }, quizId) {
-        let questionsOfQuiz = yield quizService.getQuestionsBy(quizId)
-        commit(mutationTypes.QUESTIONS_OF_QUIZ, { questionsOfQuiz })
-    }),
+  updateAnswers: Promise.coroutine(function*({ commit }, question) {
+    yield answerService.updateAnswers(question)
+    commit(mutationTypes.UPDATE_ANSWERS)
+  }),
+  getQuestionsOfQuiz: Promise.coroutine(function*({ commit }, quizId) {
+    let questionsOfQuiz = yield quizService.getQuestionsBy(quizId)
+    commit(mutationTypes.QUESTIONS_OF_QUIZ, { questionsOfQuiz })
+  }),
 
-    updateAnswersCurrent: Promise.coroutine(function*({
+  updateAnswersCurrent: Promise.coroutine(function*({
         commit
     }, selectedAnswers) {
-        commit(mutationTypes.UPDATE_ANSWERS_CURRENT, selectedAnswers)
-    })
+    commit(mutationTypes.UPDATE_ANSWERS_CURRENT, selectedAnswers)
+  })
 
 }
 
 const getters = {
-    currentAnswers: state => state.currentAnswers,
-    questionsOfQuiz: state => state.questionsOfQuiz,
-    all: state => state.all,
-    currentQuestion: state => state.currentQuestion
+  currentAnswers: state => state.currentAnswers,
+  questionsOfQuiz: state => state.questionsOfQuiz,
+  all: state => state.all,
+  currentQuestion: state => state.currentQuestion
 
 }
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters
 }
