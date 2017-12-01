@@ -65,7 +65,7 @@
                         <div class="row">
                             <div class="ui card fluid">
                                 <div class="content">
-                                    <div class="header">Câu {{ currentQuestion.number}}</div>
+                                    <div class="header">Câu {{ getCurrentOrder() + 1 }} | id: {{currentQuestion.id}}</div>
                                 </div>
                                 <div class="content">
                                     <h4 class="ui sub header ">{{currentQuestion.description}}</h4>
@@ -144,7 +144,7 @@
                     <div class="ui card fluid">
                         <div class="content">
                             <!-- <button v-for="(q, index) in userQuestions" @click="goToQuestion(q.id)" class="mini ui button" v-bind:class="{inverted: q.id!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button> -->
-                            <button v-for="(q, index) in listQuestions" @click="goToQuestion(q.id)" class="mini ui button" v-bind:class="{inverted: q.id!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
+                            <button v-for="(q, index) in listQuestions" @click="goToQuestion(index)" class="mini ui button" v-bind:class="{inverted: q.id!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
                         </div>
 
                     </div>
@@ -441,30 +441,37 @@ export default {
       }
       return title;
     },
-    goToQuestion(id) {
-        console.log('question id', id)
-        this.listQuestions.forEach(element => {
-            if (element.id === id){
-                console.log('selected id', element)
-                console.log(element.description)
-                this.currentQuestion = element;
+    goToQuestion(order) {
+        console.log('question order', order)
+        this.currentQuestion = this.listQuestions[order]
+        // this.listQuestions.forEach(element => {
+        //     if (element.id === id){
+        //         console.log('selected id', element)
+        //         console.log(element.description)
+        //         this.currentQuestion = element;
+        //     }
+        // });
+    },
+
+    updateQuestion() {
+        var questionId = this.currentQuestion.id;
+        for(var i in this.listQuestions){
+            if (this.listQuestions[i].id == questionId){
+                console.log('question')
+                this.listQuestions[i] = this.currentQuestion;
             }
-        });
-    //   if (currentQuestion != null) {
-    //     currentQuestion = listQuestions[0];
-    //     saveCurrentQuestion();
-    //   }
-    //   this.$store.dispatch("goToQuestion", id).then(() => {
-    //     this._cloneCurrentCheck();
-    //   });
+        }
     },
 
     saveCurrentQuestion() {},
-
+    getCurrentOrder() {
+        return 0;
+    },
     goNext() {
-      this.$store.dispatch("goNext").then(() => {
-        this._cloneCurrentCheck();
-      });
+       // var questionId = this.currentQuestion.id;
+       //this.getCurrentOrder()   get order
+       // goToQuestion(order + 1)
+
     },
     goPrevious() {
       this.$store.dispatch("goPre").then(() => {
@@ -486,6 +493,8 @@ export default {
             console.log('answerCheckboxQuestion()', rs)
         }
         this.currentQuestion.correctAnswers = rs;
+        this.updateQuestion();
+        this.goNext(); 
     }),
     answerCheckboxQuestion() {
         var rs = true;
