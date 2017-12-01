@@ -1,10 +1,16 @@
 <template>
   <div class="ui main text container">
     <h1>Danh sách user [{{current.name}}]</h1>
-    <div>
-      <span data-tooltip="Tạo mới">
-      <i class="add to circle icon green" v-on:click="add()"></i></span>
+    <div @click="add()" class="ui vertical animated button" style="background-color:transparent;border: 1px solid green;margin-bottom:50px">
+      <div class=" hidden content">
+        <i class="plus icon green"></i>
+      </div>
+      <div class="visible content" style="color:green; ">Thêm</div>
     </div>
+    <!-- <div>
+      <span data-tooltip="Tạo mới">
+      <i class="add to circle icon green" v-on:click="add()"></i>Tạo Mới</span>
+    </div> -->
     <div class="userlist ui modal">
       <i class="close icon"></i>
       <div class="header">

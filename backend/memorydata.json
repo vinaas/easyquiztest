@@ -1,14 +1,14 @@
 {
   "ids": {
     "User": 1,
-    "AccessToken": 59,
+    "AccessToken": 70,
     "ACL": 1,
     "RoleMapping": 1,
     "Role": 3,
-    "Quiz": 8,
+    "Quiz": 10,
     "Question": 12,
     "ApplicationUser": 4,
-    "UsersQuizs": 1,
+    "UsersQuizs": 4,
     "AnswersForAQuestion": 1
   },
   "models": {
@@ -71,7 +71,18 @@
       "DKngtst3fHQ3D4lSTzbpffxwnrsLBAGF5ZfsJFAbJPtVLCwS9XiiDSpczhKN789K": "{\"id\":\"DKngtst3fHQ3D4lSTzbpffxwnrsLBAGF5ZfsJFAbJPtVLCwS9XiiDSpczhKN789K\",\"ttl\":1209600,\"created\":\"2017-11-30T02:00:16.571Z\",\"userId\":1}",
       "BYBu9VakEmQHhKofFq39uC3JEGVfXPCLVF2yHpI2ydDGhGd5jOu01G6JDgw61cX3": "{\"id\":\"BYBu9VakEmQHhKofFq39uC3JEGVfXPCLVF2yHpI2ydDGhGd5jOu01G6JDgw61cX3\",\"ttl\":1209600,\"created\":\"2017-11-30T02:03:43.559Z\",\"userId\":2}",
       "QY75vgk6lMiGCvoIrPlxBcqw6K3t8JjVOjV6JJwP9Bh4z3b9VSumYOK4HHLkX5Lj": "{\"id\":\"QY75vgk6lMiGCvoIrPlxBcqw6K3t8JjVOjV6JJwP9Bh4z3b9VSumYOK4HHLkX5Lj\",\"ttl\":1209600,\"created\":\"2017-11-30T02:08:37.436Z\",\"userId\":2}",
-      "vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr": "{\"id\":\"vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr\",\"ttl\":1209600,\"created\":\"2017-11-30T02:25:43.139Z\",\"userId\":2}"
+      "vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr": "{\"id\":\"vjX8JcjPliJq6jE8z2h8heSLi4TqXS8pxbnQvrTCiD1NHSCWZVXAdG0pozu9OuJr\",\"ttl\":1209600,\"created\":\"2017-11-30T02:25:43.139Z\",\"userId\":2}",
+      "Ocopvi8W6hS6Lk0utGMtVsnKzJBRFCVBuGwcjIhkYh0odSTcKFaPkDv8uhaYrB6n": "{\"id\":\"Ocopvi8W6hS6Lk0utGMtVsnKzJBRFCVBuGwcjIhkYh0odSTcKFaPkDv8uhaYrB6n\",\"ttl\":1209600,\"created\":\"2017-11-30T02:32:41.285Z\",\"userId\":1}",
+      "WceCNbr2Psr25qLRCL6XsOF4UEKeBuX7chOBRDMeM9LoMKgR4l2ue7pd4FTtCaAt": "{\"id\":\"WceCNbr2Psr25qLRCL6XsOF4UEKeBuX7chOBRDMeM9LoMKgR4l2ue7pd4FTtCaAt\",\"ttl\":1209600,\"created\":\"2017-11-30T02:40:44.038Z\",\"userId\":1}",
+      "aLqzaAaKPPvI89apEGQ8llwA1W09kOIUKjdrnIYjw1IOItqHTiJ1pQhbJZzC7tkL": "{\"id\":\"aLqzaAaKPPvI89apEGQ8llwA1W09kOIUKjdrnIYjw1IOItqHTiJ1pQhbJZzC7tkL\",\"ttl\":1209600,\"created\":\"2017-11-30T02:44:41.894Z\",\"userId\":1}",
+      "VLpvmIzi9ixQZD0MfAvKeMla9nAiQVGIDFycMERAMfDR4kLxm3bVymQT3CEQjAlt": "{\"id\":\"VLpvmIzi9ixQZD0MfAvKeMla9nAiQVGIDFycMERAMfDR4kLxm3bVymQT3CEQjAlt\",\"ttl\":1209600,\"created\":\"2017-11-30T02:54:54.715Z\",\"userId\":1}",
+      "hzqFe9TjqRICgYVCelq19mjEHDG6WTVcM8tKMm92GHKYuJzyyvxTIYEnXA21SWU2": "{\"id\":\"hzqFe9TjqRICgYVCelq19mjEHDG6WTVcM8tKMm92GHKYuJzyyvxTIYEnXA21SWU2\",\"ttl\":1209600,\"created\":\"2017-11-30T03:04:56.401Z\",\"userId\":1}",
+      "TcfJ8fBRSiqD6kOe8m2xPeANBsGg1hdhOjxJiW8QDHojgYRRyaTqgZewNtdEJonL": "{\"id\":\"TcfJ8fBRSiqD6kOe8m2xPeANBsGg1hdhOjxJiW8QDHojgYRRyaTqgZewNtdEJonL\",\"ttl\":1209600,\"created\":\"2017-11-30T03:19:39.744Z\",\"userId\":1}",
+      "XEm8Nnh8IHpuLA5F5w6U8yiGFhu8CFk7WJdDPERNQzGXEzeYILT4RpB0JUdftUjU": "{\"id\":\"XEm8Nnh8IHpuLA5F5w6U8yiGFhu8CFk7WJdDPERNQzGXEzeYILT4RpB0JUdftUjU\",\"ttl\":1209600,\"created\":\"2017-11-30T03:29:37.173Z\",\"userId\":1}",
+      "D0Sh36qsd7GPI5QaFli6qUK65SU0q5Rjet8Yw9ai1O8Z3OfoClxkfyC8o7SReQT7": "{\"id\":\"D0Sh36qsd7GPI5QaFli6qUK65SU0q5Rjet8Yw9ai1O8Z3OfoClxkfyC8o7SReQT7\",\"ttl\":1209600,\"created\":\"2017-11-30T04:31:57.983Z\",\"userId\":1}",
+      "nuq5pzPWWlHWlCRhHT2lYjulDnYKEGdRuQjCLJ3GZ4LOB8w9zQC2FuFNa2nHYt8x": "{\"id\":\"nuq5pzPWWlHWlCRhHT2lYjulDnYKEGdRuQjCLJ3GZ4LOB8w9zQC2FuFNa2nHYt8x\",\"ttl\":1209600,\"created\":\"2017-11-30T04:38:25.268Z\",\"userId\":1}",
+      "Tblo3dAt3HzNRLJkVBEGTTCAD5sRxDWiKEYBTVFFVY2gW44Atty5YZiaa9COhxOX": "{\"id\":\"Tblo3dAt3HzNRLJkVBEGTTCAD5sRxDWiKEYBTVFFVY2gW44Atty5YZiaa9COhxOX\",\"ttl\":1209600,\"created\":\"2017-11-30T04:41:01.551Z\",\"userId\":1}",
+      "kEen0cZZAChEy58a0Vj47gflGkASsTx60gvjGKEI2RKL5ScErpdkCQEM8shMpkCN": "{\"id\":\"kEen0cZZAChEy58a0Vj47gflGkASsTx60gvjGKEI2RKL5ScErpdkCQEM8shMpkCN\",\"ttl\":1209600,\"created\":\"2017-11-30T05:00:22.489Z\",\"userId\":1}"
     },
     "ACL": {},
     "RoleMapping": {},
@@ -81,7 +92,9 @@
     },
     "Quiz": {
       "6": "{\"startTime\":\"2017-11-29T04:19:50.002Z\",\"endTime\":\"2017-12-29T04:19:50.002Z\",\"quizInfo\":{\"quizTime\":\"2017-11-29T04:19:50.002Z\",\"quizName\":\"Kì Thi Kiểm Tra Toán\"},\"quizStatus\":\"ACTIVE\",\"totalTime\":1800,\"numberOfQuestions\":5,\"totalQuestions\":10,\"listQuestionIds\":[{}],\"created\":\"2017-11-29T04:19:50.002Z\",\"createdUserId\":0,\"lastModified\":\"2017-11-29T04:19:50.002Z\",\"lastModifiedUserId\":0,\"id\":6}",
-      "7": "{\"startTime\":\"2017-11-29T04:19:50.002Z\",\"endTime\":\"2017-12-19T04:19:50.002Z\",\"quizInfo\":{\"quizTime\":\"2017-11-29T04:19:50.002Z\",\"quizName\":\"Kì Thi Kiểm Tra Tiếng Anh\"},\"quizStatus\":\"ACTIVE\",\"totalTime\":1200,\"numberOfQuestions\":5,\"totalQuestions\":10,\"listQuestionIds\":[{}],\"created\":\"2017-11-29T04:19:50.002Z\",\"createdUserId\":0,\"lastModified\":\"2017-11-29T04:19:50.002Z\",\"lastModifiedUserId\":0,\"id\":7}"
+      "7": "{\"startTime\":\"2017-11-29T04:19:50.002Z\",\"endTime\":\"2017-12-19T04:19:50.002Z\",\"quizInfo\":{\"quizTime\":\"2017-11-29T04:19:50.002Z\",\"quizName\":\"Kì Thi Kiểm Tra Tiếng Anh\"},\"quizStatus\":\"ACTIVE\",\"totalTime\":1200,\"numberOfQuestions\":5,\"totalQuestions\":10,\"listQuestionIds\":[{}],\"created\":\"2017-11-29T04:19:50.002Z\",\"createdUserId\":0,\"lastModified\":\"2017-11-29T04:19:50.002Z\",\"lastModifiedUserId\":0,\"id\":7}",
+      "8": "{\"quizInfo\":{\"quizName\":\"\"},\"id\":8}",
+      "9": "{\"startTime\":\"2017-11-30T05:02:39.000Z\",\"endTime\":\"2017-11-13T17:00:00.000Z\",\"quizInfo\":{\"quizTime\":\"2017-11-30T05:02:39.000Z\",\"quizName\":\"bbbbb\"},\"quizStatus\":\"\",\"totalTime\":5,\"numberOfQuestions\":5,\"totalQuestions\":3,\"listQuestionIds\":[],\"id\":9}"
     },
     "Question": {
       "1": "{\"description\":\"Nội dung câu hỏi 1, kì thi 1\",\"difficultLevel\":5,\"isRandom\":true,\"questionType\":\"ONE\",\"listAnswers\":[{\"id\":1,\"content\":\"đáp án A\",\"isCorrect\":true,\"answerByUser\":false},{\"id\":2,\"content\":\"đáp án B\",\"isCorrect\":false,\"answerByUser\":false}],\"id\":1,\"quizId\":1,\"category\":[]}",
@@ -99,7 +112,11 @@
       "2": "{\"roleId\":2,\"username\":\"user01\",\"password\":\"$2a$10$ap0cpAr.nDV6AF8dbDZd/uf0BDmA3kNHNsOhF8EIb1kGEnG69RtDS\",\"email\":\"user@vinaas.com\",\"id\":2}",
       "3": "{\"roleId\":2,\"username\":\"user02\",\"password\":\"$2a$10$J/R4uXpXR2J5BSD8tO1m2OfriWREQIxprD2mPb.eJj5yfHOVuYfS2\",\"email\":\"user02@vinaas.com\",\"id\":3}"
     },
-    "UsersQuizs": {},
+    "UsersQuizs": {
+      "1": "{\"quizId\":6,\"userInfo\":{\"userId\":1,\"username\":\"admin\",\"email\":\"admin@vinaas.com\"},\"id\":1}",
+      "2": "{\"quizId\":6,\"userInfo\":{\"userId\":2,\"username\":\"user01\",\"email\":\"user@vinaas.com\"},\"id\":2}",
+      "3": "{\"quizId\":6,\"userInfo\":{\"userId\":3,\"username\":\"user02\",\"email\":\"user02@vinaas.com\"},\"id\":3}"
+    },
     "AnswersForAQuestion": {}
   }
 }

@@ -13,41 +13,42 @@
     <div id="saveQuiz" class="ui modal saveQuiz">
       <i class="close icon"></i>
       <div class="header">
-        {{title}}
+        {{header}}
       </div>
       <div class="ui content">
 
         <form class="ui form">
           <div class="field">
             <label>Tên</label>
-            <input type="text" name="name" placeholder="Tên đề thi" :value="currentQuiz.quizInfo.quizName" @input="updateCurrent">
+            <input type="text" name="name" placeholder="Tên đề thi" v-model="currentQuiz.quizInfo.quizName" >
           </div>
           <div class="four fields">
             <div class="field">
               <label>Thời gian làm bài</label>
-              <input type="number" name="totalTime" placeholder="Thời gian làm bài" :value="currentQuiz.totalTime" @input="updateCurrent">
+              <input type="number" name="totalTime" placeholder="Thời gian làm bài" v-model="currentQuiz.totalTime" >
             </div>
                 <div class="field">
               <label>Số câu hỏi cho 1 thí sinh</label>
-              <input type="number" name="numberOfQuestions" placeholder="Số câu hỏi cho 1 thí sinh" :value="currentQuiz.numberOfQuestions" @input="updateCurrent">
+              <input type="number" name="numberOfQuestions" placeholder="Số câu hỏi cho 1 thí sinh" v-model="currentQuiz.numberOfQuestions" >
             </div>
             <div class="field">
               <label>Thời gian bắt đầu kỳ thi</label>
-              <input type="date" name="startTime" placeholder="Thời gian bắt đầu kỳ thi" :value="currentQuiz.startTime" @input="updateCurrent">
+              <date-picker  v-model="currentQuiz.startTime" lang="en" format="dd-MM-yyyy"> </date-picker>
             </div>
             <div class="field">
               <label>Thời gian kết thúc kỳ thi</label>
-              <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" :value="currentQuiz.endTime" @input="updateCurrent">
+              <date-picker  v-model="currentQuiz.endTime" lang="en" format="dd-MM-yyyy"> </date-picker>
+              <!-- <input type="date" name="endTime" placeholder="Thời gian kết thúc kỳ thi" v-model="currentQuiz.endTime"> -->
             </div>
           </div>
           <div class="four fields">
             <div class="field">
               <label>Tổng số câu hỏi</label>
-              <input type="number" name="totalQuestions" placeholder="Tổng số câu hỏi" :value="currentQuiz.totalQuestions" @input="updateCurrent">
+              <input type="number" name="totalQuestions" placeholder="Tổng số câu hỏi" v-model="currentQuiz.totalQuestions" >
             </div>
             <div class="field">
               <label>Kì thi</label>
-              <input type="date" name="quizTime" placeholder="Số câu hỏi cho 1 thí sinh" :value="currentQuiz.quizInfo.quizTime" @input="updateCurrent">
+              <date-picker  v-model="currentQuiz.quizInfo.quizTime" lang="en" format="dd-MM-yyyy"> </date-picker>
             </div>
           
           </div>
@@ -74,7 +75,7 @@
           <td class="collapsing">{{item.quizInfo.quizName}}</td>
           <td>{{item.numberOfQuestions}} </td>
           <td>{{item.totalTime}} phút</td>
-          <td>{{item.quizInfo.quizTime| moment}}</td>
+          <td>{{item.quizInfo.quizTime| formatDate}}</td>
           <td>
             <span data-tooltip="cập nhật" data-position="top left" v-on:click="toSave(item)">
               <i class="edit icon edit_question blue"></i>
@@ -99,23 +100,25 @@ import Promise from "bluebird";
 import toastr from "toastr";
 import swal from "sweetalert";
 import _ from "lodash";
+import DatePicker from 'vue2-datepicker'
+
 const logger = Logger("Admin Quiz List");
 const co = Promise.coroutine;
 export default {
+  components: { DatePicker },  
   data() {
     return {
-      quizTitle: "quocbao",
       listQuiz: [],
       currentQuiz: {
-        startTime: new Date(),
-        endTime: new Date(),
+        startTime: new Date().toString(),
+        endTime: '',
 
         quizInfo: {
           quizName: "",
-          quizTime: new Date()
+          quizTime: new Date().toString('dd/mm/yyyy')
         },
         quizStatus: "",
-        totalTime : 0,
+        totalTime: 0,
         numberOfQuestions: 0,
         totalQuestions: 0,
         listQuestionIds: []
@@ -125,7 +128,7 @@ export default {
   // Format ngày tháng năm/////////////////////////////
   filters: {
     moment: function(date) {
-      return moment(date);
+      return moment(date).format("L");
     }
   },
   computed: {
@@ -136,9 +139,17 @@ export default {
     ...mapGetters("adminQuizs", {
       title: "title"
     }),
-
-    mapCurrentQuiz(){
-       //set 
+    header: {
+      get() {
+        return this.title;
+      },
+      set(value) {
+        //this.$store.commit("updateMessage", value);
+        this.title = 'bao'
+      }
+    },
+    mapCurrentQuiz() {
+      //set
     }
   },
   mounted: function() {
@@ -213,7 +224,8 @@ export default {
     },
     addQuiz: function() {
       logger.debug("add");
-      this.$store.dispatch("adminQuizs/selectQuiz", {});
+      console.log('addQuiz()', this.currentQuiz)
+      this.$store.dispatch("adminQuizs/selectQuiz", this.currentQuiz);
 
       $(".saveQuiz")
         .last()
@@ -229,7 +241,7 @@ export default {
         .modal("show");
     }),
     save: Promise.coroutine(function*() {
-      yield this.$store.dispatch("adminQuizs/saveQuiz", this.current);
+      yield this.$store.dispatch("adminQuizs/saveQuiz", this.currentQuiz);
       yield this.$store.dispatch("adminQuizs/getAll");
     }),
     getAll: Promise.coroutine(function*() {

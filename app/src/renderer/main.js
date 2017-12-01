@@ -6,27 +6,34 @@ import Router from 'vue-router'
 import App from './App'
 import routes from './routes'
 import VueLogger from 'vuejs-logger'
+import moment from 'moment'
 
 Vue.use(Electron)
 Vue.use(Resource)
 Vue.use(Router)
 
 const options = {
-    // required ['debug', 'info', 'warn', 'error', 'fatal']
-    logLevel : 'debug', 
-    // optional : defaults to false if not specified
-    stringifyArguments : false,
-    // optional : defaults to false if not specified
-    showLogLevel : true,
-    // optional : defaults to false if not specified
-    showMethodName : false,
-    // optional : defaults to '|' if not specified
-    separator: '|',
-    // optional : defaults to false if not specified
-    showConsoleColors: true
+  // required ['debug', 'info', 'warn', 'error', 'fatal']
+  logLevel: 'debug',
+  // optional : defaults to false if not specified
+  stringifyArguments: false,
+  // optional : defaults to false if not specified
+  showLogLevel: true,
+  // optional : defaults to false if not specified
+  showMethodName: false,
+  // optional : defaults to '|' if not specified
+  separator: '|',
+  // optional : defaults to false if not specified
+  showConsoleColors: true
 }
 
 Vue.use(VueLogger, options)
+
+Vue.filter('formatDate', function (value) {
+  if (value) {
+    return moment(String(value)).format('DD/MM/YYYY hh:mm')
+  }
+})
 
 const router = new Router({
   scrollBehavior: () => ({
@@ -34,6 +41,8 @@ const router = new Router({
   }),
   routes
 })
+
+
 
 /* eslint-disable no-new */
 new Vue({
