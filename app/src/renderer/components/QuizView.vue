@@ -98,12 +98,12 @@
                                             <!--<label>How often do you use checkboxes?</label>-->
                                             
                                             <div v-if="currentQuestion.questionType ==='radio'" class="ui radio">
-                                                <div v-for="(a , i) in currentQuestion.listAnswers">
+                                                <div v-for="(a,i) in currentQuestion.listAnswers">
                                                     <input type="radio" id="one" :value="a.id" v-model="radioSeletected" ><label for="one">{{getAnswerTitle(i)}} | {{a.isCorrect}}</label>
                                                 </div>
                                             </div>
                                             <div v-else class="ui checkbox">
-                                                <div v-for="(a , i) in currentQuestion.listAnswers">
+                                                <div v-for="(a,i) in currentQuestion.listAnswers">
                                                     <input type="checkbox" :id="getAnswerTitle(i)" :value="a.id" v-model="checkboxSelected"><label :for="getAnswerTitle(i)">{{a.id}} {{i}} | {{getAnswerTitle(i)}} | {{a.isCorrect}}</label>
                                                     <br/>
                                                 </div>
@@ -418,7 +418,12 @@ export default {
     }
   }),
   components: {},
-  mounted: function() {},
+  mounted: function() {
+    var totalSecond = 60 * 60,
+    display = document.querySelector("#basicUsage");
+    startTimer(totalSecond, display);
+    console.log("display", display);
+  },
   methods: {
     chonDapAn(id) {
       console.log("da chon dap an", id);
@@ -480,11 +485,11 @@ export default {
     getCurrentOrder() {
         return 0;
     },
-    goNext() {
-       // var questionId = this.currentQuestion.id;
-       //this.getCurrentOrder()   get order
-       // goToQuestion(order + 1)
 
+    goNext() {
+       this.$store.dispatch("goNext").then(() => {
+        this._cloneCurrentCheck();
+      });
     },
     goPrevious() {
       this.$store.dispatch("goPre").then(() => {
@@ -574,11 +579,6 @@ export default {
       quizId: this.quiz.id
     });
     yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
-    // load timer
-    var totalSecond = this.quiz.totalTime * 60,
-      display = document.querySelector("#basicUsage");
-    startTimer(totalSecond, display);
-    this._cloneCurrentCheck();
 
     $("#quiz-progress").progress({
       label: "radio",

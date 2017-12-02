@@ -1,14 +1,14 @@
 // import * as mutationTypes from '../mutation-mutationTypes'
 import quizApi from '../../api/quiz'
 // import { QuizService } from '../../services/quiz'
-import { QuizService } from '../../services/quiz'
+import { QuizSrv } from '../../services/quizSrv'
 import { QuestionService } from '../../services/question'
 import { UsersQuizsService } from '../../services/users-quizes'
 import Promise from 'bluebird'
 
 const co = Promise.coroutine
 
-const quizSrv = new QuizService()
+const quizSrv = new QuizSrv()
 const questionSrv = new QuestionService()
 const usersQuizsSrv = new UsersQuizsService()
 
@@ -141,7 +141,9 @@ const mutations = {
   [mutationTypes.GO_PRE] (state) {
     let currentQuestion = state.questions.filter(x => x.id == state.currentQuestionId)[0]
     let preIndex = state.questions.indexOf(currentQuestion) - 1
+    console.log("preIndex", preIndex)
     state.currentQuestionId = state.questions[preIndex].id
+
   },
   [mutationTypes.END_QUIZ_TEST] (state, usersQuizsRow) {
     state.usersQuizsRow = usersQuizsRow

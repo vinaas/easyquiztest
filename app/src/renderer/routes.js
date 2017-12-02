@@ -34,7 +34,6 @@ export default [{
   path: '/Quiz',
   component: require('components/QuizView'),
   beforeEnter: (to, from, next) => {
-    alert('ok')
     next()
   }
 },
