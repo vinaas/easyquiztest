@@ -167,14 +167,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr v-for="(item , index) in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}">
+                            <!-- <tr v-for="(item,index) in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}">
                                 <td>{{index +1 }}</td>
                                 <td> {{ (item.userCheck)? item.userCheck.map(x=> item.answersForAQuestions.filter(y=>y.id==x).shift().name ).sort():'Chưa trả lời' }} </td>
                                 <td>
                                     {{item.answersForAQuestions.filter(x=>x.isCorrect==true).map(x=>x.name).sort()}}
                                 </td>
                                 <td>{{item.userAnswerResult? "Đúng" : "Sai"}} </td>
-                                <!--<td>None</td>-->
+                                <td>None</td>
                             </tr> -->
                         </tbody>
                     </table>
@@ -213,12 +213,12 @@ export default {
       quizStatus: "ACTIVE", //trạng thái kì thi: available :đang diễn ra | notstart: sắp diễn ra | completed đã kết thúc. Trạng thái có thể dựa vào startTime, endTime để tính, hoặc thiết lập bằng tay, ví dụ ngưng kì thi khi vẫn chưa tới thời gian kết thúc
 
       quizInfo: {
-          //Thông tin kì thi
+        //Thông tin kì thi
         quizName: "kiểm tra 60 phút", //"tên kì thi",
         quizTime: "6/5/2017" // "khóa thi"
       },
-      checkboxSelected : [],
-      radioSeletected : '', 
+      checkboxSelected: [],
+      radioSeletected: "",
 
       totalTime: 1800, //thời gian thi, countdown về 0, tính theo giây, 1800s = 30 phút
       numberOfQuestions: 20, //tổng số câu hỏi
@@ -235,25 +235,25 @@ export default {
           {
             id: 1,
             content: "Nội dung đáp án A",
-            isCorrect: false,
+            isCorrect: false
             //answerByUser: false //khi users chọn câu trả lời, lưu lựa chọn ở đây | Mặc định false
           },
           {
             id: 3,
             content: "Nội dung đáp án C",
-            isCorrect: true,
+            isCorrect: true
             //answerByUser: false //cập nhật khi user trả lời
           },
           {
             id: 2,
             content: "Nội dung đáp án B",
-            isCorrect: false,
+            isCorrect: false
             //answerByUser: false //cập nhật khi user trả lời
           },
           {
             id: 4,
             content: "Nội dung đáp án D",
-            isCorrect: false,
+            isCorrect: false
             //answerByUser: false //cập nhật khi user trả lời
           }
         ],
@@ -413,23 +413,34 @@ export default {
     answereds: "answereds",
     user: "user",
     usersQuizsRow: "usersQuizsRow",
-    updateAnswer : function(){
-        console.log('computed updateAnswer' , this.radioSeletected)
+    updateAnswer: function() {
+      console.log("computed updateAnswer", this.radioSeletected);
     }
   }),
   components: {},
   mounted: function() {
     var totalSecond = 60 * 60,
-    display = document.querySelector("#basicUsage");
+      display = document.querySelector("#basicUsage");
     startTimer(totalSecond, display);
     console.log("display", display);
+
+    $("#quiz-progress").progress({
+        lable: "ratio",
+        value: this.answereds,
+        total: this.userQuestions.length,
+        text: {
+            ratio: "{value}/{total}"
+        },
+        showActivity: false
+      });
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAsasa", $("#quiz-progress").progress());
   },
   methods: {
     chonDapAn(id) {
       console.log("da chon dap an", id);
-    //   console.log("Truoc", JSON.stringtify(this.currentQuestion.listAnswers));
-    //   this.currentQuestion.listAnswers[0].answerByUser = true;
-    //   console.log("Sau", this.currentQuestion.listAnswers);
+      //   console.log("Truoc", JSON.stringtify(this.currentQuestion.listAnswers));
+      //   this.currentQuestion.listAnswers[0].answerByUser = true;
+      //   console.log("Sau", this.currentQuestion.listAnswers);
     },
     getAnswerTitle(id) {
       var title = "";
@@ -445,49 +456,46 @@ export default {
       return title;
     },
     goToQuestion(order) {
-        console.log('question order', order)
-        this.currentQuestion = this.listQuestions[order];
+      console.log("question order", order);
+      this.currentQuestion = this.listQuestions[order];
+      this.checkboxSelected = this.listQuestions[order].checkboxSelected;
+      if (this.listQuestions[order].radioSeletected === undefined) {
+        this.radioSeletected = "";
+      } else {
+        this.radioSeletected = this.listQuestions[order].radioSeletected;
+      }
+      if (this.listQuestions[order].checkboxSelected === undefined) {
+        this.checkboxSelected = [];
+      } else {
         this.checkboxSelected = this.listQuestions[order].checkboxSelected;
-        if( this.listQuestions[order].radioSeletected === undefined){
-            this.radioSeletected = "";
-        }
-        else{
-            this.radioSeletected = this.listQuestions[order].radioSeletected;
-        }
-        if( this.listQuestions[order].checkboxSelected === undefined){
-            this.checkboxSelected = [];
-        }
-        else{
-            this.checkboxSelected = this.listQuestions[order].checkboxSelected;
-        }
-        console.log("this.currentQuestion",this.currentQuestion);
-        console.log("radioSelected", this.radioSeletected);
-        console.log("checkboxSelected", this.checkboxSelected);
-        
+      }
+      console.log("this.currentQuestion", this.currentQuestion);
+      console.log("radioSelected", this.radioSeletected);
+      console.log("checkboxSelected", this.checkboxSelected);
     },
 
     updateQuestion() {
-        var questionId = this.currentQuestion.id;
-        for(var i in this.listQuestions){
-            if (this.listQuestions[i].id == questionId){
-                console.log('question update', )
-                this.listQuestions[i] = this.currentQuestion;
-                this.listQuestions[i]["radioSeletected"] = this.radioSeletected;
-                this.listQuestions[i]["checkboxSelected"] = this.checkboxSelected;
-                console.log("radio", this.listQuestions[i]);
-            }
+      var questionId = this.currentQuestion.id;
+      for (var i in this.listQuestions) {
+        if (this.listQuestions[i].id == questionId) {
+          console.log("question update");
+          this.listQuestions[i] = this.currentQuestion;
+          this.listQuestions[i]["radioSeletected"] = this.radioSeletected;
+          this.listQuestions[i]["checkboxSelected"] = this.checkboxSelected;
+          console.log("radio", this.listQuestions[i]);
         }
+      }
     },
 
     saveCurrentQuestion() {
-        console.log('save Question AA');
+      console.log("save Question AA");
     },
     getCurrentOrder() {
-        return 0;
+      return 0;
     },
 
     goNext() {
-       this.$store.dispatch("goNext").then(() => {
+      this.$store.dispatch("goNext").then(() => {
         this._cloneCurrentCheck();
       });
     },
@@ -497,40 +505,52 @@ export default {
       });
     },
     answer: co(function*() {
-        var rs = false;
-        if (this.currentQuestion.questionType === 'radio'){
-            this.currentQuestion.listAnswers.forEach(element => {
-                if (element.id === this.radioSeletected){
-                    if (element.isCorrect) {
-                        rs = true;
-                    }
-                }
-            });
-        }else {
-            rs = this.answerCheckboxQuestion();
-            console.log('answerCheckboxQuestion()', rs)
-        }
-        this.currentQuestion.correctAnswers = rs;
-        this.updateQuestion();
-        this.goNext(); 
+      var rs = false;
+      if (this.currentQuestion.questionType === "radio") {
+        this.currentQuestion.listAnswers.forEach(element => {
+          if (element.id === this.radioSeletected) {
+            if (element.isCorrect) {
+              rs = true;
+            }
+          }
+        });
+      } else {
+        rs = this.answerCheckboxQuestion();
+        console.log("answerCheckboxQuestion()", rs);
+      }
+      this.currentQuestion.correctAnswers = rs;
+      this.updateQuestion();
+      $("#quiz-progress").progress({
+        lable: "ratio",
+        value: this.answereds,
+        total: this.userQuestions.length,
+        text: {
+            ratio: "{value}/{total}"
+        },
+        showActivity: false
+      });
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAsasa", $("#quiz-progress").progress());
     }),
     answerCheckboxQuestion() {
-        var rs = true;
-        this.currentQuestion.listAnswers.forEach(element => {
-            if (element.isCorrect) {
-                if (this.checkboxSelected.indexOf(element.id) == -1) {
-                    console.log('Correct id', element.id)
-                    rs = false;
-                }
-            }else {
-
-                if (this.checkboxSelected.indexOf(element.id) > -1) {
-                    console.log('unCorrect id', element.id)
-                    rs = false;
-                }
-            }
+      var rs = true;
+      this.currentQuestion.listAnswers.forEach(element => {
+        if (element.isCorrect) {
+          if (this.checkboxSelected.indexOf(element.id) == -1) {
+            console.log("Correct id", element.id);
+            rs = false;
+          }
+        } else {
+          if (this.checkboxSelected.indexOf(element.id) > -1) {
+            console.log("unCorrect id", element.id);
+            rs = false;
+          }
+        }
+        $("#quiz-progress").progress({
+          value: this.answereds,
+          total: this.userQuestions.length
         });
-        return rs; 
+      });
+      return rs;
     },
 
     //   if (this.cloneUserCheck.length == 0) {
@@ -579,16 +599,6 @@ export default {
       quizId: this.quiz.id
     });
     yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
-
-    $("#quiz-progress").progress({
-      label: "radio",
-      value: this.answereds,
-      total: this.userQuestions.length,
-      text: {
-        radio: "{value}/{total}"
-      },
-      showActivity: false
-    });
   })
 };
 </script>
