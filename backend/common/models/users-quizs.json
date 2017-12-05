@@ -1,50 +1,54 @@
 {
-    "name": "UsersQuizs",
-    "base": "PersistedModel",
-    "idInjection": true,
-    "options": {
-        "validateUpsert": true
+  "name": "UsersQuizs",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "forceId": false,
+  "properties": {
+    "quizId": {
+      "type": "number"
     },
-    "forceId": false,
-    "properties": {
-        "quizId": {
-            "type": "number"
-        },
-        "answerDetail": {
-            "type": [
-                "object"
-            ]
-        },
-        "listQuestions": {
-            "type": [
-                "object"
-            ]
-        },
-        "result": {
-            "type": "string"
-        },
-        "scopes": {
-            "type": "number"
-        },
-        "scopesPraction": {
-            "type": "string"
-        },
-        "beginTime": "date",
-        "userStatus": "string"
+    "answerDetail": {
+      "type": [
+        "object"
+      ]
     },
-    "validations": [],
-    "relations": {
-        "quiz": {
-            "type": "belongsTo",
-            "model": "Quiz",
-            "foreignKey": "quizId"
-        },
-        "applicationUser": {
-            "type": "belongsTo",
-            "model": "ApplicationUser",
-            "foreignKey": ""
-        }
+    "listQuestions": {
+      "type": [
+        "object"
+      ]
     },
-    "acls": [],
-    "methods": {}
+    "result": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "number"
+    },
+    "scopesPraction": {
+      "type": "string"
+    },
+    "beginTime": {
+      "type": "date"
+    },
+    "userStatus": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "quiz": {
+      "type": "belongsTo",
+      "model": "Quiz",
+      "foreignKey": "quizId"
+    },
+    "applicationUser": {
+      "type": "belongsTo",
+      "model": "ApplicationUser",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
 }

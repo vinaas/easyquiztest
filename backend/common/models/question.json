@@ -1,72 +1,74 @@
 {
-    "name": "Question",
-    "base": "PersistedModel",
-    "idInjection": true,
-    "options": {
-        "validateUpsert": true
+  "name": "Question",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "forceId": false,
+  "scope": {
+    "include": "answersForAQuestions"
+  },
+  "properties": {
+    "description": {
+      "type": "string"
     },
-    "forceId": false,
-    "scope": {
-        "include": "answersForAQuestions"
+    "difficultLevel": {
+      "type": "number"
     },
-    "properties": {
-        "description": {
-            "type": "string"
-        },
-        "difficultLevel": {
-            "type": "number"
-        },
-        "categories": [
-            {
-                "title": "string",
-                "code": "string"
-            }
-        ],
-        "isRandom": {
-            "type": "boolean"
-        },
-        "ref": {
-            "type": "string"
-        },
-        "questionType" : {
-            "type" : "string"
-        },
-        "listAnswers": {
-            "type": [
-                {
-                    "id" : {
-                        "type" : "number"
-                    },
-                    "content": {
-                        "type": "string"
-                    },
-                    "isCorrect": {
-                        "type": "boolean",
-                        "default" : false
-                    },
-                    "answerByUser" : {
-                        "type": "boolean",
-                        "default" : false
-                    }
-                }
-            ]
-        }
-    },
-    "validations": [],
-    "relations": {
-        "answersForAQuestions": {
-            "type": "hasMany",
-            "model": "AnswersForAQuestion",
-            "foreignKey": "QuestionId"
-        }
-    },
-    "acls": [
+    "categories": {
+      "type": [
         {
-            "accessType": "WRITE",
-            "principalType": "ROLE",
-            "principalId": "admin",
-            "permission": "ALLOW"
+          "title": "string",
+          "code": "string"
         }
-    ],
-    "methods": {}
+      ]
+    },
+    "isRandom": {
+      "type": "boolean"
+    },
+    "ref": {
+      "type": "string"
+    },
+    "questionType": {
+      "type": "string"
+    },
+    "listAnswers": {
+      "type": [
+        {
+          "id": {
+            "type": "number"
+          },
+          "content": {
+            "type": "string"
+          },
+          "isCorrect": {
+            "type": "boolean",
+            "default": false
+          },
+          "answerByUser": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {
+    "answersForAQuestions": {
+      "type": "hasMany",
+      "model": "AnswersForAQuestion",
+      "foreignKey": "QuestionId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
 }

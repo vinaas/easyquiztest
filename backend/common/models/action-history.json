@@ -1,0 +1,35 @@
+{
+  "name": "ActionHistory",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "actionId": {
+      "type": "string"
+    },
+    "objectId": {
+      "type": "string"
+    },
+    "objectType": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    },
+    "appUserId": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
