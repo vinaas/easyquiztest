@@ -33,6 +33,14 @@
     "questionType": {
       "type": "string"
     },
+    "checkboxSelected": {
+      "type" : [
+        "number"  
+      ]  
+    },
+    "radioSeletected": {
+      "type": "string"
+    },
     "listAnswers": {
       "type": [
         {
