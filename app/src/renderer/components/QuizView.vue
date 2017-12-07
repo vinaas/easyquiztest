@@ -623,7 +623,10 @@ export default {
     //   quizId: this.quiz.id
     // });
     // yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
-    yield this.getUserQuizById(7);
+    console.log('userQuizId', this.$route.params);
+    let id = this.$route.params.id; 
+    console.log('userQuizId', id);
+    yield this.getUserQuizById(id);
     this.goToQuestion(0);  
   })
 };

@@ -31,7 +31,7 @@ export default [{
   }
 },
 {
-  path: '/Quiz',
+  path: '/quiz/:id',
   component: require('components/QuizView'),
   beforeEnter: (to, from, next) => {
     next()
