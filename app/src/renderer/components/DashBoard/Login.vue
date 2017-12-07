@@ -2,7 +2,7 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                              <img src="../assets/logo.png" class="image">
+                              <img src="http://vinaas.com/Images/VINAAS/VinaAS_logo_70x70.png" class="image">
                               <div class="content">
                                 Log-in to your account
                               </div>
