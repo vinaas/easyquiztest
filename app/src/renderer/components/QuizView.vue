@@ -154,7 +154,7 @@
             <div id="result" class="ui modal">
                 <i class="close icon"></i>
                 <div class="header">
-                    Kết quả: {{usersQuizsRow.scopesPraction}} - Điểm : {{usersQuizsRow.scopes}}
+                    Kết quả: {{summary.correct}}/{{summary.total}} - Điểm : {{summary.result}}
                 </div>
                 <div class="image content">
                     <table class="ui celled table">
@@ -167,21 +167,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr v-for="(item,index) in usersQuizsRow.answerDetail" v-bind:class="{error : !item.userAnswerResult}">
-                                <td>{{index +1 }}</td>
-                                <td> {{ (item.userCheck)? item.userCheck.map(x=> item.answersForAQuestions.filter(y=>y.id==x).shift().name ).sort():'Chưa trả lời' }} </td>
+                            <tr v-for="(item, index) in listQuestions">
+                                <td>{{ index + 1 }}</td>
                                 <td>
-                                    {{item.answersForAQuestions.filter(x=>x.isCorrect==true).map(x=>x.name).sort()}}
+                                  <!-- <p v-for="item in listQuestions">
+                                    <span v-if="item === item.radioSeletected">radio: {{ item.radioSeletected }}</span>
+                                    <span v-if="item === item.checkboxSelected">checkbox:  {{ item.checkboxSelected }} </span>
+                                  </p> -->
+                                  <p v-for="bb in item.listAnswers.filter(x=>x.id == item.radioSeletected)">  
+                                    <!-- radio: {{ item.radioSeletected }}
+                                    checkbox: {{ item.checkboxSelected }} -->
+                                    {{ bb.content }}
+                                 </p>
+                                 <!-- <p v-for="bb in item.listAnswers.filter(x=>x.id == item.checkboxSelected)">  
+                                    {{ bb.content }}
+                                 </p> -->
                                 </td>
-                                <td>{{item.userAnswerResult? "Đúng" : "Sai"}} </td>
-                                <td>None</td>
-                            </tr> -->
+
+                                <td>
+                                  <p v-for="aa in item.listAnswers.filter(x => x.isCorrect==true)">
+                                    {{ aa.content }}
+                                  </p>
+                                </td>
+                                <td>{{item.correctAnswers ? "Đúng" : "Sai"}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="actions">
                     <!--<div class="ui button">Cancel</div>
-                                    <div class="ui button">OK</div>-->
+                    <div class="ui button">OK</div>-->
                 </div>
             </div>
         </div>
@@ -217,7 +232,7 @@ export default {
         quizName: "kiểm tra 60 phút", //"tên kì thi",
         quizTime: "6/5/2017" // "khóa thi"
       },
-      checkboxSelected: [],
+      checkboxSelected: [1,2],
       radioSeletected: "",
 
       totalTime: 1800, //thời gian thi, countdown về 0, tính theo giây, 1800s = 30 phút
@@ -270,6 +285,8 @@ export default {
           difficultLevel: 6, // 1 => 10
           categories: [], //chuyên mục của câu hỏi
           isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
+          checkboxSelected: [1,2],
+          radioSeletected: "",
           listAnswers: [
             //danh sách câu trả lời để users lựa chọn,
             //cho phép hoán đổi vị trí hiển thị, nhưng vẫn giữ id như cũ
@@ -307,6 +324,8 @@ export default {
           difficultLevel: 6, // 1 => 10
           categories: [], //chuyên mục của câu hỏi
           isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
+          checkboxSelected: [1,2],
+          radioSeletected: "",
           listAnswers: [
             //danh sách câu trả lời để users lựa chọn,
             //cho phép hoán đổi vị trí hiển thị, nhưng vẫn giữ id như cũ
@@ -344,6 +363,8 @@ export default {
           difficultLevel: 6, // 1 => 10
           categories: [], //chuyên mục của câu hỏi
           isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
+          checkboxSelected: [1,2],
+          radioSeletected: "",
           listAnswers: [
             //danh sách câu trả lời để users lựa chọn,
             //cho phép hoán đổi vị trí hiển thị, nhưng vẫn giữ id như cũ
@@ -398,7 +419,7 @@ export default {
         // sử dụng để hiển thị kết quả
         result: "", //"Pass | Failt" //kết quả
         answeredPeriod: "", // "xxxx", //thời gian làm bài, tính đến lúc bấm "kết thúc thi" hoặc khi hết giờ
-        correct: 4, //số câu trả lời đúng tính dựa vào answeredHistory
+        correct: 10, //số câu trả lời đúng tính dựa vào answeredHistory
         total: 20 // == numberOfQuestions
       }
     };
@@ -425,15 +446,14 @@ export default {
     console.log("display", display);
 
     $("#quiz-progress").progress({
-        lable: "ratio",
-        value: this.answereds,
-        total: this.userQuestions.length,
-        text: {
-            ratio: "{value}/{total}"
-        },
-        showActivity: false
-      });
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAsasa", $("#quiz-progress").progress());
+      lable: "ratio",
+      value: this.answereds,
+      total: this.userQuestions.length,
+      text: {
+        ratio: "{value}/{total}"
+      },
+      showActivity: false
+    });
   },
   methods: {
     chonDapAn(id) {
@@ -486,7 +506,6 @@ export default {
         }
       }
     },
-
     saveCurrentQuestion() {
       console.log("save Question AA");
     },
@@ -503,6 +522,29 @@ export default {
       this.$store.dispatch("goPre").then(() => {
         this._cloneCurrentCheck();
       });
+    },
+
+    resultPassFailt() {
+      var result = this.summary.correct / this.summary.total * 10;
+      if (result >= 5) {
+        this.summary.result = "Pass";
+      } else this.summary.result = "Failt";
+    },
+
+    calculate() {
+      //1. tinh toan ket qua
+      let correctList = this.listQuestions.filter(
+        x => x.correctAnswers == true
+      );
+      console.log("correctList", correctList);
+      correctList.length;
+
+      //2. cap nhat ket qua vào bien data.summary
+      this.summary.correct = correctList.length;
+      this.summary.total = this.listQuestions.length;
+      this.resultPassFailt();
+
+      //3. call API cap nhat lên server
     },
     answer: co(function*() {
       var rs = false;
@@ -525,11 +567,10 @@ export default {
         value: this.answereds,
         total: this.userQuestions.length,
         text: {
-            ratio: "{value}/{total}"
+          ratio: "{value}/{total}"
         },
         showActivity: false
       });
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAsasa", $("#quiz-progress").progress());
     }),
     answerCheckboxQuestion() {
       var rs = true;
@@ -552,7 +593,6 @@ export default {
       });
       return rs;
     },
-
     //   if (this.cloneUserCheck.length == 0) {
     //     toastr.warning("Bạn chưa chọn đáp án");
     //     return;
@@ -579,7 +619,9 @@ export default {
           cancelButtonText: "Tiếp tục làm bài"
         },
         co(function*() {
-          yield this.$store.dispatch("end");
+          // yield this.$store.dispatch("end");
+
+          this.calculate();
           $("#result").modal("show");
           swal.close();
         }).bind(this)
