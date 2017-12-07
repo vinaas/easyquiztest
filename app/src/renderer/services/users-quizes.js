@@ -36,6 +36,10 @@ export class UsersQuizsService {
     let ret = yield axios.get(`${pathEntity}?filter=` + JSON.stringify({ quizId: quizId }))
     return ret.data
   })
+  getByUserId = co(function*(userId) {
+    let ret = yield axios.get(`${pathEntity}?filter=` + JSON.stringify({ applicationId: userId }))
+    return ret.data
+  })
         /**
          * getOne with ( userId, quizId)
          * @param userId, quizId
