@@ -1,86 +1,116 @@
 <template class="">
+<div class="ui fluid-container">
+        <div class="ui menu">
+            <div class="ui container">
+                <router-link class="item header item" to="/">
+                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
+                </router-link>
+            </div>
+        </div>
     <div class="ui container" >
         <h1>Chào mừng Thí Sinh  </h1>
+        <h3>Danh Sách (Kì thi) Bài Thi của bạn</h3>
         <table class="ui celled striped table">
             <thead>
                 <tr>
-                    <th colspan="3">
-                        Danh sách các bài thi 
-                    </th>
+                    <th>STT</th>
+                    <th>Tên Kì Thi</th>
+                    <th>Ngày Thi</th>
+                    <th>Trạng Thái </th>
+                    <th>Hành Động</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="collapsing">
-                        <i class="folder icon"></i> node_modules
+                <tr v-for="(item,i) in listUserQuiz">
+                    <td >
+                        {{i+1}}
                     </td>
-                    <td>Initial commit</td>
-                    <td class="right aligned collapsing">10 hours ago</td>
-                </tr>
-                <tr>
+                    <td >
+                        {{item.quizName}}
+                    </td>
+                    <td >
+                        {{item.quizTime | moment}}
+                    </td>
+                    <td >
+                        {{item.quizStatus}}
+                    </td>
                     <td>
-                        <i class="folder icon"></i> test
+                        <button class="ui primary button" v-on:click="goToUserQuiz(item)">
+                            Tham Gia
+                            <!-- <router-link :to="{ path: 'quiz', params: { id: item.id }}" class="ui primary button" tag="li">Thi</router-link> -->
+                        </button>    
                     </td>
-                    <td>Initial commit</td>
-                    <td class="right aligned">10 hours ago</td>
-                </tr>
-                <tr>
-                    <td>
-                        <i class="folder icon"></i> build
-                    </td>
-                    <td>Initial commit</td>
-                    <td class="right aligned">10 hours ago</td>
-                </tr>
-                <tr>
-                    <td>
-                        <i class="file outline icon"></i> package.json
-                    </td>
-                    <td>Initial commit</td>
-                    <td class="right aligned">10 hours ago</td>
-                </tr>
-                <tr>
-                    <td>
-                        <i class="file outline icon"></i> Gruntfile.js
-                    </td>
-                    <td>Initial commit</td>
-                    <td class="right aligned">10 hours ago</td>
+                    <!-- <router-link class="item header item" to="/quiz">Tham Gia Thi</router-link> -->
                 </tr>
             </tbody>
         </table>
-        <router-link class="item header item" to="/quiz"> EasyQuizTest</router-link>
+    </div>
     </div>
 </template>
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
-import moment from 'moment'
-import Logger from '../../common/logger.js'
-import Promise from 'bluebird'
-import toastr from 'toastr'
-import swal from 'sweetalert'
-import _ from 'lodash'
-const logger = Logger('UserQuizView')
-const co = Promise.coroutine
+import { mapGetters, mapActions, mapState } from "vuex";
+import moment from "moment";
+import Logger from "../../common/logger.js";
+import Promise from "bluebird";
+import toastr from "toastr";
+import swal from "sweetalert";
+import _ from "lodash";
+const logger = Logger("UserQuizView");
+import { UsersQuizsService } from "../services/users-quizes";
+import { QuizService } from "../services/quiz";
+import { AuthServices } from "../services/auth.js";
+const _authServices = new AuthServices();
+const usersQuizsService = new UsersQuizsService();
+const quizsService = new QuizService();
+
+const co = Promise.coroutine;
 export default {
+  data() {
+    return {
+      listUserQuiz: []
+    };
+  },
   // Format ngày tháng năm/////////////////////////////
   filters: {
-    moment: function (date) {
-      return moment(date).format('YYYY-MM-DD')
+    moment: function(date) {
+      return moment(date).format("DD-MM-YYYY");
     }
   },
 
   computed: {
-
+    getUserId: function() {
+      console.log("user", JSON.stringify(_authServices.getUserInfo()));
+      var userId = _authServices.getUserInfo().userId;
+      return userId;
+    }
   },
-  mounted: function () {
-
-  },
+  mounted: function() {},
   methods: {
+    getAllByUser: Promise.coroutine(function*() {
+      console.log("UserId", JSON.stringify(this.getUserId));
+      let userQuizs = yield usersQuizsService.getByUserId(this.getUserId);
+      let listQuizId = [];
+      userQuizs.forEach(element => {
+        if (element.quizId > 0 && !listQuizId.includes(element.quizId)) {
+          listQuizId.push(element.quizId);
+        }
+      });
 
+      let allQuiz = yield quizsService.getAll();
+      let listQuiz = allQuiz.filter(item => listQuizId.includes(item.id));
+    //   console.log("all", JSON.stringify(listQuizId));
+    //   console.log("listQuiz", JSON.stringify(listQuiz));
+      this.listUserQuiz = listQuiz;
+    }),
+    goToUserQuiz: function (item) {
+      console.log('link to UserQuiz', JSON.stringify(item))
+      let id = item.id
+      this.$router.push({ path: `/quiz/${id}`});  //chú ý dấu
+    //   router.push({ path: `/user/${userId}` }) // -> /user/123
+    },
   },
-  created () {
-    var me = this
-    logger.debug('Danh sach Bai Thi')
-    this.$store.dispatch('adminQuizs/getAll').then(() => {})
+  created() {
+    this.getAllByUser();
   }
-}
+};
 </script>
