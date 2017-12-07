@@ -50,9 +50,9 @@
                                         <div class="header">Thông tin kỳ thi</div>
                                         <ul class="list">
                                             <li>
-                                                <b>Kì thi :</b> {{quizInfo.quizName}}</li>
+                                                <b>Kì thi :</b> {{quizName}}</li>
                                             <li>
-                                                <b>Khóa ngày:</b> {{quizInfo.quizTime}} </li>
+                                                <b>Khóa ngày:</b> {{quizTime}} </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                     <div class="ui card fluid">
                         <div class="content">
                             <!-- <button v-for="(q, index) in userQuestions" @click="goToQuestion(q.id)" class="mini ui button" v-bind:class="{inverted: q.id!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button> -->
-                            <button v-for="(q, index) in listQuestions" @click="goToQuestion(index)" class="mini ui button" v-bind:class="{inverted: q.id!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
+                            <button v-for="(q, index) in listQuestions" @click="goToQuestion(index)" class="mini ui button" v-bind:class="{inverted: index !=questionOrder, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
                         </div>
 
                     </div>
@@ -210,10 +210,10 @@ import startTimer from "../../common/coundown.js";
 import _ from "lodash";
 import Promise from "bluebird";
 import swal from "sweetalert";
-
+import { UsersQuizsService } from '../services/users-quizes'
 import { AuthServices } from "../services/auth.js";
 const _authServices = new AuthServices();
-
+const usersQuizsService = new UsersQuizsService()
 const co = Promise.coroutine;
 
 export default {
@@ -221,59 +221,23 @@ export default {
 
   data() {
     return {
+      questionOrder : 0,  
       quizId: 3, //mã kì thi
       startTime: "2017-11-30", //thời gian bắt đầu kì thi
       endTime: "2017-12-05", //thời gian kết thúc thi
 
       quizStatus: "ACTIVE", //trạng thái kì thi: available :đang diễn ra | notstart: sắp diễn ra | completed đã kết thúc. Trạng thái có thể dựa vào startTime, endTime để tính, hoặc thiết lập bằng tay, ví dụ ngưng kì thi khi vẫn chưa tới thời gian kết thúc
 
-      quizInfo: {
-        //Thông tin kì thi
-        quizName: "kiểm tra 60 phút", //"tên kì thi",
-        quizTime: "6/5/2017" // "khóa thi"
-      },
+      quizName: "kiểm tra 60 phút", //"tên kì thi",
+      quizTime: "6/5/2017", // "khóa thi"
+   
       checkboxSelected: [1,2],
       radioSeletected: "",
 
       totalTime: 1800, //thời gian thi, countdown về 0, tính theo giây, 1800s = 30 phút
       numberOfQuestions: 20, //tổng số câu hỏi
-      currentQuestion: {
-        id: "001", // mã câu hỏi: duy nhất trong ngân hàng câu hỏi
-        questionType: "radio", // | checkbox", //để hiển thị loại đáp án
-        description: "nội dung câu hỏi 1", //nội dung câu hỏi,
-        difficultLevel: 6, // 1 => 10
-        categories: [], //chuyên mục của câu hỏi
-        isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
-        listAnswers: [
-          //danh sách câu trả lời để users lựa chọn,
-          //cho phép hoán đổi vị trí hiển thị, nhưng vẫn giữ id như cũ
-          {
-            id: 1,
-            content: "Nội dung đáp án A",
-            isCorrect: false
-            //answerByUser: false //khi users chọn câu trả lời, lưu lựa chọn ở đây | Mặc định false
-          },
-          {
-            id: 3,
-            content: "Nội dung đáp án C",
-            isCorrect: true
-            //answerByUser: false //cập nhật khi user trả lời
-          },
-          {
-            id: 2,
-            content: "Nội dung đáp án B",
-            isCorrect: false
-            //answerByUser: false //cập nhật khi user trả lời
-          },
-          {
-            id: 4,
-            content: "Nội dung đáp án D",
-            isCorrect: false
-            //answerByUser: false //cập nhật khi user trả lời
-          }
-        ],
-        correctAnswers: false // | false // answers.forEach(x => { if (x.isCorrect !== x.answerByUser) return false});
-      },
+      currentQuestion: {},
+     
       listQuestions: [
         //danh sách câu hỏi == numberOfQuestions,
         //thiết lập khi Gán Thí Sinh Tham gia kì thi
@@ -436,11 +400,11 @@ export default {
     usersQuizsRow: "usersQuizsRow",
     updateAnswer: function() {
       console.log("computed updateAnswer", this.radioSeletected);
-    }
+    },
   }),
   components: {},
   mounted: function() {
-    var totalSecond = 60 * 60,
+    var totalSecond = this.totalTime * 60,
       display = document.querySelector("#basicUsage");
     startTimer(totalSecond, display);
     console.log("display", display);
@@ -456,6 +420,7 @@ export default {
     });
   },
   methods: {
+    
     chonDapAn(id) {
       console.log("da chon dap an", id);
       //   console.log("Truoc", JSON.stringtify(this.currentQuestion.listAnswers));
@@ -476,6 +441,7 @@ export default {
       return title;
     },
     goToQuestion(order) {
+      this.questionOrder = order;   
       console.log("question order", order);
       this.currentQuestion = this.listQuestions[order];
       this.checkboxSelected = this.listQuestions[order].checkboxSelected;
@@ -630,17 +596,35 @@ export default {
 
     _cloneCurrentCheck() {
       this.cloneUserCheck = _.clone(this.current.userCheck);
-    }
+    },
+    getUserQuizById : Promise.coroutine(function*(userQuizId) {
+      let userQuizs = yield usersQuizsService.getBy(userQuizId);
+      this.listQuestions = userQuizs.listQuestions;
+      this.quizId = userQuizs.quizId;       
+      //1.get quizInfo from API
+      
+      //2. gan vao cac bien tren, vi du quizName
+            
+      let userId = userQuizs.applicationId; 
+      //1.get userInfo from API
+      
+      //2. gan vao cac bien tren, vi du 
+            
+
+      console.log('userQuiz: ', userQuizs);
+    }),
   },
   created: co(function*() {
-    yield this.$store.dispatch("getQuiz", 1);
-    yield this.$store.dispatch("getQuestions", this.quiz.id);
+    // yield this.$store.dispatch("getQuiz", 1);
+    // yield this.$store.dispatch("getQuestions", this.quiz.id);
 
-    yield this.$store.dispatch("getUsersQuizsRow", {
-      userId: _authServices.getUserInfo().userId,
-      quizId: this.quiz.id
-    });
-    yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
+    // yield this.$store.dispatch("getUsersQuizsRow", {
+    //   userId: _authServices.getUserInfo().userId,
+    //   quizId: this.quiz.id
+    // });
+    // yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
+    yield this.getUserQuizById(7);
+    this.goToQuestion(0);  
   })
 };
 </script>
