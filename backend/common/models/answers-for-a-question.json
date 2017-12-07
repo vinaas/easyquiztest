@@ -1,37 +1,39 @@
 {
-    "name": "AnswersForAQuestion",
-    "base": "PersistedModel",
-    "idInjection": true,
-    "options": {
-        "validateUpsert": true
+  "name": "AnswersForAQuestion",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "forceId": false,
+  "properties": {
+    "QuestionId": {
+      "type": "number",
+      "required": true
     },
-    "forceId": false,
-    "properties": {
-        "QuestionId": {
-            "type": "number",
-            "required": true
-        },
-        "Content": {
-            "type": "string"
-        },
-        "IsCorrect": {
-            "type": "boolean",
-            "default": false
-        }
+    "Content": {
+      "type": "string"
     },
-    "validations": [],
-    "relations": {
-        "question": {
-            "type": "belongsTo",
-            "model": "Question",
-            "foreignKey": "QuestionId"
-        }
-    },
-    "acls": [{
-        "accessType": "WRITE",
-        "principalType": "ROLE",
-        "principalId": "admin",
-        "permission": "ALLOW"
-    }],
-    "methods": {}
+    "IsCorrect": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "question": {
+      "type": "belongsTo",
+      "model": "Question",
+      "foreignKey": "QuestionId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
 }

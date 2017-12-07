@@ -13,7 +13,7 @@
     "connector": "mongodb"
   },
   "mypostgres": {
-    "name": "db",
+    "name": "mypostgres",
     "connector": "memory",
     "file": "memorydata.json"
   },

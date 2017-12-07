@@ -56,5 +56,9 @@
   "Container": {
     "dataSource": "file_storage",
     "public": true
+  },
+  "ActionHistory": {
+    "dataSource": "db",
+    "public": true
   }
 }
