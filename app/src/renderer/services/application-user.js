@@ -13,6 +13,10 @@ export class ApplicationUserService {
       return x
     })
   })
+  getBy = Promise.coroutine(function*(id) {
+    let ret = yield axios.get(`${pathEntity}/${id}`)
+    return ret.data
+  })
   search = co(function*(filter) {
     let ret = yield axios.get(`${pathEntity}?filter=${JSON.stringify(filter)}`)
     return ret.data

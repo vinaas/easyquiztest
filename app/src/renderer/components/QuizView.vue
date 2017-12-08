@@ -41,7 +41,7 @@
                                             <li>
                                                 <b>SBD :</b> {{userInfo.sbd}}</li>
                                             <li>
-                                                <b>Họ tên:</b> {{userInfo.userName}}</li>
+                                                <b>Họ tên:</b> {{userInfo.tenNhanVien}}</li>
                                             <li>
                                                 <b>Ngày sinh:</b> {{userInfo.birthday}} </li>
                                         </ul>
@@ -65,7 +65,7 @@
                         <div class="row">
                             <div class="ui card fluid">
                                 <div class="content">
-                                    <div class="header">Câu {{ getCurrentOrder() + 1 }} | id: {{currentQuestion.id}}</div>
+                                    <div class="header">Câu {{ currentQuestion.id }} | id: {{currentQuestion.id}}</div>
                                 </div>
                                 <div class="content">
                                     <h4 class="ui sub header ">{{currentQuestion.description}}</h4>
@@ -86,7 +86,6 @@
 
                     </div>
                     <div class="four wide column">
-
                         <div class="row">
                             <div class="ui card">
                                 <div class="content">
@@ -210,10 +209,15 @@ import startTimer from "../../common/coundown.js";
 import _ from "lodash";
 import Promise from "bluebird";
 import swal from "sweetalert";
-import { UsersQuizsService } from '../services/users-quizes'
 import { AuthServices } from "../services/auth.js";
+import { UsersQuizsService } from '../services/users-quizes'
+import { ApplicationUserService } from '../services/application-user'
+import { QuizService } from '../services/quiz'
 const _authServices = new AuthServices();
 const usersQuizsService = new UsersQuizsService()
+const applicationUserService = new ApplicationUserService();
+const quizService = new QuizService();
+
 const co = Promise.coroutine;
 
 export default {
@@ -366,8 +370,9 @@ export default {
         //Block: Thông tin thí sinh
         userId: "xxx", //duy nhất theo thí sinh
         sbd: "001", //số báo danh của thí sinh
-        userName: "Nguyễn Văn A",
-        birthday: "20/04/2000" //ngày sinh
+        username: "user01",
+        birthday: "20/04/2000", //ngày sinh
+        tenNhanVien: "Nguyễn Văn A"
       },
 
       //Cập nhật lúc thi
@@ -388,7 +393,6 @@ export default {
       }
     };
   },
-
   computed: mapGetters({
     quiz: "quiz",
     current: "currentQuestion",
@@ -600,18 +604,30 @@ export default {
     getUserQuizById : Promise.coroutine(function*(userQuizId) {
       let userQuizs = yield usersQuizsService.getBy(userQuizId);
       this.listQuestions = userQuizs.listQuestions;
-      this.quizId = userQuizs.quizId;       
-      //1.get quizInfo from API
-      
-      //2. gan vao cac bien tren, vi du quizName
-            
-      let userId = userQuizs.applicationId; 
-      //1.get userInfo from API
-      
-      //2. gan vao cac bien tren, vi du 
-            
+      this.quizId = userQuizs.quizId;      
+      this.listAnswers = userQuizs.listAnswers;
+      console.log("quiz__ID:", this.quizId)
+      console.log("listAnswers|||: ", this.listAnswers)
 
-      console.log('userQuiz: ', userQuizs);
+
+      //1.get quizInfo from API và gan vao cac bien tren, vi du quizName
+      let quizInfo = yield quizService.getBy(userQuizId);
+      this.quizName = quizInfo.quizName;
+      this.quizTime = quizInfo.quizTime;
+      console.log("this.quizName", this.quizName)
+      console.log("this.quizTime", this.quizTime)
+          
+
+      //2.get userInfo from API và gan vao cac bien tren, vi du 
+      let userId = userQuizs.applicationId;
+      console.log("userId", userId)
+      let userInfo = yield applicationUserService.getBy(userId);
+      // console.log("userInfo", userInfo)
+      let tenNhanVien = userInfo.tenNhanVien;
+      let birthday = userInfo.birthday;
+      console.log("tenNhanVien", tenNhanVien)
+      
+      
     }),
   },
   created: co(function*() {
