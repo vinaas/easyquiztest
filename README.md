@@ -5,9 +5,12 @@
     - [AdminCP](#admincp)
     - [EasyQuiz software](#easyquiz-software)
     - [Mối quan hệ:](#mối-quan-hệ)
+    - [Mô tả tính năng](#mô-tả-tính-năng)
         - [Xây dựng ngân hàng đề thi (1000 câu)](#xây-dựng-ngân-hàng-đề-thi-1000-câu)
+        - [Danh sách thí Sinh:](#danh-sách-thí-sinh)
         - [Xây dựng kỳ thi (100 câu)](#xây-dựng-kỳ-thi-100-câu)
         - [Diễn ra Kỳ thi](#diễn-ra-kỳ-thi)
+        - [Thống kê](#thống-kê)
             - [Thí Sinh tham gia thi.](#thí-sinh-tham-gia-thi)
             - [Thông Tin kỳ thi (dành cho Admin)](#thông-tin-kỳ-thi-dành-cho-admin)
         - [Kết quả Kỳ thi](#kết-quả-kỳ-thi)
@@ -52,13 +55,18 @@
 - EasyQuiz sử dụng API backend
 - API backend: 
 
-
+## Mô tả tính năng
 
 ### Xây dựng ngân hàng đề thi (1000 câu)
 
 - Import danh sách Câu Hỏi từ file Word
 
 - Thêm câu hỏi thủ công
+  - AdminCP Link: tạo mới câu hỏi trong http://easyquiz-cms.vinaas.com/#/admin/listQuestion
+
+### Danh sách thí Sinh:
+- tạo mới account với quyền Thí Sinh
+- import từ file excel hệ thống 
 
 ### Xây dựng kỳ thi (100 câu)
 
@@ -79,17 +87,15 @@
 - Phân quyền thí sinh sẽ tham gia vào kỳ thi này
 
   - Lựa chọn từ Danh Sách Thí Sinh có sẵn.
+  - 20 câu trong bài thi : lấy random từ 100 câu của kì thi 
 
-  - Import Danh Sách từ file word, excel
-
-    - Tạo User từ dữ liệu import.
-
-  -  Có thể gửi email hoặc tin nhắn để thông báo Thí Sinh.
+- AdminCP link: tạo mới trong link http://easyquiz-cms.vinaas.com/#/admin/ds-quiz
 
 ### Diễn ra Kỳ thi
+> sử dụng EasyQuiz software để thi 
 
- 
 
+### Thống kê 
 #### Thí Sinh tham gia thi.
 
   - Dữ liệu theo từng Thí sinh.
