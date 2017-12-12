@@ -1,14 +1,72 @@
+<!-- TOC -->
 
-# easyquiztest
+- [EasyQuiz](#easyquiz)
+    - [API backend](#api-backend)
+    - [AdminCP](#admincp)
+    - [EasyQuiz software](#easyquiz-software)
+    - [Mối quan hệ:](#mối-quan-hệ)
+    - [Mô tả tính năng](#mô-tả-tính-năng)
+        - [Xây dựng ngân hàng đề thi (1000 câu)](#xây-dựng-ngân-hàng-đề-thi-1000-câu)
+        - [Danh sách thí Sinh:](#danh-sách-thí-sinh)
+        - [Xây dựng kỳ thi (100 câu)](#xây-dựng-kỳ-thi-100-câu)
+        - [Diễn ra Kỳ thi](#diễn-ra-kỳ-thi)
+        - [Thống kê](#thống-kê)
+            - [Thí Sinh tham gia thi.](#thí-sinh-tham-gia-thi)
+            - [Thông Tin kỳ thi (dành cho Admin)](#thông-tin-kỳ-thi-dành-cho-admin)
+        - [Kết quả Kỳ thi](#kết-quả-kỳ-thi)
+        - [Thống kê theo nhiều kỳ thi.](#thống-kê-theo-nhiều-kỳ-thi)
+    - [Kế hoạch thực hiện](#kế-hoạch-thực-hiện)
+        - [Bản demo dùng thử: khoảng 10/05/2017](#bản-demo-dùng-thử-khoảng-10052017)
+        - [Bản chính thức:  khoảng 10/06/2017](#bản-chính-thức--khoảng-10062017)
+        - [Requirement](#requirement)
+        - [Cài đặt để build app](#cài-đặt-để-build-app)
+            - [1. Cài đặt client](#1-cài-đặt-client)
+            - [2. Cài đặt backend](#2-cài-đặt-backend)
+        - [Chạy ứng dụng](#chạy-ứng-dụng)
+            - [1.Chạy backend](#1chạy-backend)
+            - [2.Chạy client](#2chạy-client)
+        - [Build to software (Win, Mac, Linux)](#build-to-software-win-mac-linux)
 
-> Easy QuizTest, a product of VinaAS Ltd,.Co
-> Công nghệ: Electron, VueJS, SemanticUI 
+<!-- /TOC -->
+# EasyQuiz
+> gồm 3 phần 
+
+## API backend
+> thư mục /backend
+> http://45.77.45.94:7000/explorer/#/
+- Công nghệ sử dụng framework: Loopback, database: memory db, Mongodb 
+- dev: localhost, tham khao [1.Chạy backend](#1chạy-backend)
+
+## AdminCP
+> vào thư mục /easycms
+> nằm ở repo https://gitlab.com/vinaas/easyquiz-cms.git 
+> deploy: http://easyquiz-cms.vinaas.com
+
+- Công nghệ sử dụng: Aurelia + Pages Admin theme, kế thừa Core source của EIC
+- chạy dev: xem `README.md`
+## EasyQuiz software
+> nằm ở thư mục /app
+
+- Công nghệ sử dụng: Electron, VueJS, SemanticUI 
+- chạy dev: tham khảo [2.Chạy client](#2chạy-client)
+## Mối quan hệ:
+
+- AdminCP sử dụng API backend
+- EasyQuiz sử dụng API backend
+- API backend: 
+
+## Mô tả tính năng
 
 ### Xây dựng ngân hàng đề thi (1000 câu)
 
 - Import danh sách Câu Hỏi từ file Word
 
 - Thêm câu hỏi thủ công
+  - AdminCP Link: tạo mới câu hỏi trong http://easyquiz-cms.vinaas.com/#/admin/listQuestion
+
+### Danh sách thí Sinh:
+- tạo mới account với quyền Thí Sinh
+- import từ file excel hệ thống 
 
 ### Xây dựng kỳ thi (100 câu)
 
@@ -29,17 +87,15 @@
 - Phân quyền thí sinh sẽ tham gia vào kỳ thi này
 
   - Lựa chọn từ Danh Sách Thí Sinh có sẵn.
+  - 20 câu trong bài thi : lấy random từ 100 câu của kì thi 
 
-  - Import Danh Sách từ file word, excel
-
-    - Tạo User từ dữ liệu import.
-
-  -  Có thể gửi email hoặc tin nhắn để thông báo Thí Sinh.
+- AdminCP link: tạo mới trong link http://easyquiz-cms.vinaas.com/#/admin/ds-quiz
 
 ### Diễn ra Kỳ thi
+> sử dụng EasyQuiz software để thi 
 
- 
 
+### Thống kê 
 #### Thí Sinh tham gia thi.
 
   - Dữ liệu theo từng Thí sinh.
@@ -127,9 +183,6 @@ cd ..
 ### Chạy ứng dụng
 #### 1.Chạy backend
 ```bash
-# serve with hot reload at localhost:9080
-npm run server
-# hoặc
 cd backend
 node .
 ```
