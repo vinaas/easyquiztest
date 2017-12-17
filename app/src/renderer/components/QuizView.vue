@@ -225,7 +225,7 @@ export default {
 
   data() {
     return {
-      progress: 0,
+      userQuizs : {},
       questionOrder: 0,
       quizId: 3, //mã kì thi
       startTime: "2017-11-30", //thời gian bắt đầu kì thi
@@ -394,7 +394,8 @@ export default {
         answeredPeriod: "", // "xxxx", //thời gian làm bài, tính đến lúc bấm "kết thúc thi" hoặc khi hết giờ
         answeredList: [] //danh sách câu đã trả lời
       }
-    };
+    }
+    ;
   },
   computed: mapGetters({
     quiz: "quiz",
@@ -644,9 +645,10 @@ export default {
         },
         co(function*() {
           // yield this.$store.dispatch("end");
-
           this.calculate();
+          this.userQuizs.userStatus = "COMPLETED"; //đã thi xong
           $("#result").modal("show");
+          this.updateKetQua();
           swal.close();
         }).bind(this)
       );
@@ -656,27 +658,34 @@ export default {
       this.cloneUserCheck = _.clone(this.current.userCheck);
     },
     updateKetQua() {
-      
+       this.userQuizs.listQuestions = this.listQuestions;
+       this.userQuizs.summary = this.summary; 
+       if (this.userQuizs.userStatus === undefined || this.userQuizs.userStatus == "ACTIVE") {
+         this.userQuizs.userStatus = "PROGRESS"; 
+       }; 
+       var kq = yield usersQuizsService.save(this.userQuizs);
+       console.log('updateKetQua()', kq);
     },
     getUserQuizById: Promise.coroutine(function*(userQuizId) {
-      let userQuizs = yield usersQuizsService.getBy(userQuizId);
-      this.listQuestions = userQuizs.listQuestions;
-      this.quizId = userQuizs.quizId;
+      this.userQuizs = yield usersQuizsService.getBy(userQuizId);
+      this.listQuestions = this.userQuizs.listQuestions;
+      this.quizId = this.userQuizs.quizId;
       console.log("quiz__ID:", this.quizId);
-      this.listAnswers = userQuizs.listAnswers;
+      this.listAnswers = this.userQuizs.listAnswers;
       console.log("listAnswers|||: ", this.listAnswers);
-      if (userQuizs.summary === undefined) {
-        userQuizs.summary = {
+      if (this.userQuizs.summary === undefined) {
+        this.userQuizs.summary = {
           // sử dụng để hiển thị kết quả
           result: "", //"Pass | Failt" //kết quả
           correct: 0, //số câu trả lời đúng tính dựa vào answeredHistory
-          total: userQuizs.listQuestions.length,
+          total: this.userQuizs.listQuestions.length,
           status: "ChuaThi", // ChuaThi | DangThi | DaThi
           answeredPeriod: "", // "xxxx", //thời gian làm bài, tính đến lúc bấm "kết thúc thi" hoặc khi hết giờ
           answeredList: [] //danh sách câu đã trả lời
         };
       }
-      this.summary = userQuizs.summary;
+      this.summary = this.userQuizs.summary;
+      this.beginTime = new Date(); 
 
       //1.get quizInfo from API và gan vao cac bien tren, vi du quizName
       let quizInfo = yield quizService.getBy(userQuizId);
@@ -686,13 +695,14 @@ export default {
       console.log("this.quizTime", this.quizTime);
 
       //2.get userInfo from API và gan vao cac bien tren, vi du
-      let userId = userQuizs.applicationId;
+      let userId = this.userQuizs.applicationId;
       console.log("userId", userId);
       let userInfo = yield applicationUserService.getBy(userId);
       // console.log("userInfo", userInfo)
       let tenNhanVien = userInfo.tenNhanVien;
       let birthday = userInfo.birthday;
       console.log("tenNhanVien", tenNhanVien);
+
     })
   },
   created: co(function*() {
