@@ -133,7 +133,7 @@
                 <div class="bar">
                     <div class="progress"></div>
                 </div>
-                <div class="label"> {{calculateProgress()}}</div>
+                <div class="label">{{calculateProgress()}}</div>
             </div>
             <div class="ui divider"></div>
             <div class="row">
@@ -225,6 +225,7 @@ export default {
 
   data() {
     return {
+      progress: 0,
       questionOrder: 0,
       quizId: 3, //mã kì thi
       startTime: "2017-11-30", //thời gian bắt đầu kì thi
@@ -410,23 +411,12 @@ export default {
   }),
   components: {},
   mounted: function() {
-    var totalSecond = this.totalTime * 60,
-      display = document.querySelector("#basicUsage");
+    var totalSecond = this.totalTime,
+    display = document.querySelector("#basicUsage");
     startTimer(totalSecond, display);
+    
     console.log("display", display);
-    var count = 0;
-    // if (this.summary.answeredList !== undefined) {
-    //    count = this.summary.answeredList.length;
-    // }
-    $("#quiz-progress").progress({
-      lable: "ratio",
-      value: this.summary.answeredList.length,
-      total: this.summary.total,
-      text: {
-        ratio: "{value}/{total}"
-      },
-      showActivity: false
-    });
+    this.calculateProgress();
     console.log("end mounted");
   },
   methods: {
@@ -439,10 +429,20 @@ export default {
         style = "orange";
       } else {
         var element = this.listQuestions[order];
-        console.log('bao' + JSON.stringify(element.questionType), ' radio', element.radioSeletected, ' checkbox', element.checkboxSelected)
-        if ( (element.radioSeletected !== undefined && element.radioSeletected != "") || 
-            (element.checkboxSelected !== undefined && element.checkboxSelected.length > 0)) {
-            style = "blue";
+        console.log(
+          "bao" + JSON.stringify(element.questionType),
+          " radio",
+          element.radioSeletected,
+          " checkbox",
+          element.checkboxSelected
+        );
+        if (
+          (element.radioSeletected !== undefined &&
+            element.radioSeletected != "") ||
+          (element.checkboxSelected !== undefined &&
+            element.checkboxSelected.length > 0)
+        ) {
+          style = "blue";
         }
       }
       return style;
@@ -461,7 +461,7 @@ export default {
       return title;
     },
     goToQuestion(order) {
-     // console.log("bao: Prev Question", JSON.stringify(this.currentQuestion));
+      // console.log("bao: Prev Question", JSON.stringify(this.currentQuestion));
       this.updateQuestion();
 
       this.questionOrder = order;
@@ -613,24 +613,23 @@ export default {
         this.summary.answeredList !== undefined &&
         this.summary.total !== undefined
       ) {
+        this.updateProgressBar();
         return this.summary.answeredList.length + "/" + this.summary.total;
       } else {
+        this.progress = 0;
         return "0 / " + this.summary.total;
       }
     },
-    //   if (this.cloneUserCheck.length == 0) {
-    //     toastr.warning("Bạn chưa chọn đáp án");
-    //     return;
-    //   }
-    //   toastr.info("Bạn đã trả lời thành công");
-    //   yield this.$store.dispatch(
-    //     "answer",
-    //     Object.assign({}, this.current, { userCheck: this.cloneUserCheck })
-    //   );
-    //   $("#quiz-progress").progress({
-    //     value: this.answereds,
-    //     total: this.userQuestions.length
-    //   });
+    updateProgressBar() {
+      var progress = Math.ceil(
+        this.summary.answeredList.length / this.summary.total * 100
+      );
+
+      $("#quiz-progress").progress({
+        percent: progress
+      });
+    },
+
     endQuizTest: co(function*() {
       swal(
         {
@@ -655,6 +654,9 @@ export default {
 
     _cloneCurrentCheck() {
       this.cloneUserCheck = _.clone(this.current.userCheck);
+    },
+    updateKetQua() {
+      
     },
     getUserQuizById: Promise.coroutine(function*(userQuizId) {
       let userQuizs = yield usersQuizsService.getBy(userQuizId);
@@ -694,14 +696,7 @@ export default {
     })
   },
   created: co(function*() {
-    // yield this.$store.dispatch("getQuiz", 1);
-    // yield this.$store.dispatch("getQuestions", this.quiz.id);
-
-    // yield this.$store.dispatch("getUsersQuizsRow", {
-    //   userId: _authServices.getUserInfo().userId,
-    //   quizId: this.quiz.id
-    // });
-    // yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
+ 
     console.log("userQuizId", this.$route.params);
     let id = this.$route.params.id;
     console.log("userQuizId", id);
