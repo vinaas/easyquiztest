@@ -2,7 +2,7 @@
     <div class="ui fluid-container">
         <div class="ui menu">
             <div class="ui container">
-                <router-link class="item header item" to="/">
+                <router-link class="item header item" to="/UserQuiz">
                     <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
                 </router-link>
             </div>
@@ -19,9 +19,18 @@
 
                                 <div class="content">
                                     <div class="ui info message center aligned green">
-                                        <div class="header">Thời gian</div>
+                                        <div class="header">Thời gian Còn Lại</div>
                                         <h1>
-                                            <div id="basicUsage">--:--</div>
+                                            <div>
+                                          <countdown
+                                                ref="countdown"
+                                                @onProgress="countDownProgress"
+                                                @onFinish="countDownFinished"
+                                            >
+                                               {{countdownText}}
+                                            </countdown>
+                                          
+                                            </div>
                                             <i class="alarm outline icon"></i>
                                         </h1>
                                     </div>
@@ -209,14 +218,19 @@ import startTimer from "../../common/coundown.js";
 import _ from "lodash";
 import Promise from "bluebird";
 import swal from "sweetalert";
+import Vue from "vue";
 import { AuthServices } from "../services/auth.js";
 import { UsersQuizsService } from "../services/users-quizes";
 import { ApplicationUserService } from "../services/application-user";
 import { QuizService } from "../services/quiz";
+import CountDown from "vuejs-count-down";
+
 const _authServices = new AuthServices();
 const usersQuizsService = new UsersQuizsService();
 const applicationUserService = new ApplicationUserService();
 const quizService = new QuizService();
+
+Vue.component("countdown", CountDown);
 
 const co = Promise.coroutine;
 
@@ -225,7 +239,7 @@ export default {
 
   data() {
     return {
-      userQuizs : {},
+      userQuizs: {},
       questionOrder: 0,
       quizId: 3, //mã kì thi
       startTime: "2017-11-30", //thời gian bắt đầu kì thi
@@ -239,7 +253,7 @@ export default {
       checkboxSelected: [],
       radioSeletected: "",
 
-      totalTime: 1800, //thời gian thi, countdown về 0, tính theo giây, 1800s = 30 phút
+      totalTime: 0, //thời gian thi, countdown về 0, tính theo giây, 1800s = 30 phút
       numberOfQuestions: 20, //tổng số câu hỏi
       currentQuestion: {},
 
@@ -393,9 +407,11 @@ export default {
 
         answeredPeriod: "", // "xxxx", //thời gian làm bài, tính đến lúc bấm "kết thúc thi" hoặc khi hết giờ
         answeredList: [] //danh sách câu đã trả lời
-      }
-    }
-    ;
+      },
+
+      countdownText : ''      
+
+    };
   },
   computed: mapGetters({
     quiz: "quiz",
@@ -412,15 +428,25 @@ export default {
   }),
   components: {},
   mounted: function() {
-    var totalSecond = this.totalTime,
-    display = document.querySelector("#basicUsage");
-    startTimer(totalSecond, display);
-    
-    console.log("display", display);
     this.calculateProgress();
     console.log("end mounted");
   },
   methods: {
+    
+    countDownProgress(timer) {
+        var minutes = parseInt(timer / 60, 10)
+        var seconds = parseInt(timer % 60, 10)
+
+        minutes = minutes < 10 ? '0' + minutes : minutes
+        seconds = seconds < 10 ? '0' + seconds : seconds
+
+        this.countdownText = minutes + ':' + seconds
+    },
+    countDownFinished() {
+        // restart when countdown ends
+        this.endQuizTest();        
+    },
+
     getQuestionStyleCss(order) {
       var style = "";
       ("inverted: index !=questionOrder, orange: !q.isAnswered, green:");
@@ -658,13 +684,16 @@ export default {
       this.cloneUserCheck = _.clone(this.current.userCheck);
     },
     updateKetQua() {
-       this.userQuizs.listQuestions = this.listQuestions;
-       this.userQuizs.summary = this.summary; 
-       if (this.userQuizs.userStatus === undefined || this.userQuizs.userStatus == "ACTIVE") {
-         this.userQuizs.userStatus = "PROGRESS"; 
-       }; 
-       var kq = yield usersQuizsService.save(this.userQuizs);
-       console.log('updateKetQua()', kq);
+      this.userQuizs.listQuestions = this.listQuestions;
+      this.userQuizs.summary = this.summary;
+      if (
+        this.userQuizs.userStatus === undefined ||
+        this.userQuizs.userStatus == "ACTIVE"
+      ) {
+        this.userQuizs.userStatus = "PROGRESS";
+      }
+      var kq = usersQuizsService.save(this.userQuizs);
+      console.log("updateKetQua()", kq);
     },
     getUserQuizById: Promise.coroutine(function*(userQuizId) {
       this.userQuizs = yield usersQuizsService.getBy(userQuizId);
@@ -685,14 +714,16 @@ export default {
         };
       }
       this.summary = this.userQuizs.summary;
-      this.beginTime = new Date(); 
-
+      this.beginTime = new Date();
       //1.get quizInfo from API và gan vao cac bien tren, vi du quizName
       let quizInfo = yield quizService.getBy(userQuizId);
+      console.log("quizInfo", quizInfo);
+      this.totalTime = quizInfo.totalTime 
+      this.$refs.countdown.time = this.totalTime;
+      this.$refs.countdown.$emit('restart')
+
       this.quizName = quizInfo.quizName;
       this.quizTime = quizInfo.quizTime;
-      console.log("this.quizName", this.quizName);
-      console.log("this.quizTime", this.quizTime);
 
       //2.get userInfo from API và gan vao cac bien tren, vi du
       let userId = this.userQuizs.applicationId;
@@ -702,11 +733,9 @@ export default {
       let tenNhanVien = userInfo.tenNhanVien;
       let birthday = userInfo.birthday;
       console.log("tenNhanVien", tenNhanVien);
-
     })
   },
   created: co(function*() {
- 
     console.log("userQuizId", this.$route.params);
     let id = this.$route.params.id;
     console.log("userQuizId", id);
