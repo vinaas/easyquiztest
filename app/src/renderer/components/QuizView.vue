@@ -96,7 +96,7 @@
                                         <div class="grouped fields">
                                             <!--<label>How often do you use checkboxes?</label>-->
                                             
-                                            <div v-if="currentQuestion.questionType ==='radio'" class="ui radio">
+                                            <div v-if="currentQuestion.questionType == 'ONE'" class="ui radio">
                                                 <div v-for="(a,i) in currentQuestion.listAnswers">
                                                     <input type="radio" id="one" :value="a.id" v-model="radioSeletected" ><label for="one">{{getAnswerTitle(i)}} | {{a.isCorrect}}</label>
                                                 </div>
@@ -117,9 +117,9 @@
                                         <div>radio: {{ radioSeletected }}</div>
                                         <div>checkbox: {{ checkboxSelected }}</div>
                                     <div id="nav-buttons" class="ui  buttons fluid  center alinged">
-                                        <button class="ui button left attached blue " v-bind:disabled="!previous" @click="goPrevious()">
+                                        <button class="ui button left attached blue " v-bind:disabled="! enablePrevious()" @click="goPrevious()">
                                             <i class="left chevron icon"></i>Trước</button>
-                                        <button class="ui button right attached blue " v-bind:disabled="!next" @click="goNext()"> Sau
+                                        <button class="ui button right attached blue " v-bind:disabled="! enableNext()" @click="goNext()"> Sau
                                             <i class="right chevron icon"></i>
                                         </button>
                                     </div>
@@ -133,15 +133,15 @@
                 <div class="bar">
                     <div class="progress"></div>
                 </div>
-                <!--<div class="label"> 6/50 </div>-->
+                <div class="label"> {{calculateProgress()}}</div>
             </div>
-            <!--<div class="ui divider"></div>-->
+            <div class="ui divider"></div>
             <div class="row">
                 <footer>
                     <div class="ui card fluid">
                         <div class="content">
                             <!-- <button v-for="(q, index) in userQuestions" @click="goToQuestion(q.id)" class="mini ui button" v-bind:class="{inverted: q.id!==current.id, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button> -->
-                            <button v-for="(q, index) in listQuestions" @click="goToQuestion(index)" class="mini ui button" v-bind:class="{inverted: index !=questionOrder, orange: !q.isAnswered, green:q.isAnswered}">Câu {{index+ 1}}</button>
+                            <button v-for="(q, index) in listQuestions" @click="goToQuestion(index)" class="mini ui button" v-bind:class="getQuestionStyleCss(index)">Câu {{index+ 1}}</button>
                         </div>
 
                     </div>
@@ -210,11 +210,11 @@ import _ from "lodash";
 import Promise from "bluebird";
 import swal from "sweetalert";
 import { AuthServices } from "../services/auth.js";
-import { UsersQuizsService } from '../services/users-quizes'
-import { ApplicationUserService } from '../services/application-user'
-import { QuizService } from '../services/quiz'
+import { UsersQuizsService } from "../services/users-quizes";
+import { ApplicationUserService } from "../services/application-user";
+import { QuizService } from "../services/quiz";
 const _authServices = new AuthServices();
-const usersQuizsService = new UsersQuizsService()
+const usersQuizsService = new UsersQuizsService();
 const applicationUserService = new ApplicationUserService();
 const quizService = new QuizService();
 
@@ -225,7 +225,7 @@ export default {
 
   data() {
     return {
-      questionOrder : 0,  
+      questionOrder: 0,
       quizId: 3, //mã kì thi
       startTime: "2017-11-30", //thời gian bắt đầu kì thi
       endTime: "2017-12-05", //thời gian kết thúc thi
@@ -234,14 +234,14 @@ export default {
 
       quizName: "kiểm tra 60 phút", //"tên kì thi",
       quizTime: "6/5/2017", // "khóa thi"
-   
-      checkboxSelected: [1,2],
+
+      checkboxSelected: [],
       radioSeletected: "",
 
       totalTime: 1800, //thời gian thi, countdown về 0, tính theo giây, 1800s = 30 phút
       numberOfQuestions: 20, //tổng số câu hỏi
       currentQuestion: {},
-     
+
       listQuestions: [
         //danh sách câu hỏi == numberOfQuestions,
         //thiết lập khi Gán Thí Sinh Tham gia kì thi
@@ -253,7 +253,7 @@ export default {
           difficultLevel: 6, // 1 => 10
           categories: [], //chuyên mục của câu hỏi
           isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
-          checkboxSelected: [1,2],
+          checkboxSelected: [1, 2],
           radioSeletected: "",
           listAnswers: [
             //danh sách câu trả lời để users lựa chọn,
@@ -292,7 +292,7 @@ export default {
           difficultLevel: 6, // 1 => 10
           categories: [], //chuyên mục của câu hỏi
           isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
-          checkboxSelected: [1,2],
+          checkboxSelected: [1, 2],
           radioSeletected: "",
           listAnswers: [
             //danh sách câu trả lời để users lựa chọn,
@@ -331,7 +331,7 @@ export default {
           difficultLevel: 6, // 1 => 10
           categories: [], //chuyên mục của câu hỏi
           isRandom: true, // | false, //Có xáo trộn câu trả lời hay không
-          checkboxSelected: [1,2],
+          checkboxSelected: [1, 2],
           radioSeletected: "",
           listAnswers: [
             //danh sách câu trả lời để users lựa chọn,
@@ -387,9 +387,11 @@ export default {
       summary: {
         // sử dụng để hiển thị kết quả
         result: "", //"Pass | Failt" //kết quả
-        answeredPeriod: "", // "xxxx", //thời gian làm bài, tính đến lúc bấm "kết thúc thi" hoặc khi hết giờ
         correct: 10, //số câu trả lời đúng tính dựa vào answeredHistory
-        total: 20 // == numberOfQuestions
+        total: 20, // == numberOfQuestions
+
+        answeredPeriod: "", // "xxxx", //thời gian làm bài, tính đến lúc bấm "kết thúc thi" hoặc khi hết giờ
+        answeredList: [] //danh sách câu đã trả lời
       }
     };
   },
@@ -404,7 +406,7 @@ export default {
     usersQuizsRow: "usersQuizsRow",
     updateAnswer: function() {
       console.log("computed updateAnswer", this.radioSeletected);
-    },
+    }
   }),
   components: {},
   mounted: function() {
@@ -412,24 +414,38 @@ export default {
       display = document.querySelector("#basicUsage");
     startTimer(totalSecond, display);
     console.log("display", display);
-
+    var count = 0;
+    // if (this.summary.answeredList !== undefined) {
+    //    count = this.summary.answeredList.length;
+    // }
     $("#quiz-progress").progress({
       lable: "ratio",
-      value: this.answereds,
-      total: this.userQuestions.length,
+      value: this.summary.answeredList.length,
+      total: this.summary.total,
       text: {
         ratio: "{value}/{total}"
       },
       showActivity: false
     });
+    console.log("end mounted");
   },
   methods: {
-    
-    chonDapAn(id) {
-      console.log("da chon dap an", id);
-      //   console.log("Truoc", JSON.stringtify(this.currentQuestion.listAnswers));
-      //   this.currentQuestion.listAnswers[0].answerByUser = true;
-      //   console.log("Sau", this.currentQuestion.listAnswers);
+    getQuestionStyleCss(order) {
+      var style = "";
+      ("inverted: index !=questionOrder, orange: !q.isAnswered, green:");
+      if (this.questionOrder == order) {
+        style = "green";
+      } else if (this.summary.answeredList.includes(order)) {
+        style = "orange";
+      } else {
+        var element = this.listQuestions[order];
+        console.log('bao' + JSON.stringify(element.questionType), ' radio', element.radioSeletected, ' checkbox', element.checkboxSelected)
+        if ( (element.radioSeletected !== undefined && element.radioSeletected != "") || 
+            (element.checkboxSelected !== undefined && element.checkboxSelected.length > 0)) {
+            style = "blue";
+        }
+      }
+      return style;
     },
     getAnswerTitle(id) {
       var title = "";
@@ -445,10 +461,11 @@ export default {
       return title;
     },
     goToQuestion(order) {
-      this.questionOrder = order;   
-      console.log("question order", order);
+     // console.log("bao: Prev Question", JSON.stringify(this.currentQuestion));
+      this.updateQuestion();
+
+      this.questionOrder = order;
       this.currentQuestion = this.listQuestions[order];
-      this.checkboxSelected = this.listQuestions[order].checkboxSelected;
       if (this.listQuestions[order].radioSeletected === undefined) {
         this.radioSeletected = "";
       } else {
@@ -459,19 +476,18 @@ export default {
       } else {
         this.checkboxSelected = this.listQuestions[order].checkboxSelected;
       }
-      console.log("this.currentQuestion", this.currentQuestion);
-      console.log("radioSelected", this.radioSeletected);
-      console.log("checkboxSelected", this.checkboxSelected);
+      // console.log("bao: Current Question", JSON.stringify(this.currentQuestion) );
     },
 
     updateQuestion() {
+      this.currentQuestion.radioSeletected = this.radioSeletected;
+      this.currentQuestion.checkboxSelected = this.checkboxSelected;
+
       var questionId = this.currentQuestion.id;
       for (var i in this.listQuestions) {
         if (this.listQuestions[i].id == questionId) {
           console.log("question update");
           this.listQuestions[i] = this.currentQuestion;
-          this.listQuestions[i]["radioSeletected"] = this.radioSeletected;
-          this.listQuestions[i]["checkboxSelected"] = this.checkboxSelected;
           console.log("radio", this.listQuestions[i]);
         }
       }
@@ -483,15 +499,21 @@ export default {
       return 0;
     },
 
+    enableNext() {
+      return this.questionOrder < this.listQuestions.length - 1;
+    },
+    enablePrevious() {
+      return this.questionOrder > 0;
+    },
     goNext() {
-      this.$store.dispatch("goNext").then(() => {
-        this._cloneCurrentCheck();
-      });
+      if (this.questionOrder < this.listQuestions.length - 1) {
+        this.goToQuestion(this.questionOrder + 1);
+      }
     },
     goPrevious() {
-      this.$store.dispatch("goPre").then(() => {
-        this._cloneCurrentCheck();
-      });
+      if (this.questionOrder > 0) {
+        this.goToQuestion(this.questionOrder - 1);
+      }
     },
 
     resultPassFailt() {
@@ -517,30 +539,49 @@ export default {
       //3. call API cap nhat lên server
     },
     answer: co(function*() {
-      var rs = false;
-      if (this.currentQuestion.questionType === "radio") {
+      var isCorrect = false;
+      if (this.currentQuestion.questionType == "ONE") {
+        this.currentQuestion.radioSeletected = this.radioSeletected;
         this.currentQuestion.listAnswers.forEach(element => {
-          if (element.id === this.radioSeletected) {
-            if (element.isCorrect) {
-              rs = true;
-            }
+          console.log(this.currentQuestion.radioSeletected, "  : ", element.id);
+          if (
+            element.isCorrect &&
+            this.currentQuestion.radioSeletected == element.id
+          ) {
+            isCorrect = true;
           }
         });
       } else {
-        rs = this.answerCheckboxQuestion();
-        console.log("answerCheckboxQuestion()", rs);
+        isCorrect = true;
+        this.currentQuestion.checkboxSelected = this.checkboxSelected;
+        this.currentQuestion.listAnswers.forEach(element => {
+          if (element.isCorrect) {
+            //là câu đúng nhưng không được chọn
+            if (!this.currentQuestion.checkboxSelected.includes(element.id)) {
+              isCorrect = false;
+            }
+          } else {
+            //là câu sai nhưng lại chọn
+            if (this.currentQuestion.checkboxSelected.includes(element.id)) {
+              isCorrect = false;
+            }
+          }
+        });
       }
-      this.currentQuestion.correctAnswers = rs;
+      this.currentQuestion.correctAnswers = isCorrect;
       this.updateQuestion();
-      $("#quiz-progress").progress({
-        lable: "ratio",
-        value: this.answereds,
-        total: this.userQuestions.length,
-        text: {
-          ratio: "{value}/{total}"
-        },
-        showActivity: false
-      });
+      if (this.summary.answeredList == undefined) {
+        this.summary.answeredList = [];
+      }
+      if (!this.summary.answeredList.includes(this.questionOrder)) {
+        this.summary.answeredList.push(this.questionOrder);
+      }
+      //  this.updateProgress();
+      console.log("Trả lời", JSON.stringify(this.summary));
+      console.log("Trả lời", JSON.stringify(this.currentQuestion));
+
+      //tự động chuyển sang câu hỏi tiếp theo
+      this.goNext();
     }),
     answerCheckboxQuestion() {
       var rs = true;
@@ -558,10 +599,24 @@ export default {
         }
         $("#quiz-progress").progress({
           value: this.answereds,
-          total: this.userQuestions.length
+          total: this.userQuestions.length,
+          text: {
+            ratio: "{value}/{total}"
+          },
+          showActivity: false
         });
       });
       return rs;
+    },
+    calculateProgress() {
+      if (
+        this.summary.answeredList !== undefined &&
+        this.summary.total !== undefined
+      ) {
+        return this.summary.answeredList.length + "/" + this.summary.total;
+      } else {
+        return "0 / " + this.summary.total;
+      }
     },
     //   if (this.cloneUserCheck.length == 0) {
     //     toastr.warning("Bạn chưa chọn đáp án");
@@ -601,34 +656,42 @@ export default {
     _cloneCurrentCheck() {
       this.cloneUserCheck = _.clone(this.current.userCheck);
     },
-    getUserQuizById : Promise.coroutine(function*(userQuizId) {
+    getUserQuizById: Promise.coroutine(function*(userQuizId) {
       let userQuizs = yield usersQuizsService.getBy(userQuizId);
       this.listQuestions = userQuizs.listQuestions;
-      this.quizId = userQuizs.quizId;      
+      this.quizId = userQuizs.quizId;
+      console.log("quiz__ID:", this.quizId);
       this.listAnswers = userQuizs.listAnswers;
-      console.log("quiz__ID:", this.quizId)
-      console.log("listAnswers|||: ", this.listAnswers)
-
+      console.log("listAnswers|||: ", this.listAnswers);
+      if (userQuizs.summary === undefined) {
+        userQuizs.summary = {
+          // sử dụng để hiển thị kết quả
+          result: "", //"Pass | Failt" //kết quả
+          correct: 0, //số câu trả lời đúng tính dựa vào answeredHistory
+          total: userQuizs.listQuestions.length,
+          status: "ChuaThi", // ChuaThi | DangThi | DaThi
+          answeredPeriod: "", // "xxxx", //thời gian làm bài, tính đến lúc bấm "kết thúc thi" hoặc khi hết giờ
+          answeredList: [] //danh sách câu đã trả lời
+        };
+      }
+      this.summary = userQuizs.summary;
 
       //1.get quizInfo from API và gan vao cac bien tren, vi du quizName
       let quizInfo = yield quizService.getBy(userQuizId);
       this.quizName = quizInfo.quizName;
       this.quizTime = quizInfo.quizTime;
-      console.log("this.quizName", this.quizName)
-      console.log("this.quizTime", this.quizTime)
-          
+      console.log("this.quizName", this.quizName);
+      console.log("this.quizTime", this.quizTime);
 
-      //2.get userInfo from API và gan vao cac bien tren, vi du 
+      //2.get userInfo from API và gan vao cac bien tren, vi du
       let userId = userQuizs.applicationId;
-      console.log("userId", userId)
+      console.log("userId", userId);
       let userInfo = yield applicationUserService.getBy(userId);
       // console.log("userInfo", userInfo)
       let tenNhanVien = userInfo.tenNhanVien;
       let birthday = userInfo.birthday;
-      console.log("tenNhanVien", tenNhanVien)
-      
-      
-    }),
+      console.log("tenNhanVien", tenNhanVien);
+    })
   },
   created: co(function*() {
     // yield this.$store.dispatch("getQuiz", 1);
@@ -639,11 +702,11 @@ export default {
     //   quizId: this.quiz.id
     // });
     // yield this.$store.dispatch("goToQuestion", this.userQuestions[0].id);
-    console.log('userQuizId', this.$route.params);
-    let id = this.$route.params.id; 
-    console.log('userQuizId', id);
+    console.log("userQuizId", this.$route.params);
+    let id = this.$route.params.id;
+    console.log("userQuizId", id);
     yield this.getUserQuizById(id);
-    this.goToQuestion(0);  
+    this.goToQuestion(0);
   })
 };
 </script>
