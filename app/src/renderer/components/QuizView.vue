@@ -12,7 +12,8 @@
                 <div class="ui three column grid">
                     <div class="four wide column">
                         <div class="row" style="padding-bottom:10px">
-                            <button v-on:click="endQuizTest" class="positive ui button fluid">Kết thúc thi</button>
+                            <button v-on:click="endQuizTest" v-show="userStatus != 'COMPLETED'" class="positive ui button fluid">Kết thúc thi</button>
+                            <button @click="showKetQua" v-show="userStatus == 'COMPLETED'" class="ui blue button fluid">Xem Kết Quả</button>
                         </div>
                         <div class="row">
                             <div class="ui card">
@@ -162,8 +163,9 @@
             <div id="result" class="ui modal">
                 <i class="close icon"></i>
                 <div class="header">
-                    Kết quả: {{summary.correct}}/{{summary.total}} - Điểm : {{summary.result}}
+                    Kết quả Bài thi: {{summary.result}}
                 </div>
+                <h3> {{Math.ceil( (summary.correct * 10) / summary.total)}} Điểm</h3>
                 <div class="image content">
                     <table class="ui celled table">
                         <thead>
@@ -409,8 +411,7 @@ export default {
         answeredList: [] //danh sách câu đã trả lời
       },
 
-      countdownText : ''      
-
+      countdownText: ""
     };
   },
   computed: mapGetters({
@@ -432,21 +433,23 @@ export default {
     console.log("end mounted");
   },
   methods: {
-    
     countDownProgress(timer) {
-        var minutes = parseInt(timer / 60, 10)
-        var seconds = parseInt(timer % 60, 10)
+      var minutes = parseInt(timer / 60, 10);
+      var seconds = parseInt(timer % 60, 10);
 
-        minutes = minutes < 10 ? '0' + minutes : minutes
-        seconds = seconds < 10 ? '0' + seconds : seconds
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        this.countdownText = minutes + ':' + seconds
+      this.countdownText = minutes + ":" + seconds;
     },
     countDownFinished() {
-        // restart when countdown ends
-        this.endQuizTest();        
+      // restart when countdown ends
+     if (!this.isCompleted()) 
+        this.endQuizTest();
     },
-
+    isCompleted() {
+       return this.userStatus == "COMPLETED"; 
+    },  
     getQuestionStyleCss(order) {
       var style = "";
       ("inverted: index !=questionOrder, orange: !q.isAnswered, green:");
@@ -660,8 +663,8 @@ export default {
     endQuizTest: co(function*() {
       swal(
         {
-          title: "Kết thúc bài kiểm tra",
-          text: "Bạn có chắc chắn muốn kết thúc bài kiểm tra không?",
+          title: "Kết thúc",
+          text: "Bạn có chắc chắn muốn kết thúc bài thi không?",
           type: "info",
           showCancelButton: true,
           closeOnConfirm: false,
@@ -672,26 +675,27 @@ export default {
         co(function*() {
           // yield this.$store.dispatch("end");
           this.calculate();
-          this.userQuizs.userStatus = "COMPLETED"; //đã thi xong
-          $("#result").modal("show");
+          this.userStatus = "COMPLETED";
+          
+          this.showKetQua(); 
+
           this.updateKetQua();
           swal.close();
         }).bind(this)
       );
     }),
-
+    showKetQua() {
+       $("#result").modal("show");
+    },
     _cloneCurrentCheck() {
       this.cloneUserCheck = _.clone(this.current.userCheck);
     },
     updateKetQua() {
       this.userQuizs.listQuestions = this.listQuestions;
       this.userQuizs.summary = this.summary;
-      if (
-        this.userQuizs.userStatus === undefined ||
-        this.userQuizs.userStatus == "ACTIVE"
-      ) {
-        this.userQuizs.userStatus = "PROGRESS";
-      }
+
+      this.userQuizs.userStatus = this.userStatus;
+
       var kq = usersQuizsService.save(this.userQuizs);
       console.log("updateKetQua()", kq);
     },
@@ -715,12 +719,26 @@ export default {
       }
       this.summary = this.userQuizs.summary;
       this.beginTime = new Date();
+      if (
+        this.userQuizs.userStatus === undefined ||
+        this.userStatus == "ACTIVE"
+      ) {
+        this.userStatus = "PROGRESS";
+      }else {
+        this.userStatus = this.userQuizs.userStatus; 
+      }
+
       //1.get quizInfo from API và gan vao cac bien tren, vi du quizName
       let quizInfo = yield quizService.getBy(userQuizId);
       console.log("quizInfo", quizInfo);
-      this.totalTime = quizInfo.totalTime 
-      this.$refs.countdown.time = this.totalTime;
-      this.$refs.countdown.$emit('restart')
+      this.totalTime = quizInfo.totalTime;
+      if (this.isCompleted()) {
+        this.$refs.countdown.time = 0;
+      }else {
+        this.$refs.countdown.time = this.totalTime;
+      }
+      this.$refs.countdown.$emit("restart");
+      
 
       this.quizName = quizInfo.quizName;
       this.quizTime = quizInfo.quizTime;
