@@ -17,6 +17,7 @@
                     <th>Tên Kì Thi</th>
                     <th>Ngày Thi</th>
                     <th>Trạng Thái </th>
+                    <th>Kết Quả </th>
                     <th>Hành Động</th>
                 </tr>
             </thead>
@@ -26,13 +27,16 @@
                         {{i+1}}
                     </td>
                     <td >
-                        {{item.quizName}}
+                        {{ item.quiz !== undefined ? item.quiz.quizName : ''}}
                     </td>
                     <td >
                         {{item.quizTime | moment}}
                     </td>
                     <td >
-                        {{item.quizStatus}}
+                        {{item.userStatus}}
+                    </td>
+                    <td >
+                        {{ displayKetQua(item)}}
                     </td>
                     <td>
                         <button class="ui primary button" v-on:click="goToUserQuiz(item)">
@@ -67,7 +71,7 @@ const co = Promise.coroutine;
 export default {
   data() {
     return {
-      listUserQuiz: []
+      listUserQuiz: []  // item: userQuiz ,   quiz: Quiz
     };
   },
   // Format ngày tháng năm/////////////////////////////
@@ -86,6 +90,17 @@ export default {
   },
   mounted: function() {},
   methods: {
+    displayKetQua(item) {
+        var text = 'Chưa thi'
+        if (item.summary !== undefined && item.summary.result !== undefined) {
+            if (item.summary.result == 'Pass') {
+                text = "Đậu"
+            }else {
+                text = "Rớt"
+            }
+        }
+        return text;
+    },
     getAllByUser: Promise.coroutine(function*() {
       console.log("UserId", JSON.stringify(this.getUserId));
       let userQuizs = yield usersQuizsService.getByUserId(this.getUserId);
@@ -97,10 +112,15 @@ export default {
       });
 
       let allQuiz = yield quizsService.getAll();
-      let listQuiz = allQuiz.filter(item => listQuizId.includes(item.id));
-    //   console.log("all", JSON.stringify(listQuizId));
-    //   console.log("listQuiz", JSON.stringify(listQuiz));
-      this.listUserQuiz = listQuiz;
+      for(var i in userQuizs) {
+          allQuiz.forEach(element => {
+              if (element.id == userQuizs[i].quizId) {
+                  userQuizs[i]['quiz'] = element; 
+                  console.log("quiz", JSON.stringify(userQuizs[i]));
+                  this.listUserQuiz.push(userQuizs[i])
+              }
+          });
+      }
     }),
     goToUserQuiz: function (item) {
       console.log('link to UserQuiz', JSON.stringify(item))
