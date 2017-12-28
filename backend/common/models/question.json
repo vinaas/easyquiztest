@@ -34,9 +34,9 @@
       "type": "string"
     },
     "checkboxSelected": {
-      "type" : [
-        "number"  
-      ]  
+      "type": [
+        "number"
+      ]
     },
     "radioSeletected": {
       "type": "string"

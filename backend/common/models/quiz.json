@@ -19,11 +19,8 @@
     "quizName": {
       "type": "string"
     },
-    "quizInfo": {
-      "type": {
-        "quizTime": "date",
-        "quizName": "string"
-      }
+    "quizId": {
+      "type": "string"
     },
     "quizStatus": {
       "type": "string"

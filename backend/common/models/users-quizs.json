@@ -10,6 +10,9 @@
     "quizId": {
       "type": "number"
     },
+    "registrationNumber": {
+      "type": "string"
+    },
     "answerDetail": {
       "type": [
         "object"

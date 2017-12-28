@@ -1,12 +1,4 @@
 {
-  "db": {
-    "name": "db",
-    "connector": "memory"
-  },
-  "mongoDs": {
-   "name": "db",
-    "connector": "memory"
-  },
   "mypostgres": {
     "name": "mypostgres",
     "connector": "memory",

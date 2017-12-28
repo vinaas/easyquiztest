@@ -1,0 +1,24 @@
+{
+  "name": "Category",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "danhMucCha": {
+      "type": "string",
+      "required": true
+    },
+    "danhMuc": {
+      "type": "string"
+    },
+    "tenDanhMuc": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
