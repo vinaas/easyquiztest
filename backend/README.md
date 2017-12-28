@@ -24,6 +24,8 @@
 
 - thực hiện ở commit https://github.com/vinaas/easyquiztest/commit/3dc690fa7086a9aab01035f05dfc136fdfeaa3be
 
+- Test parse file trên postman
+    - [parseexcel-postman](https://user-images.githubusercontent.com/10808157/34399544-c8b19948-ebba-11e7-8269-0c6bec99df2b.png)
 
 Please see LoopBack [Getting started part II](http://loopback.io/doc/en/lb3/Getting-started-part-II.html) for the tutorial that walks you through creating this application.
 
