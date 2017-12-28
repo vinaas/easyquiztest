@@ -2,6 +2,14 @@
 
 ## Tính năng
 
+## Tóm lượt kiến thức
+- programming languages: js (typescript: ts), php, java, c#, vb, 
+- Web servers: nginx (php, static files) | IIS 7,8 (microsoft: c#, vb.net, vb6, ) | apache (php)  | express (nodejs | js)  | tomcat (java)
+- database: RMDS: mssql server, mysql, oracle, postgresql | NoSQL: mongodb, couchbase, redis, memorydb 
+- backend framworks: microsoft: asp.net mvc, web api | PHP: zend framework, yii | java: spring | nodejs: 
+- frontend frameworks: SPA: angularjs | aurelia | react | vuejs | .....
+- open source: blog: wordress, joomla, 
+
 ### Parse Excel files
 
 #### Mô tả:
