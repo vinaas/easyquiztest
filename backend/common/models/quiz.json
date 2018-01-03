@@ -7,6 +7,9 @@
   },
   "forceId": false,
   "properties": {
+    "examId" : {
+      "type" : "number"
+    }, 
     "quizTime": {
       "type": "date"
     },

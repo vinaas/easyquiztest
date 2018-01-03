@@ -1,17 +1,4 @@
 {
-  "db": {
-    "name": "db",
-    "connector": "memory"
-  },
-  "mongoDs": {
-    "host": "ds143221.mlab.com",
-    "port": 43221,
-    "database": "quiztestdb",
-    "username": "quiztestadmin",
-    "password": "123456",
-    "name": "mongoDs",
-    "connector": "mongodb"
-  },
   "mypostgres": {
     "name": "mypostgres",
     "connector": "memory",

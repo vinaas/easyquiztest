@@ -58,7 +58,11 @@
     "public": true
   },
   "ActionHistory": {
-    "dataSource": "db",
+    "dataSource": "mypostgres",
+    "public": true
+  },
+  "Category": {
+    "dataSource": "mypostgres",
     "public": true
   },
   "Exam": {
