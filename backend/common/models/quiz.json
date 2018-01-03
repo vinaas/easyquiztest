@@ -7,16 +7,13 @@
   },
   "forceId": false,
   "properties": {
-    "startTime": {
-      "type": "date"
-    },
-    "endTime": {
-      "type": "date"
-    },
     "quizTime": {
       "type": "date"
     },
     "quizName": {
+      "type": "string"
+    },
+    "sbdPrefix": {
       "type": "string"
     },
     "quizInfo": {
@@ -39,6 +36,11 @@
     },
     "listQuestionIds": {
       "type": [
+        "number"
+      ]
+    },
+    "listUserIds" : {
+      "type" : [
         "number"
       ]
     },

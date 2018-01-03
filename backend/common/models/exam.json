@@ -1,0 +1,46 @@
+{
+  "name": "Exam",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "startTime": {
+      "type": "date"
+    },
+    "endTime": {
+      "type": "date"
+    },
+    "status": {
+      "type": "string"
+    },
+    "sbdPrefix": {
+      "type": "string"
+    },
+    "listUserIds" : {
+      "type" : [
+        "number"
+      ]
+    },
+    "created": {
+      "type": "date"
+    },
+    "createdUserId": {
+      "type": "number"
+    },
+    "lastModified": {
+      "type": "date"
+    },
+    "lastModifiedUserId": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

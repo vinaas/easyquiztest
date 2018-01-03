@@ -60,5 +60,9 @@
   "ActionHistory": {
     "dataSource": "db",
     "public": true
+  },
+  "Exam": {
+    "dataSource": "mypostgres",
+    "public": true
   }
 }
