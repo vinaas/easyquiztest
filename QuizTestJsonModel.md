@@ -1,3 +1,25 @@
+## Điều chỉnh:
+
+### Bổ sung khái niệm môn thi:
+1. Ngân Hàng Câu Hỏi (Questions)
+    - import dạng Excel 
+    - thêm loại câu hỏi **Kết Nối** 
+
+1. Kì Thi có nhiều môn Thi cho nhiều thí sinh  (Exam)
+    - danh sách kì thi 
+    - thuộc tính: 
+        - tên | ngày bắt đầu | ngày kết thúc  | trạng thái 
+        - prefix : `SBD` 
+        - chọn thí sinh cho kì thi (import excel)
+
+1. Môn thi cho nhiều thí sinh (Quiz)
+    - đổi tên từ (Kì thi cũ)
+    - lựa chọn Kì thi từ danh sách có sẵn : -> kế thừa toàn bộ thông tin kì thi 
+    - prefix: SBD, kế thừa từ Kì Thi | cho phép đổi
+    - danh sách thí sinh kế thừa từ kì thi 
+
+1. Bài Thi cho từng thí sinh (UserQuiz)
+
 
 ### Json schema theo User cho Bài Thi
 > Khi Thi, kết quả sẽ được cập nhật tự động 15s lần
