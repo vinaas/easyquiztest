@@ -1,6 +1,6 @@
 {
     "name": "easyquiztest",
-    "endpointApi": "http://localhost:8899",
+    "endpointApi": "http://45.77.45.94:7000",
     "logLevel": "debug",
     "WordParsePath" : "ParseTools/WordParser.exe"
 }
