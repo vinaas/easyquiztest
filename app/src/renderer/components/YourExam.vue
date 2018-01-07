@@ -4,7 +4,7 @@
             <div class="ui container">
                 <div class="item header item">
                     <router-link class="item header item" to="/">
-                        <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
+                        <img class="logo" src="./assets/banner.jpg">EasyQuizTest
                     </router-link>
                 </div>
             </div>

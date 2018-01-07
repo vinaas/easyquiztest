@@ -186,6 +186,8 @@
     "ActionHistory": {
       "1": "{\"actionId\":\"Quiz_1\",\"objectId\":\"26\",\"objectType\":\"Quiz\",\"message\":\"đã tạo mới\",\"notes\":\"TODO\",\"date\":\"2017-12-26T09:55:43.644Z\",\"userId\":1,\"id\":1}",
       "2": "{\"actionId\":\"UserQuiz_1\",\"objectId\":\"30\",\"objectType\":\"UserQuiz\",\"message\":\"đã tạo mới\",\"notes\":\"TODO\",\"date\":\"2017-12-26T10:27:19.849Z\",\"userId\":1,\"id\":2}"
-    }
+    }, 
+	"Exam": {
+	}
   }
 }

@@ -3,7 +3,7 @@
         <div class="ui menu">
             <div class="ui container">
                 <router-link class="item header item" to="/UserQuiz">
-                    <img class="logo" src="./assets/vinaas-logo.png">EasyQuizTest
+                    <img class="logo" src="./assets/banner.jpg">EasyQuizTest
                 </router-link>
             </div>
         </div>
