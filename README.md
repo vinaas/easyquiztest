@@ -186,6 +186,9 @@ cd ..
 cd backend
 node .
 ```
+- Fix Error: Cannot create data source "file_storage": Cannot initialize connector "loopback-component-storage": FileSystemProvider: Path does not exist:
+./server/storage
+  - Create folder `storage` in `./server`
 #### 2.Chạy client
 ```
 # chạy ở thư mục gốc
