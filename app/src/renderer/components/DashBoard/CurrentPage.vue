@@ -2,9 +2,9 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                <img src="../assets/vinaas-logo.png" class="image">
+                <img src="../assets/banner.jpg" class="image">
                 <div class="content">
-                    Đăng nhập vào hệ thống
+                    Trung Tâm Ngoại Ngữ Tin Học Đăk Nông
                 </div>
             </h2>
             <form class="ui large form ">
@@ -109,6 +109,6 @@ body>.grid {
 }
 
 .column {
-    max-width: 450px;
+    max-width: 500px;
 }
 </style>

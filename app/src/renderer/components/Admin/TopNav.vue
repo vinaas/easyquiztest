@@ -2,7 +2,7 @@
     <div class="ui fixed menu">
         <div class="ui container">
             <router-link class="item header item" to="/">
-                <img class="logo" src="../assets/vinaas-logo.png">EasyQuizTest</router-link>
+                <img class="logo" src="../assets/banner.jpg">EasyQuizTest</router-link>
             <!--<a href="javascript:void()" class="item">Quản lý thí sinh</a>-->
             <router-link to="/admin" class="item">Quản lý đề thi</router-link>
             <router-link to="/admin/appuserslist" class="item">Quản thí sinh</router-link>
