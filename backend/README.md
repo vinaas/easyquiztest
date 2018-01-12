@@ -60,3 +60,20 @@ node .
 - frontend frameworks: SPA: angularjs | aurelia | react | vuejs | .....
 - open source: blog: wordress, joomla, 
 
+## Chạy backend trên server 
+- http://45.77.45.94:7000/explorer
+- Truy cập vào server sử dụng `WinSCP`
+  - Tài khoản `root`
+  - Mất khẩu được cung cấp
+- Thư mục chưa backend `/var/www/easyquiztest/backend`
+- Cài đặt `PuTTY` để sử dụng cmd trong `WinSCP`
+- Restart lại khi update file trong `backend`
+  - Mở `PuTTY` (Ctrl +P)
+  - `forever list` => Xem `pid_number` của `easyquiztest`
+  - `forever restart pid_number`
+
+## Xử lý khi gặp lỗi không thể restart
+- Sử dụng `PuTTY`
+- cd tới `/var/www/easyquiztest/backend`
+- Chạy `node .` để xem lỗi và sửa lỗi
+- Chạy `forever restart pid_number` lại sau khi sửa xong lỗi
