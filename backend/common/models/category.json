@@ -7,18 +7,26 @@
   },
   "properties": {
     "danhMucCha": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "danhMuc": {
       "type": "string"
     },
     "tenDanhMuc": {
       "type": "string"
+    },
+    "parentId": {
+      "type": "number"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "categories": {
+      "type": "hasMany",
+      "model": "Category",
+      "foreignKey": "groupId"
+    }
+  },
   "acls": [],
   "methods": {}
 }
