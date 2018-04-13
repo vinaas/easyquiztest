@@ -7,9 +7,9 @@
   },
   "forceId": false,
   "properties": {
-    "examId" : {
-      "type" : "number"
-    }, 
+    "examId": {
+      "type": "number"
+    },
     "quizTime": {
       "type": "date"
     },
@@ -42,8 +42,8 @@
         "number"
       ]
     },
-    "listUserIds" : {
-      "type" : [
+    "listUserIds": {
+      "type": [
         "number"
       ]
     },
@@ -80,6 +80,12 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
     }
   ],
   "methods": {}

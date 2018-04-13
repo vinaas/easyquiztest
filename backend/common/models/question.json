@@ -72,10 +72,10 @@
   },
   "acls": [
     {
-      "accessType": "WRITE",
+      "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "admin",
-      "permission": "ALLOW"
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
     }
   ],
   "methods": {}
