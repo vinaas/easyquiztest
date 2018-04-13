@@ -2,7 +2,7 @@
   "mypostgres": {
     "name": "mypostgres",
     "connector": "memory",
-    "file": "memorydata.json"
+    "file": "memorydb/memorydata.json"
   },
   "file_storage": {
     "name": "file_storage",
