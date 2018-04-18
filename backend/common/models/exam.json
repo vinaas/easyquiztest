@@ -40,7 +40,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "monThi": {
+      "type": "hasMany",
+      "model": "Quiz",
+      "foreignKey": "examId"
+    }
+  },
   "acls": [
     {
       "accessType": "*",
