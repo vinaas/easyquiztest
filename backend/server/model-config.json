@@ -68,5 +68,9 @@
   "Exam": {
     "dataSource": "mypostgres",
     "public": true
+  },
+  "DotThi": {
+    "dataSource": "mypostgres",
+    "public": true
   }
 }

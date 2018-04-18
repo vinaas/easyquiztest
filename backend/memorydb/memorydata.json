@@ -437,6 +437,9 @@
     },
     "Exam": {
       "7": "{\"startTime\":\"2018-03-04T17:00:00.000Z\",\"endTime\":\"2018-03-08T17:00:00.000Z\",\"status\":\"NEW\",\"listUserIds\":[],\"created\":\"2018-03-26T07:19:46.964Z\",\"createdUserId\":1,\"lastModified\":\"2018-03-26T07:19:46.964Z\",\"lastModifiedUserId\":1,\"examStatus\":\"ACTIVE\",\"examName\":\"HĐ THI TUYỂN CC NĂM 2018\",\"id\":7}"
+    },
+    "DotThi" : {
+
     }
   }
 }

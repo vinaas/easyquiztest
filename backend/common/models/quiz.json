@@ -67,6 +67,11 @@
       "model": "Question",
       "foreignKey": ""
     },
+    "doiThi": {
+      "type": "hasMany",
+      "model": "DotThi",
+      "foreignKey": "monThiId"
+    },
     "applicationUsers": {
       "type": "hasMany",
       "model": "ApplicationUser",
