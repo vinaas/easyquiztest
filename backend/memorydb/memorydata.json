@@ -1,7 +1,7 @@
 {
   "ids": {
     "User": 1,
-    "AccessToken": 110,
+    "AccessToken": 111,
     "ACL": 1,
     "RoleMapping": 1,
     "Role": 3,
@@ -10,7 +10,7 @@
     "ApplicationUser": 24,
     "UsersQuizs": 50,
     "AnswersForAQuestion": 1,
-    "Category": 23,
+    "Category": 29,
     "ActionHistory": 44,
     "Exam": 8
   },
@@ -125,7 +125,8 @@
       "DlyX874DriSkuVCSWrcwht67z2cJovjucMI1qvmgXEnZg8ky4JnnVDqZWFYaW1oo": "{\"id\":\"DlyX874DriSkuVCSWrcwht67z2cJovjucMI1qvmgXEnZg8ky4JnnVDqZWFYaW1oo\",\"ttl\":1209600,\"created\":\"2018-04-12T23:49:10.145Z\",\"userId\":1}",
       "VNeLFvABuvRWfjkl8OA9kArnFmR63xGSbyuoSQ9wOxzGhdYk4rQTMlcYoHGV9vGh": "{\"id\":\"VNeLFvABuvRWfjkl8OA9kArnFmR63xGSbyuoSQ9wOxzGhdYk4rQTMlcYoHGV9vGh\",\"ttl\":1209600,\"created\":\"2018-04-12T23:49:23.477Z\",\"userId\":1}",
       "SLWsYajNFR2EoL91lBgsYPEeTKQy5Iq7psvDwyz2ZJNtK4JHQrnS5gMFWzbDmHMw": "{\"id\":\"SLWsYajNFR2EoL91lBgsYPEeTKQy5Iq7psvDwyz2ZJNtK4JHQrnS5gMFWzbDmHMw\",\"ttl\":1209600,\"created\":\"2018-04-13T00:14:13.885Z\",\"userId\":1}",
-      "J2NFbWzCoQHYJFXP4zyyJ33UBeoMpTEC2yk89vFt8vqdiGL88SZvuHydDherFezW": "{\"id\":\"J2NFbWzCoQHYJFXP4zyyJ33UBeoMpTEC2yk89vFt8vqdiGL88SZvuHydDherFezW\",\"ttl\":1209600,\"created\":\"2018-04-13T00:14:28.309Z\",\"userId\":1}"
+      "J2NFbWzCoQHYJFXP4zyyJ33UBeoMpTEC2yk89vFt8vqdiGL88SZvuHydDherFezW": "{\"id\":\"J2NFbWzCoQHYJFXP4zyyJ33UBeoMpTEC2yk89vFt8vqdiGL88SZvuHydDherFezW\",\"ttl\":1209600,\"created\":\"2018-04-13T00:14:28.309Z\",\"userId\":1}",
+      "7OWRePEEsxRg7F07HMK8WTlphn0B246Fy0rxQcd06ezDVogUAAlLAeiNM73dT6Q6": "{\"id\":\"7OWRePEEsxRg7F07HMK8WTlphn0B246Fy0rxQcd06ezDVogUAAlLAeiNM73dT6Q6\",\"ttl\":1209600,\"created\":\"2018-04-17T07:53:25.057Z\",\"userId\":1}"
     },
     "ACL": {},
     "RoleMapping": {},
@@ -371,8 +372,8 @@
       "9": "{\"danhMucCha\":\"root\",\"danhMuc\":\"Tieng-Anh\",\"tenDanhMuc\":\"Tiếng Anh\",\"id\":9}",
       "10": "{\"danhMuc\":\"MUCDOKHO\",\"tenDanhMuc\":\"Độ Khó Câu Hỏi\",\"groupId\":2,\"id\":10,\"parentId\":0}",
       "11": "{\"danhMuc\":\"LOAICAUHOI\",\"tenDanhMuc\":\"Loại Câu Hỏi\",\"parentId\":0,\"groupId\":2,\"id\":11}",
-      "12": "{\"danhMuc\":\"su-dung-may-tinh\",\"tenDanhMuc\":\"Sử dụng máy tính\",\"groupId\":11,\"id\":12}",
-      "13": "{\"danhMuc\":\"hieu-biet-ve-cntt\",\"tenDanhMuc\":\"Hiểu biết về CNTT\",\"parentId\":0,\"groupId\":11,\"id\":13}",
+      "12": "{\"danhMuc\":\"su-dung-may-tinh\",\"tenDanhMuc\":\"Sử dụng máy tính\",\"groupId\":11,\"id\":12,\"parentId\":25}",
+      "13": "{\"danhMuc\":\"hieu-biet-ve-cntt\",\"tenDanhMuc\":\"Hiểu biết về CNTT\",\"parentId\":25,\"groupId\":11,\"id\":13}",
       "14": "{\"danhMuc\":\"de\",\"tenDanhMuc\":\"Dễ\",\"groupId\":10,\"id\":14}",
       "15": "{\"danhMuc\":\"TB\",\"tenDanhMuc\":\"Trung Bình\",\"parentId\":0,\"groupId\":10,\"id\":15}",
       "16": "{\"danhMuc\":\"kho\",\"tenDanhMuc\":\"Khó\",\"parentId\":0,\"groupId\":10,\"id\":16}",
@@ -381,7 +382,13 @@
       "19": "{\"danhMuc\":\"MANY\",\"tenDanhMuc\":\"Nhiều Đáp An\",\"parentId\":0,\"groupId\":17,\"id\":19}",
       "20": "{\"danhMuc\":\"TRANGTHAI_BAITHI\",\"tenDanhMuc\":\"Trạng Thái Bài Thi\",\"parentId\":0,\"groupId\":2,\"id\":20}",
       "21": "{\"danhMuc\":\"TRANGTHAI_KITHI\",\"tenDanhMuc\":\"Trạng Thái Kì Thi\",\"parentId\":0,\"groupId\":2,\"id\":21}",
-      "22": "{\"danhMuc\":\"TRANGTHAI_MONTHI\",\"tenDanhMuc\":\"Trạng Thái Môn Thi\",\"parentId\":0,\"groupId\":2,\"id\":22}"
+      "22": "{\"danhMuc\":\"TRANGTHAI_MONTHI\",\"tenDanhMuc\":\"Trạng Thái Môn Thi\",\"parentId\":0,\"groupId\":2,\"id\":22}",
+      "23": "{\"danhMuc\":\"LOAIMONTHI\",\"tenDanhMuc\":\"Loại Môn Thi\",\"parentId\":0,\"groupId\":2,\"id\":23}",
+      "24": "{\"danhMuc\":\"tin-hoc\",\"tenDanhMuc\":\"Tin Học\",\"groupId\":23,\"id\":24}",
+      "25": "{\"danhMuc\":\"tin-hoc\",\"tenDanhMuc\":\"Tin Học\",\"parentId\":0,\"groupId\":11,\"id\":25}",
+      "26": "{\"danhMuc\":\"tieng-anh\",\"tenDanhMuc\":\"Tiếng Anh\",\"parentId\":0,\"groupId\":11,\"id\":26}",
+      "27": "{\"danhMuc\":\"tieng-anh-co-ban\",\"tenDanhMuc\":\"Tiếng Anh Cơ Bản\",\"parentId\":26,\"groupId\":11,\"id\":27}",
+      "28": "{\"danhMuc\":\"tieng-anh-nang-cao\",\"tenDanhMuc\":\"Tiếng Anh Nâng Cao\",\"parentId\":26,\"groupId\":11,\"id\":28}"
     },
     "ActionHistory": {
       "1": "{\"actionId\":\"Quiz_1\",\"objectId\":\"26\",\"objectType\":\"Quiz\",\"message\":\"đã tạo mới\",\"notes\":\"TODO\",\"date\":\"2017-12-26T09:55:43.644Z\",\"userId\":1,\"id\":1}",
