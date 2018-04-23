@@ -67,7 +67,7 @@
       "model": "Question",
       "foreignKey": ""
     },
-    "doiThi": {
+    "dotThi": {
       "type": "hasMany",
       "model": "DotThi",
       "foreignKey": "monThiId"
