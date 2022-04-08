@@ -111,7 +111,7 @@
     "webpack-merge": "^2.4.0"
   },
   "dependencies": {
-    "moment": "^2.18.1",
+    "moment": "^2.29.2",
     "vue2-datepicker": "^1.6.3",
     "vuejs-count-down": "0.0.5"
   }
