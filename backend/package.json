@@ -8,7 +8,7 @@
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
-    "async": "^2.1.2",
+    "async": "^3.2.2",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "express-formidable": "^1.0.0",
